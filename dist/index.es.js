@@ -18235,7 +18235,7 @@ function constructHttpClientIndexScript({
 }) {
   let imports = `import { HttpClient } from '@srclaunch/http-client';
 import { Environment } from '@srclaunch/types';
-import { getEnvironment } from '@srclaunch/environment-web';
+import { getEnvironment } from '@srclaunch/web-environment';
 `;
   models.forEach((name) => {
     imports += `import ${name.toLowerCase()}Endpoints from './${name}Endpoints';
