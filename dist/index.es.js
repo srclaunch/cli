@@ -18377,13 +18377,16 @@ function getHttpClientEndpoints({
   `;
 }
 async function buildHttpClient({
-  path: projectPath
+  httpClientProjectName,
+  modelsPath,
+  path: projectPath,
+  typesProjectName
 }) {
   try {
-    const APPLAB_CONFIG_PATH = path7.join(path7.resolve(), "applab.json");
+    const APPLAB_CONFIG_PATH = path7.join(path7.resolve(), "./.applab/config.json");
     const APPLAB_CONFIG = await JSON.parse(await fs7.readFile(APPLAB_CONFIG_PATH, "utf8"));
     const APPLAB_DIRECTORY = ".applab";
-    const MODELS_PATH = path7.join(path7.resolve(), APPLAB_DIRECTORY, "dependencies/models/src");
+    const MODELS_PATH = path7.join(path7.resolve(), APPLAB_DIRECTORY, `${modelsPath}/src`);
     const BUILD_PATH = path7.join(path7.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
     await fs7.emptyDir(BUILD_PATH);
     const files = await fs7.readdir(MODELS_PATH);
@@ -18392,8 +18395,8 @@ async function buildHttpClient({
         const name = `${file.toLowerCase().replace(".ts", "")}Endpoints.ts`;
         const modelHttpClientEndpoints = getHttpClientEndpoints({
           modelName: file.replace(".ts", ""),
-          httpClientProjectName: "@azorakapp/azorak-http-client",
-          typesProjectName: "@azorakapp/azorak-types"
+          httpClientProjectName,
+          typesProjectName
         });
         await fs7.writeFile(path7.join(BUILD_PATH, name), modelHttpClientEndpoints, "utf8");
       }
@@ -18522,7 +18525,7 @@ async function buildModels() {
     inputScripts: ["src/index.ts"],
     platform: "node"
   });
-  await buildHttpClient({ path: config.dependencies["http-client"].path });
+  await buildHttpClient({ httpClientProjectName: config.dependencies["http-client"].repo, path: config.dependencies["http-client"].path, modelsPath: config.dependencies.models.path, typesProjectName: config.dependencies.types.repo });
   await build({
     buildPath: `.applab/${config.dependencies["http-client"].path}`,
     buildTypes: true,

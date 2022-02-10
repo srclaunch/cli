@@ -166,12 +166,18 @@ function getHttpClientEndpoints({
 }
 
 export async function buildHttpClient({
+  httpClientProjectName,
+  modelsPath,
   path: projectPath,
+  typesProjectName
 }: {
+  httpClientProjectName: string;
+  modelsPath: string;
   path: string;
+  typesProjectName: string;
 }): Promise<void> {
   try {
-    const APPLAB_CONFIG_PATH = path.join(path.resolve(), 'applab.json');
+    const APPLAB_CONFIG_PATH = path.join(path.resolve(), './.applab/config.json');
     const APPLAB_CONFIG = await JSON.parse(
       await fs.readFile(APPLAB_CONFIG_PATH, 'utf8'),
     );
@@ -179,7 +185,7 @@ export async function buildHttpClient({
     const MODELS_PATH = path.join(
       path.resolve(),
       APPLAB_DIRECTORY,
-      'dependencies/models/src'
+      `${modelsPath}/src`
     );
 
     const BUILD_PATH = path.join(
@@ -197,8 +203,8 @@ export async function buildHttpClient({
 
         const modelHttpClientEndpoints = getHttpClientEndpoints({
           modelName: file.replace('.ts', ''),
-          httpClientProjectName: '@azorakapp/azorak-http-client',
-          typesProjectName: '@azorakapp/azorak-types',
+          httpClientProjectName,
+          typesProjectName
         });
 
         // logger.info(`Writing ${name} HTTP client endpoints`);

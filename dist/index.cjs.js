@@ -18384,13 +18384,16 @@ function getHttpClientEndpoints({
   `;
 }
 async function buildHttpClient({
-  path: projectPath
+  httpClientProjectName,
+  modelsPath,
+  path: projectPath,
+  typesProjectName
 }) {
   try {
-    const APPLAB_CONFIG_PATH = import_path6.default.join(import_path6.default.resolve(), "applab.json");
+    const APPLAB_CONFIG_PATH = import_path6.default.join(import_path6.default.resolve(), "./.applab/config.json");
     const APPLAB_CONFIG = await JSON.parse(await import_fs_extra7.default.readFile(APPLAB_CONFIG_PATH, "utf8"));
     const APPLAB_DIRECTORY = ".applab";
-    const MODELS_PATH = import_path6.default.join(import_path6.default.resolve(), APPLAB_DIRECTORY, "dependencies/models/src");
+    const MODELS_PATH = import_path6.default.join(import_path6.default.resolve(), APPLAB_DIRECTORY, `${modelsPath}/src`);
     const BUILD_PATH = import_path6.default.join(import_path6.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
     await import_fs_extra7.default.emptyDir(BUILD_PATH);
     const files = await import_fs_extra7.default.readdir(MODELS_PATH);
@@ -18399,8 +18402,8 @@ async function buildHttpClient({
         const name = `${file.toLowerCase().replace(".ts", "")}Endpoints.ts`;
         const modelHttpClientEndpoints = getHttpClientEndpoints({
           modelName: file.replace(".ts", ""),
-          httpClientProjectName: "@azorakapp/azorak-http-client",
-          typesProjectName: "@azorakapp/azorak-types"
+          httpClientProjectName,
+          typesProjectName
         });
         await import_fs_extra7.default.writeFile(import_path6.default.join(BUILD_PATH, name), modelHttpClientEndpoints, "utf8");
       }
@@ -18529,7 +18532,7 @@ async function buildModels() {
     inputScripts: ["src/index.ts"],
     platform: "node"
   });
-  await buildHttpClient({ path: config.dependencies["http-client"].path });
+  await buildHttpClient({ httpClientProjectName: config.dependencies["http-client"].repo, path: config.dependencies["http-client"].path, modelsPath: config.dependencies.models.path, typesProjectName: config.dependencies.types.repo });
   await build({
     buildPath: `.applab/${config.dependencies["http-client"].path}`,
     buildTypes: true,

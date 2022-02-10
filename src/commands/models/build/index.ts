@@ -49,7 +49,7 @@ export async function buildModels() {
     platform: 'node',
   });
 
-  await buildHttpClient({ path: config.dependencies['http-client'].path });
+  await buildHttpClient({ httpClientProjectName: config.dependencies['http-client'].repo, path: config.dependencies['http-client'].path, modelsPath: config.dependencies.models.path, typesProjectName: config.dependencies.types.repo });
   await build({
     buildPath: `.applab/${config.dependencies['http-client'].path}`,
     buildTypes: true,
