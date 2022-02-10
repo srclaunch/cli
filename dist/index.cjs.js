@@ -1181,13 +1181,17 @@ var import_meow = __toESM(require("meow"), 1);
 var import_update_notifier = __toESM(require("update-notifier"), 1);
 
 // src/lib/cli.ts
-var import_fs_extra11 = __toESM(require("fs-extra"), 1);
-var import_path10 = __toESM(require("path"), 1);
+var import_fs_extra12 = __toESM(require("fs-extra"), 1);
+var import_path11 = __toESM(require("path"), 1);
 
 // src/commands/help/index.ts
 function showHelp() {
   cli.showHelp();
 }
+
+// src/commands/models/build/index.ts
+var import_path8 = __toESM(require("path"), 1);
+var import_fs_extra9 = __toESM(require("fs-extra"), 1);
 
 // src/commands/models/build/clean.ts
 var import_fs_extra = __toESM(require("fs-extra"), 1);
@@ -18493,6 +18497,8 @@ async function build({
 
 // src/commands/models/build/index.ts
 async function buildModels() {
+  const config = await JSON.parse(await import_fs_extra9.default.readFile(import_path8.default.join(import_path8.default.resolve(), import_path8.default.join("./.applab/config.json")), "utf8"));
+  console.log("config", config);
   await cleanModels();
   await copyStubModels();
   await buildAppLabModels({ path: "dependencies/models" });
@@ -18548,11 +18554,11 @@ async function buildModels() {
 }
 
 // src/commands/models/list.ts
-var import_fs_extra9 = __toESM(require("fs-extra"), 1);
-var import_path8 = __toESM(require("path"), 1);
+var import_fs_extra10 = __toESM(require("fs-extra"), 1);
+var import_path9 = __toESM(require("path"), 1);
 async function listModels() {
-  const modelsPath = import_path8.default.join("models");
-  const files = import_fs_extra9.default.readdirSync(modelsPath).filter((file) => {
+  const modelsPath = import_path9.default.join("models");
+  const files = import_fs_extra10.default.readdirSync(modelsPath).filter((file) => {
     return file.slice(-3) === ".ts" && file.split(".ts")[0] !== "index";
   });
   console.info(files.map((file) => file.split(".ts")[0]).toString());
@@ -18582,15 +18588,15 @@ async function handleModelCommands(command) {
 }
 
 // src/commands/build/index.ts
-var import_path9 = __toESM(require("path"), 1);
-var import_fs_extra10 = __toESM(require("fs-extra"), 1);
+var import_path10 = __toESM(require("path"), 1);
+var import_fs_extra11 = __toESM(require("fs-extra"), 1);
 async function handleBuildCommand(config) {
   if (Array.isArray(config)) {
     let buildDirs = [];
     for (const buildConfig of config) {
       if (!buildDirs.includes(buildConfig.buildDir)) {
         if (buildConfig.emptyBuildDir) {
-          await import_fs_extra10.default.emptyDir(import_path9.default.join(import_path9.default.resolve(), buildConfig.buildDir ?? "dist"));
+          await import_fs_extra11.default.emptyDir(import_path10.default.join(import_path10.default.resolve(), buildConfig.buildDir ?? "dist"));
         }
         buildDirs = [...buildDirs, buildConfig.buildDir];
       }
@@ -18598,7 +18604,7 @@ async function handleBuildCommand(config) {
     }
   } else {
     if (config.emptyBuildDir) {
-      await import_fs_extra10.default.emptyDir(import_path9.default.join(import_path9.default.resolve(), config.buildDir ?? "dist"));
+      await import_fs_extra11.default.emptyDir(import_path10.default.join(import_path10.default.resolve(), config.buildDir ?? "dist"));
     }
     await build(config);
   }
@@ -18606,8 +18612,8 @@ async function handleBuildCommand(config) {
 
 // src/lib/cli.ts
 async function ensureCwdIsApplabProject() {
-  const projectConfigFilePath = import_path10.default.join("applab.json");
-  const isCwdProjectLevel = Boolean(await import_fs_extra11.default.stat(projectConfigFilePath));
+  const projectConfigFilePath = import_path11.default.join("./.applab/config.json");
+  const isCwdProjectLevel = Boolean(await import_fs_extra12.default.stat(projectConfigFilePath));
   if (!isCwdProjectLevel) {
     throw new Error("Please run this command from the AppLab project directory.");
   }
@@ -18620,15 +18626,16 @@ async function run({
   try {
     switch (command[0]) {
       case "build":
-        const config = await import_fs_extra11.default.readFile(import_path10.default.join(import_path10.default.resolve(), "applab.config.json"), "utf8");
+        const config = await import_fs_extra12.default.readFile(import_path11.default.join(import_path11.default.resolve(), "applab.config.json"), "utf8");
         if (!config) {
           console.error('Missing config file "applab.config.json"');
-        }
-        try {
-          const buildConfig = JSON.parse(config).build;
-          await handleBuildCommand(buildConfig);
-        } catch (err) {
-          console.error('Error in config file "applab.config.json": ', err);
+        } else {
+          try {
+            const buildConfig = JSON.parse(config).build;
+            await handleBuildCommand(buildConfig);
+          } catch (err) {
+            console.error('Error in config file "applab.config.json": ', err);
+          }
         }
         break;
       case "models":

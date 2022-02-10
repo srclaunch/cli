@@ -1174,13 +1174,17 @@ import meow from "meow";
 import updateNotifier from "update-notifier";
 
 // src/lib/cli.ts
-import fs11 from "fs-extra";
-import path11 from "path";
+import fs12 from "fs-extra";
+import path12 from "path";
 
 // src/commands/help/index.ts
 function showHelp() {
   cli.showHelp();
 }
+
+// src/commands/models/build/index.ts
+import path9 from "path";
+import fs9 from "fs-extra";
 
 // src/commands/models/build/clean.ts
 import fs from "fs-extra";
@@ -18486,6 +18490,8 @@ async function build({
 
 // src/commands/models/build/index.ts
 async function buildModels() {
+  const config = await JSON.parse(await fs9.readFile(path9.join(path9.resolve(), path9.join("./.applab/config.json")), "utf8"));
+  console.log("config", config);
   await cleanModels();
   await copyStubModels();
   await buildAppLabModels({ path: "dependencies/models" });
@@ -18541,11 +18547,11 @@ async function buildModels() {
 }
 
 // src/commands/models/list.ts
-import fs9 from "fs-extra";
-import path9 from "path";
+import fs10 from "fs-extra";
+import path10 from "path";
 async function listModels() {
-  const modelsPath = path9.join("models");
-  const files = fs9.readdirSync(modelsPath).filter((file) => {
+  const modelsPath = path10.join("models");
+  const files = fs10.readdirSync(modelsPath).filter((file) => {
     return file.slice(-3) === ".ts" && file.split(".ts")[0] !== "index";
   });
   console.info(files.map((file) => file.split(".ts")[0]).toString());
@@ -18575,15 +18581,15 @@ async function handleModelCommands(command) {
 }
 
 // src/commands/build/index.ts
-import path10 from "path";
-import fs10 from "fs-extra";
+import path11 from "path";
+import fs11 from "fs-extra";
 async function handleBuildCommand(config) {
   if (Array.isArray(config)) {
     let buildDirs = [];
     for (const buildConfig of config) {
       if (!buildDirs.includes(buildConfig.buildDir)) {
         if (buildConfig.emptyBuildDir) {
-          await fs10.emptyDir(path10.join(path10.resolve(), buildConfig.buildDir ?? "dist"));
+          await fs11.emptyDir(path11.join(path11.resolve(), buildConfig.buildDir ?? "dist"));
         }
         buildDirs = [...buildDirs, buildConfig.buildDir];
       }
@@ -18591,7 +18597,7 @@ async function handleBuildCommand(config) {
     }
   } else {
     if (config.emptyBuildDir) {
-      await fs10.emptyDir(path10.join(path10.resolve(), config.buildDir ?? "dist"));
+      await fs11.emptyDir(path11.join(path11.resolve(), config.buildDir ?? "dist"));
     }
     await build(config);
   }
@@ -18599,8 +18605,8 @@ async function handleBuildCommand(config) {
 
 // src/lib/cli.ts
 async function ensureCwdIsApplabProject() {
-  const projectConfigFilePath = path11.join("applab.json");
-  const isCwdProjectLevel = Boolean(await fs11.stat(projectConfigFilePath));
+  const projectConfigFilePath = path12.join("./.applab/config.json");
+  const isCwdProjectLevel = Boolean(await fs12.stat(projectConfigFilePath));
   if (!isCwdProjectLevel) {
     throw new Error("Please run this command from the AppLab project directory.");
   }
@@ -18613,15 +18619,16 @@ async function run({
   try {
     switch (command[0]) {
       case "build":
-        const config = await fs11.readFile(path11.join(path11.resolve(), "applab.config.json"), "utf8");
+        const config = await fs12.readFile(path12.join(path12.resolve(), "applab.config.json"), "utf8");
         if (!config) {
           console.error('Missing config file "applab.config.json"');
-        }
-        try {
-          const buildConfig = JSON.parse(config).build;
-          await handleBuildCommand(buildConfig);
-        } catch (err) {
-          console.error('Error in config file "applab.config.json": ', err);
+        } else {
+          try {
+            const buildConfig = JSON.parse(config).build;
+            await handleBuildCommand(buildConfig);
+          } catch (err) {
+            console.error('Error in config file "applab.config.json": ', err);
+          }
         }
         break;
       case "models":

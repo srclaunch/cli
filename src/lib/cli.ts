@@ -33,15 +33,15 @@ export async function run({
 
         if (!config) {
           console.error('Missing config file "applab.config.json"');
+        } else {
+          try {
+            const buildConfig = JSON.parse(config).build;
+            await handleBuildCommand(buildConfig);  
+          } catch (err) {
+            console.error('Error in config file "applab.config.json": ', err);
+          }
         }
 
-        try {
-          const buildConfig = JSON.parse(config).build;
-          await handleBuildCommand(buildConfig);  
-        } catch (err) {
-          console.error('Error in config file "applab.config.json": ', err);
-        }
-  
         break;
       case 'models':
         // await buildModels();
