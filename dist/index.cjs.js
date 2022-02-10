@@ -18501,27 +18501,27 @@ async function buildModels() {
   console.log("config", config);
   await cleanModels();
   await copyStubModels();
-  await buildAppLabModels({ path: config.models.path });
+  await buildAppLabModels({ path: config.dependencies.models.path });
   await build({
-    buildPath: `.applab/${config.models.path}`,
+    buildPath: `.applab/${config.dependencies.models.path}`,
     buildTypes: true,
     bundle: true,
     format: "esm",
     inputScripts: ["src/index.ts"],
     platform: "browser"
   });
-  await buildModelTypes({ path: config.types.path });
+  await buildModelTypes({ path: config.dependencies.types.path });
   await build({
-    buildPath: `.applab/${config.types.path}`,
+    buildPath: `.applab/${config.dependencies.types.path}`,
     buildTypes: true,
     bundle: true,
     format: "esm",
     inputScripts: ["src/index.ts"],
     platform: "browser"
   });
-  await buildSequelizeModels({ path: config["sequelize-models"].path });
+  await buildSequelizeModels({ path: config.dependencies["sequelize-models"].path });
   await build({
-    buildPath: `.applab/${config["sequelize-models"].path}`,
+    buildPath: `.applab/${config.dependencies["sequelize-models"].path}`,
     buildTypes: true,
     bundle: true,
     excludeLibs: ["sequelize"],
@@ -18529,9 +18529,9 @@ async function buildModels() {
     inputScripts: ["src/index.ts"],
     platform: "node"
   });
-  await buildHttpClient({ path: config["http-client"].path });
+  await buildHttpClient({ path: config.dependencies["http-client"].path });
   await build({
-    buildPath: `.applab/${config["http-client"].path}`,
+    buildPath: `.applab/${config.dependencies["http-client"].path}`,
     buildTypes: true,
     bundle: true,
     format: "esm",
@@ -18539,12 +18539,12 @@ async function buildModels() {
     platform: "browser"
   });
   await buildReduxSlices({
-    httpClientProjectName: config["http-client"].repo,
-    projectPath: config["redux-state"].path,
-    typesProjectName: config["types"].repo
+    httpClientProjectName: config.dependencies["http-client"].repo,
+    projectPath: config.dependencies["redux-state"].path,
+    typesProjectName: config.dependencies["types"].repo
   });
   await build({
-    buildPath: `.applab/${config["redux-state"].path}`,
+    buildPath: `.applab/${config.dependencies["redux-state"].path}`,
     buildTypes: true,
     bundle: true,
     format: "esm",
