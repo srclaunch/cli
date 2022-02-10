@@ -1,0 +1,87 @@
+name: Deploy package
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'srclaunch'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          # always-auth: true
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@srclaunch'
+      - run: yarn install
+      - run: yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
+# name: Deploy package
+# on:
+#   push:
+#     branches:
+#       - main
+# jobs:
+#   install:
+#     runs-on: ubuntu-18.04
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Use Node.js 14.x
+#         uses: actions/setup-node@v1
+#         with:
+#           always-auth: true
+#           node-version: 14.x
+#           registry-url: https://npm.pkg.github.com/
+#           scope: '@srclaunch'
+#       - run: yarn install
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.GPR_READ_TOKEN }}
+
+#   package:
+#     needs: [install]
+#     runs-on: ubuntu-18.04
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Use Node.js 14.x
+#         uses: actions/setup-node@v1
+#         with:
+#           always-auth: true
+#           node-version: 14.x
+#           registry-url: https://npm.pkg.github.com/
+#           scope: '@srclaunch'
+#       - run: yarn install
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.GPR_READ_TOKEN }}
+#       - run: yarn pack
+#       - name: Upload build artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: package
+#           path: '*.tgz'
+
+#   publish:
+#     name: 'Publish to GitHub Packages'
+#     needs: [package]
+#     runs-on: ubuntu-18.04
+#     if: github.repository_owner == 'srclaunch' && github.token != ''
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Download build artifact
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: package
+#       - uses: actions/setup-node@v1
+#         with:
+#           always-auth: true
+#           node-version: 14.x
+#           registry-url: https://npm.pkg.github.com/
+#           scope: '@srclaunch'
+#       - run: yarn publish $(ls *.tgz)
+#         env:
+#           NODE_AUTH_TOKEN: ${{ github.token }}

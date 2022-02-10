@@ -1,0 +1,19 @@
+{
+  "name": "@srclaunch/cli",
+  "version": "0.2.0",
+  "description": "Command line tools used by backend AppLab services",
+  "engines": {
+    "node": ">=14"
+  },
+  "bin": {
+    "applab": "yarn node ./index.js"
+  },
+  "author": "Steven Bennett <steven@srclaunch.com>",
+  "license": "ISC",
+  "resolve": {
+    "alias": {
+      "react/jsx-dev-runtime": "react/jsx-dev-runtime.js",
+      "react/jsx-runtime": "react/jsx-runtime.js"
+    }
+  }
+}
