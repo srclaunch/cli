@@ -7,7 +7,7 @@ import { handleModelCommands } from '../commands/models/index.js';
 import { handleBuildCommand } from '../commands/build/index.js';
 
 export async function ensureCwdIsApplabProject() {
-  const projectConfigFilePath = path.join('applab.json');
+  const projectConfigFilePath = path.join('./.applab/config.json');
   const isCwdProjectLevel = Boolean(await fs.stat(projectConfigFilePath));
 
   if (!isCwdProjectLevel) {

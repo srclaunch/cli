@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs-extra';
+
 import { cleanModels } from './clean.js';
 import { copyStubModels } from './stubs/index.js';
 import { buildAppLabModels } from './outputs/applab.js';
@@ -9,6 +12,8 @@ import { buildHttpClient } from './outputs/http-client.js';
 import { build } from '../../../lib/build/index.js';
 
 export async function buildModels() {
+  const config = await JSON.parse(await fs.readFile(path.join(path.resolve(), path.join('./.applab/config.json')), 'utf8'));
+  console.log('config',config)
   await cleanModels();
   await copyStubModels();
   
