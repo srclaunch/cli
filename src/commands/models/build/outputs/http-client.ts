@@ -79,7 +79,7 @@ function getHttpClientEndpoints({
   const urlParam = paramCase(pluralize(modelName));
 
   return `import { Condition, HttpResponse } from '@srclaunch/types';
-  import queryString from 'query-string';
+  import { stringify } from 'query-string';
   import { httpClient } from './index';
   import { ${modelName} } from '${typesProjectName}';
 
@@ -143,7 +143,7 @@ function getHttpClientEndpoints({
       limit?: number;
       offset?: number
     }): Promise<HttpResponse<${modelName}> | void> => 
-      httpClient.get(\`/${urlParam}?\${filters ? queryString.stringify(filters) : ''}limit=\${limit}&offset=\${offset}\`),
+      httpClient.get(\`/${urlParam}?\${filters ? stringify(filters) : ''}limit=\${limit}&offset=\${offset}\`),
     update${modelName}: (
       id: ${modelName}['id'],
       props: ${modelName},
