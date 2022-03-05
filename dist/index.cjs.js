@@ -17510,8 +17510,10 @@ async function buildModelTypes({ path: projectPath }) {
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_BUILD_PATH = import_path3.default.join(import_path3.default.resolve(), APPLAB_DIRECTORY, "dependencies/models/dist/index.js");
     const BUILD_PATH = import_path3.default.join(import_path3.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = import_path3.default.join(import_path3.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/dist`);
     const TYPES_DIR_PATH = import_path3.default.join(import_path3.default.resolve(), "types");
     await import_fs_extra4.default.emptyDir(BUILD_PATH);
+    await import_fs_extra4.default.emptyDir(DIST_PATH);
     const files = await import_fs_extra4.default.readdir(TYPES_DIR_PATH);
     for (const file of files) {
       const fileContents = await import_fs_extra4.default.readFile(import_path3.default.join(TYPES_DIR_PATH, file), "utf8");
@@ -17716,7 +17718,9 @@ async function buildSequelizeModels({
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_BUILD_PATH = import_path4.default.join(import_path4.default.resolve(), APPLAB_DIRECTORY, "dependencies/models/dist/index.js");
     const BUILD_PATH = import_path4.default.join(import_path4.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = import_path4.default.join(import_path4.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/dist`);
     await import_fs_extra5.default.emptyDir(BUILD_PATH);
+    await import_fs_extra5.default.emptyDir(DIST_PATH);
     const Models = await import(MODELS_BUILD_PATH);
     for (const model of [...Object.entries(Models)]) {
       const modelName = model[1].name;
@@ -18214,7 +18218,9 @@ async function buildReduxSlices({
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_PATH = import_path5.default.join(import_path5.default.resolve(), APPLAB_DIRECTORY, "dependencies/models/src");
     const BUILD_PATH = import_path5.default.join(import_path5.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = import_path5.default.join(import_path5.default.resolve(), APPLAB_DIRECTORY, "dependencies/models/dist");
     await import_fs_extra6.default.emptyDir(BUILD_PATH);
+    await import_fs_extra6.default.emptyDir(DIST_PATH);
     const files = await import_fs_extra6.default.readdir(MODELS_PATH);
     for (const file of files) {
       if (file !== "index.ts") {
@@ -18395,7 +18401,9 @@ async function buildHttpClient({
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_PATH = import_path6.default.join(import_path6.default.resolve(), APPLAB_DIRECTORY, `${modelsPath}/src`);
     const BUILD_PATH = import_path6.default.join(import_path6.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = import_path6.default.join(import_path6.default.resolve(), APPLAB_DIRECTORY, `${projectPath}/dist`);
     await import_fs_extra7.default.emptyDir(BUILD_PATH);
+    await import_fs_extra7.default.emptyDir(DIST_PATH);
     const files = await import_fs_extra7.default.readdir(MODELS_PATH);
     for (const file of files) {
       if (file !== "index.ts") {

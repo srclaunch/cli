@@ -133,9 +133,15 @@ export async function buildModelTypes({ path: projectPath }: { path: string }) {
       APPLAB_DIRECTORY,
       `${projectPath}/src`,
     );
+    const DIST_PATH = path.join(
+      path.resolve(),
+      APPLAB_DIRECTORY,
+      `${projectPath}/dist`,
+    );
     const TYPES_DIR_PATH = path.join(path.resolve(), 'types');
 
     await fs.emptyDir(BUILD_PATH);
+    await fs.emptyDir(DIST_PATH);
 
     const files = await fs.readdir(TYPES_DIR_PATH);
     for (const file of files) {

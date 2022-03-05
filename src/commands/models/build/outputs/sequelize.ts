@@ -354,8 +354,14 @@ export async function buildSequelizeModels({
       APPLAB_DIRECTORY,
       `${projectPath}/src`,
     );
+    const DIST_PATH = path.join(
+      path.resolve(),
+      APPLAB_DIRECTORY,
+      `${projectPath}/dist`,
+    );
 
     await fs.emptyDir(BUILD_PATH);
+    await fs.emptyDir(DIST_PATH);
 
     const Models = await import(MODELS_BUILD_PATH);
 

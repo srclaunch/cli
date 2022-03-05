@@ -194,7 +194,14 @@ export async function buildHttpClient({
       `${projectPath}/src`,
     );
 
+    const DIST_PATH = path.join(
+      path.resolve(),
+      APPLAB_DIRECTORY,
+      `${projectPath}/dist`,
+    );
+
     await fs.emptyDir(BUILD_PATH);
+    await fs.emptyDir(DIST_PATH);
 
     const files = await fs.readdir(MODELS_PATH);
     for (const file of files) {

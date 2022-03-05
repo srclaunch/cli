@@ -506,8 +506,14 @@ export async function buildReduxSlices({
       APPLAB_DIRECTORY,
       `${projectPath}/src`,
     );
+    const DIST_PATH = path.join(      
+      path.resolve(),
+      APPLAB_DIRECTORY, 
+      'dependencies/models/dist'
+    );
 
     await fs.emptyDir(BUILD_PATH);
+    await fs.emptyDir(DIST_PATH);
 
     const files = await fs.readdir(MODELS_PATH);
     for (const file of files) {

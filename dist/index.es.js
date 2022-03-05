@@ -17503,8 +17503,10 @@ async function buildModelTypes({ path: projectPath }) {
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_BUILD_PATH = path4.join(path4.resolve(), APPLAB_DIRECTORY, "dependencies/models/dist/index.js");
     const BUILD_PATH = path4.join(path4.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = path4.join(path4.resolve(), APPLAB_DIRECTORY, `${projectPath}/dist`);
     const TYPES_DIR_PATH = path4.join(path4.resolve(), "types");
     await fs4.emptyDir(BUILD_PATH);
+    await fs4.emptyDir(DIST_PATH);
     const files = await fs4.readdir(TYPES_DIR_PATH);
     for (const file of files) {
       const fileContents = await fs4.readFile(path4.join(TYPES_DIR_PATH, file), "utf8");
@@ -17709,7 +17711,9 @@ async function buildSequelizeModels({
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_BUILD_PATH = path5.join(path5.resolve(), APPLAB_DIRECTORY, "dependencies/models/dist/index.js");
     const BUILD_PATH = path5.join(path5.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = path5.join(path5.resolve(), APPLAB_DIRECTORY, `${projectPath}/dist`);
     await fs5.emptyDir(BUILD_PATH);
+    await fs5.emptyDir(DIST_PATH);
     const Models = await import(MODELS_BUILD_PATH);
     for (const model of [...Object.entries(Models)]) {
       const modelName = model[1].name;
@@ -18207,7 +18211,9 @@ async function buildReduxSlices({
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_PATH = path6.join(path6.resolve(), APPLAB_DIRECTORY, "dependencies/models/src");
     const BUILD_PATH = path6.join(path6.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = path6.join(path6.resolve(), APPLAB_DIRECTORY, "dependencies/models/dist");
     await fs6.emptyDir(BUILD_PATH);
+    await fs6.emptyDir(DIST_PATH);
     const files = await fs6.readdir(MODELS_PATH);
     for (const file of files) {
       if (file !== "index.ts") {
@@ -18388,7 +18394,9 @@ async function buildHttpClient({
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_PATH = path7.join(path7.resolve(), APPLAB_DIRECTORY, `${modelsPath}/src`);
     const BUILD_PATH = path7.join(path7.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
+    const DIST_PATH = path7.join(path7.resolve(), APPLAB_DIRECTORY, `${projectPath}/dist`);
     await fs7.emptyDir(BUILD_PATH);
+    await fs7.emptyDir(DIST_PATH);
     const files = await fs7.readdir(MODELS_PATH);
     for (const file of files) {
       if (file !== "index.ts") {
