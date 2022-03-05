@@ -17927,7 +17927,7 @@ const slice = createSlice({
 });
 
 export const create${modelName} = (${singularCamel}: ${modelName}): AppThunk =>
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(slice.actions.setActionInProgress({
         type: 'create${modelName}',
@@ -17958,7 +17958,7 @@ export const create${modelName} = (${singularCamel}: ${modelName}): AppThunk =>
   };
 
 export const create${capitalizedPlural} = (${pluralizedCamel}: ${modelName}[]): AppThunk =>
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(slice.actions.setActionInProgress({
         type: 'create${capitalizedPlural}',
@@ -17989,7 +17989,7 @@ export const create${capitalizedPlural} = (${pluralizedCamel}: ${modelName}[]): 
   };
 
 export const delete${modelName} = (${singularCamel}: ${modelName}['id']): AppThunk =>
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(slice.actions.setActionInProgress({
         type: 'delete${modelName}',
@@ -18020,7 +18020,7 @@ export const delete${modelName} = (${singularCamel}: ${modelName}['id']): AppThu
   };
 
 export const delete${capitalizedPlural} = (${pluralizedCamel}: ${modelName}['id'][]): AppThunk =>
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(slice.actions.setActionInProgress({
         type: 'delete${capitalizedPlural}',
@@ -18051,7 +18051,7 @@ export const delete${capitalizedPlural} = (${pluralizedCamel}: ${modelName}['id'
   };
 
 export const get${modelName} = (${singularCamel}: ${modelName}['id']): AppThunk => 
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(slice.actions.setActionInProgress({
         type: 'get${modelName}',
@@ -18093,7 +18093,7 @@ export const get${capitalizedPlural} = ({
   filters?: Record<string, string>,
   limit?: number;
   offset?: number
-}): AppThunk =>  async (dispatch: AppDispatch, getState) => {
+}): AppThunk =>  async (dispatch: AppDispatch, getState: () => RootState) => {
   try {
     dispatch(slice.actions.setActionInProgress({
       type: 'get${capitalizedPlural}',
@@ -18130,7 +18130,7 @@ export const get${capitalizedPlural} = ({
 
 
 export const update${modelName} = (${singularCamel}: ${modelName}): AppThunk =>
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(slice.actions.setActionInProgress({
         type: 'update${modelName}',
@@ -18164,7 +18164,7 @@ export const update${modelName} = (${singularCamel}: ${modelName}): AppThunk =>
   
 
 export const update${capitalizedPlural} = (${pluralizedCamel}: ${modelName}[]): AppThunk =>
-  async (dispatch: AppDispatch, getState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(slice.actions.setActionInProgress({
         type: 'update${capitalizedPlural}',
