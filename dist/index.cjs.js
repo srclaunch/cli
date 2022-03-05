@@ -18501,7 +18501,6 @@ async function build({
 // src/commands/models/build/index.ts
 async function buildModels() {
   const config = await JSON.parse(await import_fs_extra9.default.readFile(import_path8.default.join(import_path8.default.resolve(), import_path8.default.join("./.applab/config.json")), "utf8"));
-  console.log("config", config);
   await cleanModels();
   await copyStubModels();
   await buildAppLabModels({ path: config.dependencies.models.path });

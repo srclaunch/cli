@@ -13,7 +13,7 @@ import { build } from '../../../lib/build/index.js';
 
 export async function buildModels() {
   const config = await JSON.parse(await fs.readFile(path.join(path.resolve(), path.join('./.applab/config.json')), 'utf8'));
-  console.log('config',config);
+
   await cleanModels();
   await copyStubModels();
   
