@@ -18211,7 +18211,7 @@ async function buildReduxSlices({
     const APPLAB_DIRECTORY = ".applab";
     const MODELS_PATH = path6.join(path6.resolve(), APPLAB_DIRECTORY, "dependencies/models/src");
     const BUILD_PATH = path6.join(path6.resolve(), APPLAB_DIRECTORY, `${projectPath}/src`);
-    const DIST_PATH = path6.join(path6.resolve(), APPLAB_DIRECTORY, "dependencies/models/dist");
+    const DIST_PATH = path6.join(path6.resolve(), APPLAB_DIRECTORY, `${projectPath}/dist`);
     await fs6.emptyDir(BUILD_PATH);
     await fs6.emptyDir(DIST_PATH);
     const files = await fs6.readdir(MODELS_PATH);

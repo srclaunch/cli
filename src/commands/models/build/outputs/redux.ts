@@ -506,11 +506,12 @@ export async function buildReduxSlices({
       APPLAB_DIRECTORY,
       `${projectPath}/src`,
     );
-    const DIST_PATH = path.join(      
+    const DIST_PATH = path.join(
       path.resolve(),
-      APPLAB_DIRECTORY, 
-      'dependencies/models/dist'
+      APPLAB_DIRECTORY,
+      `${projectPath}/dist`,
     );
+
 
     await fs.emptyDir(BUILD_PATH);
     await fs.emptyDir(DIST_PATH);
