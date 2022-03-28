@@ -32,22 +32,20 @@ export async function buildFromConfig(configPath: string) {
   
 }
 
-
-
 export async function buildModels() {
   const configPath = path.join(path.resolve(), '.applab/config.json');
 
   console.log('configPath', configPath);
-  const configContents = await fs.readFile(configPath).toString();
+  const configContents = await fs.readFile(configPath);
   console.log('configContents', configContents);
 
   const config = await JSON.parse(
-    configContents
+    configContents.toString()
   );
 
   console.log('config,',config)
   
-  
+
   if (!config) {
    throw new Exception('Missing config file ".applab/config.json"');
   }
