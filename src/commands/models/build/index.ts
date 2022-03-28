@@ -43,7 +43,7 @@ export async function buildFromConfig(configPath: string) {
 }
 
 export async function buildModels() {
-  console.info('Starting build of Core Object models...');
+  console.info('Building Core Object dependencies...');
 
   const configPath = path.join(path.resolve(), '.applab/config.json');
   const configContents = await fs.readFile(configPath);
@@ -53,10 +53,7 @@ export async function buildModels() {
     throw new Exception('Missing config file ".applab/config.json"');
   }
 
-  console.info('Cleaning models...');
-  await cleanModels();
-
-  console.info('Copying stubs...');
+  console.info('Adding out of box Core Objects...');
   await copyStubModels();
 
   console.info('Building AppLab models...');
