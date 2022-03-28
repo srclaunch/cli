@@ -23,6 +23,7 @@ export async function build({
   sourceMap = true,
   target = 'es6',
   treeShaking = true,
+  tsconfigPath = '',
 }: BuildConfig) {
 
   try {
@@ -63,7 +64,7 @@ export async function build({
       console.info('Compiling types... ');
 
       const tsConfig = await JSON.parse(
-        fs.readFileSync(path.join(path.resolve(), buildPath, 'tsconfig.json'), 'utf8'),
+        fs.readFileSync(path.join(path.resolve(), tsconfigPath), 'utf8'),
       );
   
       const { options } = ts.parseJsonConfigFileContent(

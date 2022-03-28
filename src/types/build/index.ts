@@ -18,4 +18,5 @@ export type BuildConfig = {
   sourceMap?: boolean;
   target?:  'es5' | 'es6' | 'es2015' | 'es2017' | 'es2019' | 'es2020' | 'esnext';
   treeShaking?: boolean;
+  tsconfigPath?: string;
 }

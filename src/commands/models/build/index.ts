@@ -36,6 +36,9 @@ export async function buildProject(projectPath: string) {
         inputScripts: build.inputScripts
           ? build.inputScripts.map(input => path.join(projectPath, input))
           : [],
+        tsconfigPath: build.tsconfigPath
+          ? path.join(projectPath, build.tsconfigPath)
+          : undefined,
       }),
     );
 
