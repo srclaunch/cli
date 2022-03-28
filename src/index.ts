@@ -1,6 +1,7 @@
 import meow from 'meow';
 import updateNotifier, { Package } from 'update-notifier';
-import { run } from './lib/cli.js';
+
+import { run } from './lib/cli';
 
 export const helpMessage = `
 Usage
@@ -18,6 +19,7 @@ Commands
 To get help for a specific command type help after the command name, for example:
   $ applab dev help
 `;
+
 
 export const cli = meow(helpMessage, {
   flags: {},

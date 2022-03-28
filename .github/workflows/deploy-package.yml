@@ -10,17 +10,32 @@ jobs:
     if: github.repository_owner == 'srclaunch'
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
         with:
-          # always-auth: true
           node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@srclaunch'
-      - run: yarn install
-      - run: yarn publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Enable Yarn Berry
+        run: yarn set version stable
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Allow private package registry access
+        id: allow-private-package-registry-access
+        run: |
+          echo "npmScopes:" > ./.yarnrc.yml
+          echo "  ${{ github.event.repository.owner.login }}:" >> ./.yarnrc.yml
+          echo "    npmRegistryServer: https://registry.npmjs.org" >> ./.yarnrc.yml
+          echo "    npmAlwaysAuth: true" >> ./.yarnrc.yml
+          echo "    npmAuthToken: ${{ secrets.NPM_ACCESS_TOKEN }}" >> ./.yarnrc.yml
+
+      - name: Publish package to NPM
+        run: yarn npm publish
 
 # name: Deploy package
 # on:

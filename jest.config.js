@@ -1,5 +1,5 @@
-const base = require('@srclaunch/dx/jest.config');
+import base from '@srclaunch/dx/jest.config';
 
-module.exports = {
+export default {
   ...base,
 }

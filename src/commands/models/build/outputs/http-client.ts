@@ -10,7 +10,8 @@ function constructHttpClientIndexScript({
   environments: {
     dev: { host: string; port: number; protocol: string };
     test: { host: string; port: number; protocol: string };
-    prod: { host: string; port: number; protocol: string };
+    preview: { host: string; port: number; protocol: string };
+    production: { host: string; port: number; protocol: string };
   };
   models: string[];
 }) {
@@ -33,9 +34,12 @@ const hosts = {
   test: '${environments.test.protocol}://${
     environments.test.host
   }${environments.test.port !== 80 ? `:${environments.test.port.toString()}` : ''}',
-  prod: '${environments.prod.protocol}://${
-    environments.prod.host
-  }${environments.prod.port !== 80 ? `:${environments.prod.port.toString()}` : ''}',
+  preview: '${environments.preview.protocol}://${
+    environments.preview.host
+  }${environments.preview.port !== 80 ? `:${environments.preview.port.toString()}` : ''}',
+  production: '${environments.production.protocol}://${
+    environments.production.host
+  }${environments.production.port !== 80 ? `:${environments.production.port.toString()}` : ''}',
 }
 
 export const httpClient = HttpClient({
@@ -44,7 +48,6 @@ export const httpClient = HttpClient({
   host: hosts[environment.id],
   headers: {
     Accept: 'application/json',
-
     'Content-Type': 'application/json',
     // headers: { 'X-Requested-With': 'XMLHttpRequest' },
   },

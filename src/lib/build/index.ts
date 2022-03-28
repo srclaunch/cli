@@ -9,9 +9,9 @@ export async function build({
   buildFile = 'index.js',
   buildPath = '',
   buildTypes = false,
-  bundle = false,
-  bundleCSS = false,
-  codeSplitting = false,
+  bundle = true,
+  bundleCSS = true,
+  codeSplitting = true,
   color = true,
   define = {},
   excludeLibs = [],
@@ -22,7 +22,7 @@ export async function build({
   showWarnings = false,
   sourceMap = true,
   target = 'es6',
-  treeShaking = false,
+  treeShaking = true,
 }: BuildConfig) {
 
   try {
