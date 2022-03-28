@@ -1,26 +1,25 @@
-import path from 'path';
 import fs from 'fs-extra';
+import path from 'node:path';
+
 import { build } from '../../lib/build/index.js';
 import { BuildConfig } from '../../types/build/index';
 
-export async function handleBuildCommand(config: BuildConfig | BuildConfig[]) {
-  if (Array.isArray(config)) {
+export async function handleBuildCommand(
+  config: BuildConfig | readonly BuildConfig[],
+) {
+  if (Array.isArray(config) && config.length > 0) {
     let buildDirs: (string | undefined)[] = [];
+
     for (const buildConfig of config) {
       if (!buildDirs.includes(buildConfig.buildDir)) {
-        if (buildConfig.emptyBuildDir) {
-          await fs.emptyDir(path.join(path.resolve(), buildConfig.buildDir ?? 'dist'));
-        }
+        await fs.emptyDir(
+          path.join(path.resolve(), buildConfig.buildDir ?? 'dist'),
+        );
+
         buildDirs = [...buildDirs, buildConfig.buildDir];
       }
 
       await build(buildConfig);
     }
-  } else {
-    if (config.emptyBuildDir) {
-      await fs.emptyDir(path.join(path.resolve(), config.buildDir ?? 'dist'));
-    }
-
-    await build(config);
   }
 }
