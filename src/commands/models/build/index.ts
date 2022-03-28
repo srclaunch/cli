@@ -23,12 +23,12 @@ export async function buildFromConfig(configPath: string) {
 
   try {
     await handleBuildCommand({
+      ...config,
       buildDir: buildDir ? path.join(cwd, buildDir) : undefined,
       buildPath: buildPath ? path.join(cwd, buildPath) : undefined,
       inputScripts: inputScripts
         ? inputScripts.map(input => path.join(cwd, input))
         : [],
-      ...config,
     });
   } catch (error) {
     throw new Exception(`Error in config file "${fullPath}"`, {
@@ -46,9 +46,6 @@ export async function buildModels() {
   if (!config) {
     throw new Exception('Missing config file ".applab/config.json"');
   }
-
-  // const config = await JSON.parse(path.join(path.resolve(), ));
-  // const config = await fs.readFile(path.join(path.resolve(), configFilePath), 'utf8');
 
   console.info('Cleaning models...');
   await cleanModels();
