@@ -16,20 +16,23 @@ import { copyStubModels } from './stubs/index';
 export async function buildFromConfig(configPath: string) {
   const cwd = path.resolve();
   const fullPath = path.join(cwd, path.join(configPath));
-  const configContents = await fs.readFile(fullPath);
-  const config = await JSON.parse(configContents.toString());
-  const buildConfig: BuildConfig = config.build;
-  const { buildDir, buildPath, inputScripts } = buildConfig;
 
   try {
-    await handleBuildCommand({
-      ...buildConfig,
-      buildDir: buildDir ? path.join(cwd, buildDir) : undefined,
-      buildPath: buildPath ? path.join(cwd, buildPath) : undefined,
-      inputScripts: inputScripts
-        ? inputScripts.map(input => path.join(cwd, input))
-        : [],
-    });
+    const configContents = await fs.readFile(fullPath);
+    const config = await JSON.parse(configContents.toString());
+    const buildConfig: BuildConfig[] = config.build.map(
+      (build: BuildConfig) => ({
+        buildDir: build.buildDir ? path.join(cwd, build.buildDir) : undefined,
+        buildPath: build.buildPath
+          ? path.join(cwd, build.buildPath)
+          : undefined,
+        inputScripts: build.inputScripts
+          ? build.inputScripts.map(input => path.join(cwd, input))
+          : [],
+      }),
+    );
+
+    await handleBuildCommand(buildConfig);
   } catch (error) {
     throw new Exception(`Error in config file "${fullPath}"`, {
       cause: error as Error,
