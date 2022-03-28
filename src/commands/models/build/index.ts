@@ -14,29 +14,34 @@ import { buildModelTypes } from './outputs/types';
 import { copyStubModels } from './stubs/index';
 
 export async function buildFromConfig(configPath: string) {
-  const cwd = path.resolve();
-  const fullPath = path.join(cwd, path.join(configPath, 'applab.config.json'));
+  const fullConfigPath = path.join(
+    path.resolve(),
+    configPath,
+    'applab.config.json',
+  );
 
   try {
-    const configContents = await fs.readFile(fullPath);
+    const configContents = await fs.readFile(fullConfigPath);
     const config = await JSON.parse(configContents.toString());
     const buildConfig: BuildConfig[] = config.build.map(
       (build: BuildConfig) => ({
         buildDir: build.buildDir
-          ? path.join(cwd, configPath, build.buildDir)
+          ? path.join(path.resolve(), configPath, build.buildDir)
           : undefined,
         buildPath: build.buildPath
-          ? path.join(cwd, configPath, build.buildPath)
+          ? path.join(path.resolve(), configPath, build.buildPath)
           : undefined,
         inputScripts: build.inputScripts
-          ? build.inputScripts.map(input => path.join(cwd, configPath, input))
+          ? build.inputScripts.map(input =>
+              path.join(path.resolve(), configPath, input),
+            )
           : [],
       }),
     );
 
     await handleBuildCommand(buildConfig);
   } catch (error) {
-    throw new Exception(`Error in config file "${fullPath}"`, {
+    throw new Exception(`Error in config file "${fullConfigPath}"`, {
       cause: error as Error,
     });
   }

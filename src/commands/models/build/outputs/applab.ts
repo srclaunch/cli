@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 
-import { constructModelExportIndexScript } from '../exports.js';
+import { constructModelExportIndexScript } from '../exports';
 
 export async function buildAppLabModels({
   path: projectPath,
