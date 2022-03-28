@@ -11,10 +11,8 @@ export async function handleBuildCommand(
     let buildDirs: (string | undefined)[] = [];
 
     for (const buildConfig of config) {
-      if (!buildDirs.includes(buildConfig.buildDir)) {
-        await fs.emptyDir(
-          path.join(path.resolve(), buildConfig.buildDir ?? 'dist'),
-        );
+      if (!buildDirs.includes(buildConfig.buildDir) && buildConfig.buildDir) {
+        await fs.emptyDir(path.join(path.resolve(), buildConfig.buildDir));
 
         buildDirs = [...buildDirs, buildConfig.buildDir];
       }
