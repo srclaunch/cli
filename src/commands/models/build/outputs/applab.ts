@@ -25,6 +25,7 @@ export async function buildAppLabModels({
         'utf8',
       );
 
+      console.log('file', file);
       const fieldsPropertyExists = fileContents.includes('fields: {');
 
       if (!fieldsPropertyExists) {
@@ -56,6 +57,8 @@ export async function buildAppLabModels({
         const belongsToStart = relationships.indexOf('belongsTo:') + 10;
         const belongsToEnd = relationships.indexOf(']', belongsToStart) + 1;
         const belongsTo = relationships.slice(belongsToStart, belongsToEnd);
+
+        console.log('belongsTo', belongsTo);
 
         if (belongsTo) {
           const belongsToFields = JSON.parse(belongsTo.replace(/'/g, '"'));

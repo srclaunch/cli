@@ -8,7 +8,7 @@ var vs=Object.create;var ia=Object.defineProperty;var bs=Object.getOwnPropertyDe
 export {
 ${c}};
 ${o==="sequelize"?m:""}
-`}catch(c){console.error(c)}}async function cn({path:e}){try{let o=ee.join(ee.resolve(),"models"),c=".applab",l=ee.join(ee.resolve(),c,`${e}/src`),m=await de.readdir(o);for(let T of m){let E=await de.readFile(ee.join(o,T),"utf8");if(!E.includes("fields: {"))throw new Error(`${T} is missing the fields property.`);let v=`
+`}catch(c){console.error(c)}}async function cn({path:e}){try{let o=ee.join(ee.resolve(),"models"),c=".applab",l=ee.join(ee.resolve(),c,`${e}/src`),m=await de.readdir(o);for(let T of m){let E=await de.readFile(ee.join(o,T),"utf8");if(console.log("file",T),!E.includes("fields: {"))throw new Error(`${T} is missing the fields property.`);let v=`
     created_date: {
       label: 'Created Date',
       required: false,
@@ -19,7 +19,7 @@ ${o==="sequelize"?m:""}
       required: false,
       type: Primitives.DateTime,
     },
-  `,f=E.indexOf("relationships:")+15,p=E.indexOf("}",f)+1,_=E.slice(f,p);if(_){let y=_.indexOf("belongsTo:")+10,B=_.indexOf("]",y)+1,N=_.slice(y,B);if(N){let ne=JSON.parse(N.replace(/'/g,'"'));for(let x of ne)v+=`
+  `,f=E.indexOf("relationships:")+15,p=E.indexOf("}",f)+1,_=E.slice(f,p);if(_){let y=_.indexOf("belongsTo:")+10,B=_.indexOf("]",y)+1,N=_.slice(y,B);if(console.log("belongsTo",N),N){let ne=JSON.parse(N.replace(/'/g,'"'));for(let x of ne)v+=`
         ${x}Id: {
           label: '${x}',
           required: false,
