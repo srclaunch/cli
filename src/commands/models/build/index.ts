@@ -28,15 +28,13 @@ export async function buildProject(projectPath: string) {
     const buildConfig: BuildConfig[] = config.build.map(
       (build: BuildConfig) => ({
         buildDir: build.buildDir
-          ? path.join(path.resolve(), projectPath, build.buildDir)
+          ? path.join(projectPath, build.buildDir)
           : undefined,
         buildPath: build.buildPath
-          ? path.join(path.resolve(), projectPath, build.buildPath)
+          ? path.join(projectPath, build.buildPath)
           : undefined,
         inputScripts: build.inputScripts
-          ? build.inputScripts.map(input =>
-              path.join(path.resolve(), projectPath, input),
-            )
+          ? build.inputScripts.map(input => path.join(projectPath, input))
           : [],
       }),
     );
