@@ -15,14 +15,8 @@ import { copyStubModels } from './stubs/index';
 
 export async function buildFromConfig(configPath: string) {
   const fullPath = path.join(path.resolve(), path.join(configPath));
-  
-  console.info(`Building from config file "${fullPath}"`);
-
-  const configContents = await fs.readFile(fullPath).toString();
-
-  console.info('configConfigs', configContents);
-
-  const config = await JSON.parse(configContents);
+  const configContents = await fs.readFile(fullPath);
+  const config = await JSON.parse(configContents.toString());
 
     try {
       await handleBuildCommand(config);  
@@ -34,17 +28,10 @@ export async function buildFromConfig(configPath: string) {
 
 export async function buildModels() {
   const configPath = path.join(path.resolve(), '.applab/config.json');
-
-  console.log('configPath', configPath);
   const configContents = await fs.readFile(configPath);
-  console.log('configContents', configContents);
-
   const config = await JSON.parse(
     configContents.toString()
   );
-
-  console.log('config,',config)
-  
 
   if (!config) {
    throw new Exception('Missing config file ".applab/config.json"');
