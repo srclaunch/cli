@@ -20,8 +20,6 @@ export async function buildProject(projectPath: string) {
     'applab.config.json',
   );
 
-  console.log('fullConfigPath', fullConfigPath);
-
   try {
     const configContents = await fs.readFile(fullConfigPath);
     const config = await JSON.parse(configContents.toString());
@@ -42,7 +40,6 @@ export async function buildProject(projectPath: string) {
       }),
     );
 
-    console.log('buildConfig', buildConfig);
     await handleBuildCommand(buildConfig);
   } catch (error) {
     throw new Exception(`Error in config file "${fullConfigPath}"`, {
@@ -54,22 +51,20 @@ export async function buildProject(projectPath: string) {
 export async function buildModels() {
   console.info('Building Core Object dependencies...');
 
-  const configPath = path.join(path.resolve(), 'applab.config.json');
-  const configContents = await fs.readFile(configPath);
-  const config = await JSON.parse(configContents.toString());
+  const projectConfigPath = path.join(path.resolve(), 'applab.config.json');
+  const projectConfigContents = await fs.readFile(projectConfigPath);
+  const projectConfig = await JSON.parse(projectConfigContents.toString());
 
-  if (!config) {
-    throw new Exception('Missing config file ".applab/config.json"');
+  if (!projectConfig) {
+    throw new Exception('Missing config file "applab.config.json"');
   }
-
-  console.log('config', config);
 
   console.info('Adding out of box Core Objects...');
   await copyStubModels();
 
   console.info('Building AppLab models...');
-  await buildAppLabModels(config.dependencies.models.path);
-  await buildProject(config.dependencies.models.path);
+  await buildAppLabModels(projectConfig.dependencies.models.path);
+  await buildProject(projectConfig.dependencies.models.path);
 
   // console.info('Creating model type definitions...');
   // await buildModelTypes({ path: config.dependencies.types.path });
