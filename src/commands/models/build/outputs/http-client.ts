@@ -1,27 +1,28 @@
-import path from 'path';
-import fs from 'fs-extra';
-import pluralize from 'pluralize';
 import { paramCase } from 'change-case';
+import fs from 'fs-extra';
+import path from 'node:path';
+import pluralize from 'pluralize';
 
 function constructHttpClientIndexScript({
   environments,
   models,
 }: {
-  environments: {
-    dev: { host: string; port: number; protocol: string };
-    test: { host: string; port: number; protocol: string };
-    preview: { host: string; port: number; protocol: string };
-    production: { host: string; port: number; protocol: string };
+  readonly environments: {
+    readonly dev: { readonly host: string; readonly port: number; readonly protocol: string };
+    readonly test: { readonly host: string; readonly port: number; readonly protocol: string };
+    readonly preview: { readonly host: string; readonly port: number; readonly protocol: string };
+    readonly production: { readonly host: string; readonly port: number; readonly protocol: string };
   };
-  models: string[];
+  readonly models: readonly string[];
 }) {
   let imports = `import { HttpClient } from '@srclaunch/http-client';
 import { Environment } from '@srclaunch/types';
 import { getEnvironment } from '@srclaunch/web-environment';
 `;
-  models.forEach(name => {
+
+  for (const name of models) {
     imports += `import ${name.toLowerCase()}Endpoints from './${name}Endpoints';\n`;
-  });
+  }
 
   return `${imports}
 
@@ -72,9 +73,9 @@ function getHttpClientEndpoints({
   modelName,
   typesProjectName,
 }: {
-  httpClientProjectName?: string;
-  modelName: string;
-  typesProjectName: string;
+  readonly httpClientProjectName?: string;
+  readonly modelName: string;
+  readonly typesProjectName: string;
 }): string {
   const lowercase = modelName.toLowerCase();
   const lowercasePlural = pluralize(modelName.toLowerCase());
@@ -174,15 +175,16 @@ export async function buildHttpClient({
   path: projectPath,
   typesProjectName
 }: {
-  httpClientProjectName: string;
-  modelsPath: string;
-  path: string;
-  typesProjectName: string;
+  readonly httpClientProjectName: string;
+  readonly modelsPath: string;
+  readonly path: string;
+  readonly typesProjectName: string;
 }): Promise<void> {
   try {
     const APPLAB_CONFIG_PATH = path.join(path.resolve(), './.applab/config.json');
+
     const APPLAB_CONFIG = await JSON.parse(
-      await fs.readFile(APPLAB_CONFIG_PATH, 'utf8'),
+      await (await fs.readFile(APPLAB_CONFIG_PATH)).toString(),
     );
     const APPLAB_DIRECTORY = '.applab';
     const MODELS_PATH = path.join(
@@ -207,13 +209,14 @@ export async function buildHttpClient({
     await fs.emptyDir(DIST_PATH);
 
     const files = await fs.readdir(MODELS_PATH);
+
     for (const file of files) {
       if (file !== 'index.ts') {
         const name = `${file.toLowerCase().replace('.ts', '')}Endpoints.ts`;
 
         const modelHttpClientEndpoints = getHttpClientEndpoints({
-          modelName: file.replace('.ts', ''),
           httpClientProjectName,
+          modelName: file.replace('.ts', ''),
           typesProjectName
         });
 
@@ -230,10 +233,10 @@ export async function buildHttpClient({
     // logger.info(`Writing ${BUILD_PATH}/index.ts`);
 
     const indexFileContent = constructHttpClientIndexScript({
+      environments: APPLAB_CONFIG['core-api'].environments,
       models: files.filter(f => f !== 'index.ts').map(file =>
         pluralize(file.toLowerCase()).replace('.ts', ''),
       ),
-      environments: APPLAB_CONFIG['core-api'].environments,
     });
 
     await fs.writeFile(
@@ -243,7 +246,7 @@ export async function buildHttpClient({
     );
 
     console.info('Finished building HTTP client');
-  } catch (err: any) {
-    console.error(err);
+  } catch (error: any) {
+    console.error(error);
   }
 }

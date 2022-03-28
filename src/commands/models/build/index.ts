@@ -14,8 +14,15 @@ import { buildModelTypes } from './outputs/types';
 import { copyStubModels } from './stubs/index';
 
 export async function buildFromConfig(configPath: string) {
-  const fullPath = path.join(path.resolve(), path.join(configPath))
-  const config = await JSON.parse(await fs.readFile(fullPath).toString());
+  const fullPath = path.join(path.resolve(), path.join(configPath));
+  
+  console.info(`Building from config file "${fullPath}"`);
+
+  const configContents = await fs.readFile(fullPath).toString();
+
+  console.info('configConfigs', configContents);
+
+  const config = await JSON.parse(configContents);
 
     try {
       await handleBuildCommand(config);  
