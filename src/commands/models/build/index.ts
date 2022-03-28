@@ -23,7 +23,7 @@ export async function buildFromConfig(configPath: string) {
 
   try {
     await handleBuildCommand({
-      ...config,
+      ...buildConfig,
       buildDir: buildDir ? path.join(cwd, buildDir) : undefined,
       buildPath: buildPath ? path.join(cwd, buildPath) : undefined,
       inputScripts: inputScripts
