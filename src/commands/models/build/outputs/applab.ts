@@ -10,12 +10,16 @@ export async function buildAppLabModels({
 }): Promise<void> {
   try {
     const MODELS_PATH = path.join(path.resolve(), 'models');
+
+    console.log('MODELS_PATH', MODELS_PATH);
     const APPLAB_DIRECTORY = '.applab';
     const BUILD_PATH = path.join(
       path.resolve(),
       APPLAB_DIRECTORY,
       `${projectPath}/src`,
     );
+
+    console.log('BUILD_PATH', BUILD_PATH);
 
     await fs.emptyDir(BUILD_PATH);
 

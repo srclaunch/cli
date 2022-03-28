@@ -8,7 +8,7 @@ var Ji=Object.create;var W=Object.defineProperty;var Zi=Object.getOwnPropertyDes
 export {
 ${d}};
 ${l==="sequelize"?h:""}
-`}catch(d){console.error(d)}}async function Ci({path:e}){try{let l=L.default.join(L.default.resolve(),"models"),d=".applab",c=L.default.join(L.default.resolve(),d,`${e}/src`);await z.default.emptyDir(c);let h=await z.default.readdir(l);for(let _ of h){let U=await z.default.readFile(L.default.join(l,_),"utf8");if(!U.includes("fields: {"))throw new Error(`${_} is missing the fields property.`);let P=`
+`}catch(d){console.error(d)}}async function Ci({path:e}){try{let l=L.default.join(L.default.resolve(),"models");console.log("MODELS_PATH",l);let d=".applab",c=L.default.join(L.default.resolve(),d,`${e}/src`);console.log("BUILD_PATH",c),await z.default.emptyDir(c);let h=await z.default.readdir(l);for(let _ of h){let U=await z.default.readFile(L.default.join(l,_),"utf8");if(!U.includes("fields: {"))throw new Error(`${_} is missing the fields property.`);let P=`
     created_date: {
       label: 'Created Date',
       required: false,

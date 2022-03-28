@@ -8,7 +8,7 @@ import st from"meow";import rt from"update-notifier";import Mi from"fs-extra";im
 export {
 ${d}};
 ${m==="sequelize"?T:""}
-`}catch(d){console.error(d)}}async function Ai({path:e}){try{let m=k.join(k.resolve(),"models"),d=".applab",c=k.join(k.resolve(),d,`${e}/src`);await R.emptyDir(c);let T=await R.readdir(m);for(let p of T){let y=await R.readFile(k.join(m,p),"utf8");if(!y.includes("fields: {"))throw new Error(`${p} is missing the fields property.`);let U=`
+`}catch(d){console.error(d)}}async function Ai({path:e}){try{let m=k.join(k.resolve(),"models");console.log("MODELS_PATH",m);let d=".applab",c=k.join(k.resolve(),d,`${e}/src`);console.log("BUILD_PATH",c),await R.emptyDir(c);let T=await R.readdir(m);for(let p of T){let y=await R.readFile(k.join(m,p),"utf8");if(!y.includes("fields: {"))throw new Error(`${p} is missing the fields property.`);let U=`
     created_date: {
       label: 'Created Date',
       required: false,

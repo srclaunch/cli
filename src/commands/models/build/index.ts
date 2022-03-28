@@ -44,6 +44,7 @@ export async function buildFromConfig(configPath: string) {
 
 export async function buildModels() {
   console.info('Starting build of Core Object models...');
+
   const configPath = path.join(path.resolve(), '.applab/config.json');
   const configContents = await fs.readFile(configPath);
   const config = await JSON.parse(configContents.toString());
