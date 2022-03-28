@@ -13,12 +13,14 @@ import { buildSequelizeModels } from './outputs/sequelize';
 import { buildModelTypes } from './outputs/types';
 import { copyStubModels } from './stubs/index';
 
-export async function buildFromConfig(configPath: string) {
+export async function buildProject(projectPath: string) {
   const fullConfigPath = path.join(
     path.resolve(),
-    configPath,
+    projectPath,
     'applab.config.json',
   );
+
+  console.log('fullConfigPath', fullConfigPath);
 
   try {
     const configContents = await fs.readFile(fullConfigPath);
@@ -26,19 +28,20 @@ export async function buildFromConfig(configPath: string) {
     const buildConfig: BuildConfig[] = config.build.map(
       (build: BuildConfig) => ({
         buildDir: build.buildDir
-          ? path.join(path.resolve(), configPath, build.buildDir)
+          ? path.join(path.resolve(), projectPath, build.buildDir)
           : undefined,
         buildPath: build.buildPath
-          ? path.join(path.resolve(), configPath, build.buildPath)
+          ? path.join(path.resolve(), projectPath, build.buildPath)
           : undefined,
         inputScripts: build.inputScripts
           ? build.inputScripts.map(input =>
-              path.join(path.resolve(), configPath, input),
+              path.join(path.resolve(), projectPath, input),
             )
           : [],
       }),
     );
 
+    console.log('buildConfig', buildConfig);
     await handleBuildCommand(buildConfig);
   } catch (error) {
     throw new Exception(`Error in config file "${fullConfigPath}"`, {
@@ -58,12 +61,14 @@ export async function buildModels() {
     throw new Exception('Missing config file ".applab/config.json"');
   }
 
+  console.log('config', config);
+
   console.info('Adding out of box Core Objects...');
   await copyStubModels();
 
   console.info('Building AppLab models...');
   await buildAppLabModels({ path: config.dependencies.models.path });
-  await buildFromConfig(`.applab/${config.dependencies.models.path}`);
+  await buildProject(`.applab/${config.dependencies.models.path}`);
 
   // console.info('Creating model type definitions...');
   // await buildModelTypes({ path: config.dependencies.types.path });
