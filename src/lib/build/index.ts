@@ -63,8 +63,9 @@ export async function build({
     if (buildTypes) {
       console.info('Compiling types... ');
 
+      const tsConfigContents = await fs.readFile(path.join(path.resolve(), tsconfigPath), 'utf8')
       const tsConfig = await JSON.parse(
-        fs.readFileSync(path.join(path.resolve(), tsconfigPath), 'utf8'),
+        tsConfigContents.toString()
       );
   
       const { options } = ts.parseJsonConfigFileContent(
