@@ -59,16 +59,12 @@ export async function buildAppLabModels({
         const belongsToEnd = relationships.indexOf(']', belongsToStart) + 1;
         const belongsTo = relationships.slice(belongsToStart, belongsToEnd);
 
-        console.log('belongsTo', belongsTo);
-
         if (belongsTo) {
           const transformed = belongsTo
             .replace(/'/g, '"')
             .replace(/ {2}|\r\n|\n|\r/g, '')
             .replace(/\s/g, '')
             .replace(',]', ']');
-
-          console.log('transformed', transformed);
 
           const belongsToFields = JSON.parse(transformed);
 

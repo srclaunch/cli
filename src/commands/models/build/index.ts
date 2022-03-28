@@ -62,32 +62,32 @@ export async function buildModels() {
   await buildAppLabModels({ path: config.dependencies.models.path });
   await buildFromConfig(`.applab/${config.dependencies.models.path}`);
 
-  console.info('Creating model type definitions...');
-  await buildModelTypes({ path: config.dependencies.types.path });
-  await buildFromConfig(`.applab/${config.dependencies.types.path}`);
+  // console.info('Creating model type definitions...');
+  // await buildModelTypes({ path: config.dependencies.types.path });
+  // await buildFromConfig(`.applab/${config.dependencies.types.path}`);
 
-  console.info('Creating Sequelize models...');
-  await buildSequelizeModels({
-    path: config.dependencies['sequelize-models'].path,
-  });
-  await buildFromConfig(
-    `.applab/${config.dependencies['sequelize-models'].path}`,
-  );
+  // console.info('Creating Sequelize models...');
+  // await buildSequelizeModels({
+  //   path: config.dependencies['sequelize-models'].path,
+  // });
+  // await buildFromConfig(
+  //   `.applab/${config.dependencies['sequelize-models'].path}`,
+  // );
 
-  console.info('Building HTTP client...');
-  await buildHttpClient({
-    httpClientProjectName: config.dependencies['http-client'].repo,
-    modelsPath: config.dependencies.models.path,
-    path: config.dependencies['http-client'].path,
-    typesProjectName: config.dependencies.types.repo,
-  });
-  await buildFromConfig(`.applab/${config.dependencies['http-client'].path}`);
+  // console.info('Building HTTP client...');
+  // await buildHttpClient({
+  //   httpClientProjectName: config.dependencies['http-client'].repo,
+  //   modelsPath: config.dependencies.models.path,
+  //   path: config.dependencies['http-client'].path,
+  //   typesProjectName: config.dependencies.types.repo,
+  // });
+  // await buildFromConfig(`.applab/${config.dependencies['http-client'].path}`);
 
-  console.info('Building Redux state...');
-  await buildReduxSlices({
-    httpClientProjectName: config.dependencies['http-client'].repo,
-    projectPath: config.dependencies['redux-state'].path,
-    typesProjectName: config.dependencies.types.repo,
-  });
-  await buildFromConfig(`.applab/${config.dependencies['redux-state'].path}`);
+  // console.info('Building Redux state...');
+  // await buildReduxSlices({
+  //   httpClientProjectName: config.dependencies['http-client'].repo,
+  //   projectPath: config.dependencies['redux-state'].path,
+  //   typesProjectName: config.dependencies.types.repo,
+  // });
+  // await buildFromConfig(`.applab/${config.dependencies['redux-state'].path}`);
 }
