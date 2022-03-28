@@ -17,6 +17,8 @@ export async function buildAppLabModels({
       `${projectPath}/src`,
     );
 
+    await fs.emptyDir(BUILD_PATH);
+
     const files = await fs.readdir(MODELS_PATH);
 
     for (const file of files) {
@@ -25,7 +27,6 @@ export async function buildAppLabModels({
         'utf8',
       );
 
-      console.log('file', file);
       const fieldsPropertyExists = fileContents.includes('fields: {');
 
       if (!fieldsPropertyExists) {
@@ -63,7 +64,9 @@ export async function buildAppLabModels({
         if (belongsTo) {
           const transformed = belongsTo
             .replace(/'/g, '"')
-            .replace(/[\t\n\r]/g, '');
+            .replace(/ {2}|\r\n|\n|\r/g, '')
+            .replace(/\s/g, '')
+            .replace(',]', ']');
 
           console.log('transformed', transformed);
 
