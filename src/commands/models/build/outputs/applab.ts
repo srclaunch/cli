@@ -61,7 +61,13 @@ export async function buildAppLabModels({
         console.log('belongsTo', belongsTo);
 
         if (belongsTo) {
-          const belongsToFields = JSON.parse(belongsTo.replace(/'/g, '"'));
+          const transformed = belongsTo
+            .replace(/'/g, '"')
+            .replace(/[\t\n\r]/g, '');
+
+          console.log('transformed', transformed);
+
+          const belongsToFields = JSON.parse(transformed);
 
           for (const relationship of belongsToFields) {
             entityFields += `
