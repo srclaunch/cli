@@ -203,10 +203,7 @@ export async function buildHttpClient({
   readonly typesProjectName: string;
 }): Promise<void> {
   try {
-    const APPLAB_CONFIG_PATH = path.join(
-      path.resolve(),
-      './.applab/config.json',
-    );
+    const APPLAB_CONFIG_PATH = path.join(path.resolve(), 'applab.config.json');
 
     const APPLAB_CONFIG = await JSON.parse(
       await (await fs.readFile(APPLAB_CONFIG_PATH)).toString(),

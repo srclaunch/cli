@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 
-import { build } from '../../lib/build/index.js';
+import { build } from '../../lib/build/index';
 import { BuildConfig } from '../../types/build/index';
 
 export async function handleBuildCommand(

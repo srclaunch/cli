@@ -53,7 +53,7 @@ export async function buildProject(projectPath: string) {
 export async function buildModels() {
   console.info('Building Core Object dependencies...');
 
-  const configPath = path.join(path.resolve(), '.applab/config.json');
+  const configPath = path.join(path.resolve(), 'applab.config.json');
   const configContents = await fs.readFile(configPath);
   const config = await JSON.parse(configContents.toString());
 
@@ -67,8 +67,8 @@ export async function buildModels() {
   await copyStubModels();
 
   console.info('Building AppLab models...');
-  await buildAppLabModels({ path: config.dependencies.models.path });
-  await buildProject(`.applab/${config.dependencies.models.path}`);
+  await buildAppLabModels(config.dependencies.models.path);
+  await buildProject(config.dependencies.models.path);
 
   // console.info('Creating model type definitions...');
   // await buildModelTypes({ path: config.dependencies.types.path });

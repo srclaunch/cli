@@ -1,4 +1,2 @@
-export declare function buildAppLabModels({ path: projectPath, }: {
-    readonly path: string;
-}): Promise<void>;
+export declare function buildAppLabModels(projectPath: string): Promise<void>;
 //# sourceMappingURL=applab.d.ts.map

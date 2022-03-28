@@ -19,12 +19,7 @@ import {
 
 export async function copyStubModels() {
   try {
-    const APPLAB_DIRECTORY = '.applab';
-    const BUILD_PATH = path.join(
-      path.resolve(),
-      APPLAB_DIRECTORY,
-      'dependencies/models',
-    );
+    const BUILD_PATH = path.join(path.resolve(), '.applab/dependencies/models');
 
     const applabModelPath = path.join(BUILD_PATH, 'src');
 
