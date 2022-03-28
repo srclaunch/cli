@@ -14,27 +14,36 @@ import { buildModelTypes } from './outputs/types';
 import { copyStubModels } from './stubs/index';
 
 export async function buildFromConfig(configPath: string) {
-  const fullPath = path.join(path.resolve(), path.join(configPath));
+  const cwd = path.resolve();
+  const fullPath = path.join(cwd, path.join(configPath));
   const configContents = await fs.readFile(fullPath);
   const config = await JSON.parse(configContents.toString());
+  const buildConfig: BuildConfig = config.build;
+  const { buildDir, buildPath, inputScripts } = buildConfig;
 
-    try {
-      await handleBuildCommand(config);  
-    } catch (error) {
-      throw new Exception(`Error in config file "${fullPath}"`, { cause: error as Error })
-    }
-  
+  try {
+    await handleBuildCommand({
+      buildDir: buildDir ? path.join(cwd, buildDir) : undefined,
+      buildPath: buildPath ? path.join(cwd, buildPath) : undefined,
+      inputScripts: inputScripts
+        ? inputScripts.map(input => path.join(cwd, input))
+        : [],
+      ...config,
+    });
+  } catch (error) {
+    throw new Exception(`Error in config file "${fullPath}"`, {
+      cause: error as Error,
+    });
+  }
 }
 
 export async function buildModels() {
   const configPath = path.join(path.resolve(), '.applab/config.json');
   const configContents = await fs.readFile(configPath);
-  const config = await JSON.parse(
-    configContents.toString()
-  );
+  const config = await JSON.parse(configContents.toString());
 
   if (!config) {
-   throw new Exception('Missing config file ".applab/config.json"');
+    throw new Exception('Missing config file ".applab/config.json"');
   }
 
   // const config = await JSON.parse(path.join(path.resolve(), ));
@@ -42,10 +51,12 @@ export async function buildModels() {
 
   await cleanModels();
   await copyStubModels();
-  
+
   await buildAppLabModels({ path: config.dependencies.models.path });
-  await buildFromConfig(`.applab/${config.dependencies.models.path}/applab.config.json`);
-  
+  await buildFromConfig(
+    `.applab/${config.dependencies.models.path}/applab.config.json`,
+  );
+
   // await build({
   //   buildPath: `.applab/`,
   //   buildTypes: true,
@@ -54,7 +65,6 @@ export async function buildModels() {
   //   inputScripts: ['src/index.ts'],
   //   platform: 'browser',
   // });
-  
 
   // await buildModelTypes({ path: config.dependencies.types.path });
   // await buildFromConfig(`.applab/${config.dependencies.types.path}/applab.config.json`);
@@ -79,11 +89,11 @@ export async function buildModels() {
   //   platform: 'node',
   // });
 
-  // await buildHttpClient({ 
-  //   httpClientProjectName: config.dependencies['http-client'].repo, 
-  //   path: config.dependencies['http-client'].path, 
-  //   modelsPath: config.dependencies.models.path, 
-  //   typesProjectName: config.dependencies.types.repo 
+  // await buildHttpClient({
+  //   httpClientProjectName: config.dependencies['http-client'].repo,
+  //   path: config.dependencies['http-client'].path,
+  //   modelsPath: config.dependencies.models.path,
+  //   typesProjectName: config.dependencies.types.repo
   // });
   // await buildFromConfig(`.applab/${config.dependencies['http-client'].path}/applab.config.json`);
   // await build({
@@ -94,7 +104,6 @@ export async function buildModels() {
   //   inputScripts: ['src/index.ts'],
   //   platform: 'browser',
   // });
-
 
   // await buildReduxSlices({
   //   httpClientProjectName: config.dependencies['http-client'].repo,
@@ -110,6 +119,4 @@ export async function buildModels() {
   //   inputScripts: ['src/index.ts'],
   //   platform: 'browser',
   // });
-
-
 }
