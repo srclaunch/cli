@@ -1,10 +1,5 @@
-import base from '@srclaunch/dx/.versionrc';
+const base = require( '@srclaunch/dx/.versionrc');
 
-export default {
+module.exports = {
   ...base,
-  skip: {
-    "bump": true,
-    'commit': true,
-    "tag": true,
-  }
 };

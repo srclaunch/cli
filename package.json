@@ -41,6 +41,7 @@
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
     "start": "node dist/index.js",
     "push": "git push --follow-tags origin main",
+    "release": "yarn standard-version && yarn push",
     "release-patch": "yarn version patch && standard-version && yarn push",
     "release-minor": "yarn version minor && standard-version && yarn push",
     "release-major": "yarn version major && standard-version && yarn push",
