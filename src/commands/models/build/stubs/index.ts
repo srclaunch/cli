@@ -1,18 +1,19 @@
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
+
 import { constructAppLabModelExports } from '../exports.js';
 import {
   getDocumentModel,
   getInvoiceModel,
   getMessageModel,
   getOrganizationModel,
-  getPaymentModel,
   getPaymentMethodModel,
+  getPaymentModel,
   getPersonModel,
   getSubscriptionModel,
   getTeamModel,
-  getUserModel,
   getUserGroupModel,
+  getUserModel,
   getUserRoleModel,
 } from './models.js';
 
@@ -103,7 +104,7 @@ export async function copyStubModels() {
     //   modelExportsIndexFile,
     //   'utf8',
     // );
-  } catch (err: any) {
-    console.error(err);
+  } catch (error: any) {
+    console.error(error);
   }
 }

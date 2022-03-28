@@ -101,9 +101,8 @@ export async function buildAppLabModels({
       indexFileContent,
       'utf8',
     );
-
-    console.info('Finished building AppLab models');
   } catch (error: any) {
     console.error(error);
+    throw error;
   }
 }

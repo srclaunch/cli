@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 
 export async function cleanModels() {
   try {
@@ -20,14 +20,12 @@ export async function cleanModels() {
     //   'dependencies/sequelize-models',
     // );
 
-    console.info('Cleaning models...');
-
     await fs.emptyDir(path.join(MODEL_DEPS_PATH, 'src'));
     // await fs.emptyDir(path.join(MODEL_DEPS_PATH, 'src', 'applab'));
     // await fs.emptyDir(path.join(MODEL_DEPS_PATH, 'src', 'json'));
     // await fs.emptyDir(path.join(TYPES_DEPS_PATH, 'src'));
     // await fs.emptyDir(path.join(SEQUELIZE_DEPS_PATH, 'src'));
-  } catch (err: any) {
-    console.error(err);
+  } catch (error: any) {
+    console.error(error);
   }
 }

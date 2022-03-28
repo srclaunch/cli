@@ -1,4 +1,4 @@
-export declare function buildHttpClient({ httpClientProjectName, modelsPath, path: projectPath, typesProjectName }: {
+export declare function buildHttpClient({ httpClientProjectName, modelsPath, path: projectPath, typesProjectName, }: {
     readonly httpClientProjectName: string;
     readonly modelsPath: string;
     readonly path: string;

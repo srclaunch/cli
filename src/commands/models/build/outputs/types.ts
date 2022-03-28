@@ -1,7 +1,8 @@
-import { Model,  ModelField,Primitives } from '@srclaunch/types';
-import path from 'path';
+import { Model, ModelField, Primitives } from '@srclaunch/types';
 import fs from 'fs-extra';
+import path from 'node:path';
 import pluralize from 'pluralize';
+
 import { getTypescriptTypeFromPrimitive } from '../types.js';
 
 const snakeToPascal = (str: string) => {
@@ -16,10 +17,12 @@ const snakeToPascal = (str: string) => {
     .join('/');
 };
 
-
-export function getPrimitiveImports(fields: Record<string, ModelField>) : string {
+export function getPrimitiveImports(
+  fields: Record<string, ModelField>,
+): string {
   let imports = 'import { ';
-  Object.values(fields).forEach((f) => {
+
+  for (const f of Object.values(fields)) {
     switch (f.type) {
       case Primitives.Image:
         if (!imports.includes(' Image,')) {
@@ -31,19 +34,20 @@ export function getPrimitiveImports(fields: Record<string, ModelField>) : string
         if (!imports.includes(' Menu,')) {
           imports += 'Menu, ';
         }
-        break;
-        default:
-          break;
-    }
-  });
 
-  imports += '} from \'@srclaunch/types\';';
+        break;
+      default:
+        break;
+    }
+  }
+
+  imports += "} from '@srclaunch/types';";
 
   return imports;
 }
 
 export function constructModelTypeFromModel(model: Model): string {
-  let fieldStrs = Object.entries(model.fields)
+  const fieldStrs = Object.entries(model.fields)
     .map(([fieldName, field]) => {
       return `\n${fieldName}${field.required ? '' : '?'}: ${
         field.type === Primitives.Menu
@@ -63,15 +67,16 @@ export function constructModelTypeFromModel(model: Model): string {
   //   }
   // }
 
-  let str =   getPrimitiveImports(model.fields) + '\n';
+  let str = `${getPrimitiveImports(model.fields)}\n`;
 
-  Object.entries(model.fields).forEach(([fieldName, field]) => {
+  for (const [fieldName, field] of Object.entries(model.fields)) {
     let enumStr = '';
+
     if (field.type === Primitives.Menu && field.menu) {
       enumStr += `export enum ${
         model.name + pluralize(snakeToPascal(fieldName))
       } {`;
-      const regex = /[^A-Za-z0-9]/g;
+      const regex = /[^\dA-Za-z]/g;
 
       for (const item of field.menu) {
         if (item.label) {
@@ -90,11 +95,12 @@ export function constructModelTypeFromModel(model: Model): string {
             .replace(regex, '')} = "${item.value}",`;
         }
       }
+
       enumStr += '};\n\n';
     }
 
     str += `\n${enumStr}`;
-  });
+  }
 
   str += `export type ${model.name} = {
     id?: string;${fieldStrs}
@@ -107,11 +113,12 @@ export function getModelExports(model: Model): string {
   let str = `export { ${model.name} } from './${model.name}';\n`;
 
   let enumStr = '';
-  Object.entries(model.fields).forEach(([fieldName, field]) => {
+
+  for (const [fieldName, field] of Object.entries(model.fields)) {
     if (field.type === Primitives.Menu && field.menu) {
-      enumStr += model.name + pluralize(snakeToPascal(fieldName)) + ',';
+      enumStr += `${model.name + pluralize(snakeToPascal(fieldName))},`;
     }
-  });
+  }
 
   if (enumStr.length > 0) {
     str += `export {${enumStr}} from './${model.name}.js';\n`;
@@ -120,7 +127,11 @@ export function getModelExports(model: Model): string {
   return str;
 }
 
-export async function buildModelTypes({ path: projectPath }: { path: string }) {
+export async function buildModelTypes({
+  path: projectPath,
+}: {
+  readonly path: string;
+}) {
   try {
     const APPLAB_DIRECTORY = '.applab';
     const MODELS_BUILD_PATH = path.join(
@@ -144,13 +155,12 @@ export async function buildModelTypes({ path: projectPath }: { path: string }) {
     await fs.emptyDir(DIST_PATH);
 
     const files = await fs.readdir(TYPES_DIR_PATH);
+
     for (const file of files) {
       const fileContents = await fs.readFile(
         path.join(TYPES_DIR_PATH, file),
         'utf8',
       );
-
-      console.info(`Copying ${file} type`);
 
       await fs.writeFile(path.join(BUILD_PATH, file), fileContents, 'utf8');
     }
@@ -158,7 +168,8 @@ export async function buildModelTypes({ path: projectPath }: { path: string }) {
     const Models = await import(MODELS_BUILD_PATH);
 
     let exportStr = '';
-    for (const model of [...Object.entries(Models as Record<string, Model>)]) {
+
+    for (const model of Object.entries(Models as Record<string, Model>)) {
       const modelName = model[1].name;
       const types = constructModelTypeFromModel(model[1]);
       const fileName = `${modelName}.ts`;
@@ -174,9 +185,8 @@ export async function buildModelTypes({ path: projectPath }: { path: string }) {
     // logger.info(`Writing ${BUILD_PATH}/index.ts`);
 
     await fs.writeFile(path.join(BUILD_PATH, 'index.ts'), exportStr, 'utf8');
-
-    console.info('Finished building model types');
-  } catch (err: any) {
-    console.error('err', err);
+  } catch (error: any) {
+    console.error('err', error);
+    throw error;
   }
 }

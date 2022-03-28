@@ -8,10 +8,26 @@ function constructHttpClientIndexScript({
   models,
 }: {
   readonly environments: {
-    readonly dev: { readonly host: string; readonly port: number; readonly protocol: string };
-    readonly test: { readonly host: string; readonly port: number; readonly protocol: string };
-    readonly preview: { readonly host: string; readonly port: number; readonly protocol: string };
-    readonly production: { readonly host: string; readonly port: number; readonly protocol: string };
+    readonly dev: {
+      readonly host: string;
+      readonly port: number;
+      readonly protocol: string;
+    };
+    readonly test: {
+      readonly host: string;
+      readonly port: number;
+      readonly protocol: string;
+    };
+    readonly preview: {
+      readonly host: string;
+      readonly port: number;
+      readonly protocol: string;
+    };
+    readonly production: {
+      readonly host: string;
+      readonly port: number;
+      readonly protocol: string;
+    };
   };
   readonly models: readonly string[];
 }) {
@@ -29,18 +45,24 @@ import { getEnvironment } from '@srclaunch/web-environment';
 const environment: Environment = getEnvironment();
 
 const hosts = {
-  dev: '${environments.dev.protocol}://${
-    environments.dev.host
-  }${environments.dev.port !== 80 ? `:${environments.dev.port.toString()}` : ''}',
-  test: '${environments.test.protocol}://${
-    environments.test.host
-  }${environments.test.port !== 80 ? `:${environments.test.port.toString()}` : ''}',
-  preview: '${environments.preview.protocol}://${
-    environments.preview.host
-  }${environments.preview.port !== 80 ? `:${environments.preview.port.toString()}` : ''}',
+  dev: '${environments.dev.protocol}://${environments.dev.host}${
+    environments.dev.port !== 80 ? `:${environments.dev.port.toString()}` : ''
+  }',
+  test: '${environments.test.protocol}://${environments.test.host}${
+    environments.test.port !== 80 ? `:${environments.test.port.toString()}` : ''
+  }',
+  preview: '${environments.preview.protocol}://${environments.preview.host}${
+    environments.preview.port !== 80
+      ? `:${environments.preview.port.toString()}`
+      : ''
+  }',
   production: '${environments.production.protocol}://${
     environments.production.host
-  }${environments.production.port !== 80 ? `:${environments.production.port.toString()}` : ''}',
+  }${
+    environments.production.port !== 80
+      ? `:${environments.production.port.toString()}`
+      : ''
+  }',
 }
 
 export const httpClient = HttpClient({
@@ -173,7 +195,7 @@ export async function buildHttpClient({
   httpClientProjectName,
   modelsPath,
   path: projectPath,
-  typesProjectName
+  typesProjectName,
 }: {
   readonly httpClientProjectName: string;
   readonly modelsPath: string;
@@ -181,7 +203,10 @@ export async function buildHttpClient({
   readonly typesProjectName: string;
 }): Promise<void> {
   try {
-    const APPLAB_CONFIG_PATH = path.join(path.resolve(), './.applab/config.json');
+    const APPLAB_CONFIG_PATH = path.join(
+      path.resolve(),
+      './.applab/config.json',
+    );
 
     const APPLAB_CONFIG = await JSON.parse(
       await (await fs.readFile(APPLAB_CONFIG_PATH)).toString(),
@@ -190,7 +215,7 @@ export async function buildHttpClient({
     const MODELS_PATH = path.join(
       path.resolve(),
       APPLAB_DIRECTORY,
-      `${modelsPath}/src`
+      `${modelsPath}/src`,
     );
 
     const BUILD_PATH = path.join(
@@ -217,7 +242,7 @@ export async function buildHttpClient({
         const modelHttpClientEndpoints = getHttpClientEndpoints({
           httpClientProjectName,
           modelName: file.replace('.ts', ''),
-          typesProjectName
+          typesProjectName,
         });
 
         // logger.info(`Writing ${name} HTTP client endpoints`);
@@ -234,9 +259,9 @@ export async function buildHttpClient({
 
     const indexFileContent = constructHttpClientIndexScript({
       environments: APPLAB_CONFIG['core-api'].environments,
-      models: files.filter(f => f !== 'index.ts').map(file =>
-        pluralize(file.toLowerCase()).replace('.ts', ''),
-      ),
+      models: files
+        .filter(f => f !== 'index.ts')
+        .map(file => pluralize(file.toLowerCase()).replace('.ts', '')),
     });
 
     await fs.writeFile(
@@ -244,9 +269,8 @@ export async function buildHttpClient({
       indexFileContent,
       'utf8',
     );
-
-    console.info('Finished building HTTP client');
   } catch (error: any) {
     console.error(error);
+    throw error;
   }
 }

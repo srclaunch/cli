@@ -1,20 +1,20 @@
-import path from 'path';
 import fs from 'fs-extra';
+import path from 'node:path';
 import pluralize from 'pluralize';
 
-function constructReduxReducersIndexScript(models: string[]) {
+function constructReduxReducersIndexScript(models: readonly string[]) {
   const imports = models
     .map(name => {
       const pluralizedCamel = pluralize(name[0]?.toLowerCase() + name.slice(1));
 
-      return `import ${pluralizedCamel} from './${pluralizedCamel}.js';`
+      return `import ${pluralizedCamel} from './${pluralizedCamel}.js';`;
     })
     .join('\n');
   const exports = models
     .map(name => {
       const pluralizedCamel = pluralize(name[0]?.toLowerCase() + name.slice(1));
 
-      return`export { 
+      return `export { 
         create${name}, 
         create${pluralize(name)}, 
         delete${name}, 
@@ -24,17 +24,19 @@ function constructReduxReducersIndexScript(models: string[]) {
         update${name},
         update${pluralize(name)},
         ${name}Selectors, 
-      } from './${pluralizedCamel}.js';`;})
+      } from './${pluralizedCamel}.js';`;
+    })
     .join('\n');
 
   return `${imports}
 export default {
-  ${models.map(name =>  pluralize(name[0]?.toLowerCase() + name.slice(1))).join(',\n  ')},
+  ${models
+    .map(name => pluralize(name[0]?.toLowerCase() + name.slice(1)))
+    .join(',\n  ')},
 };
 
 ${exports}
 `;
-
 }
 
 function getModelSlice({
@@ -42,16 +44,20 @@ function getModelSlice({
   modelName,
   typesProjectName,
 }: {
-  httpClientProjectName?: string;
-  modelName: string;
-  typesProjectName: string;
+  readonly httpClientProjectName?: string;
+  readonly modelName: string;
+  readonly typesProjectName: string;
 }): string {
   const lowercase = modelName.toLowerCase();
   const lowercasePlural = pluralize(modelName.toLowerCase());
-  const pluralCamel = pluralize(modelName?.[0]?.toLowerCase() + modelName.slice(1));
+  const pluralCamel = pluralize(
+    modelName?.[0]?.toLowerCase() + modelName.slice(1),
+  );
   const capitalizedPlural = pluralize(modelName);
   const singularCamel = modelName?.[0]?.toLowerCase() + modelName.slice(1);
-  const pluralizedCamel = pluralize(modelName[0]?.toLowerCase() + modelName.slice(1))
+  const pluralizedCamel = pluralize(
+    modelName[0]?.toLowerCase() + modelName.slice(1),
+  );
 
   return `import { ${modelName} } from '${typesProjectName}';
   import * as httpClient from '${httpClientProjectName}';
@@ -489,16 +495,16 @@ export async function buildReduxSlices({
   projectPath,
   typesProjectName,
 }: {
-  httpClientProjectName: string;
-  projectPath: string;
-  typesProjectName: string;
+  readonly httpClientProjectName: string;
+  readonly projectPath: string;
+  readonly typesProjectName: string;
 }): Promise<void> {
   try {
     const APPLAB_DIRECTORY = '.applab';
-    const MODELS_PATH = path.join(      
+    const MODELS_PATH = path.join(
       path.resolve(),
-      APPLAB_DIRECTORY, 
-      'dependencies/models/src'
+      APPLAB_DIRECTORY,
+      'dependencies/models/src',
     );
 
     const BUILD_PATH = path.join(
@@ -512,31 +518,39 @@ export async function buildReduxSlices({
       `${projectPath}/dist`,
     );
 
-
     await fs.emptyDir(BUILD_PATH);
     await fs.emptyDir(DIST_PATH);
 
     const files = await fs.readdir(MODELS_PATH);
+
     for (const file of files) {
       if (file !== 'index.ts') {
-        const name = pluralize(file[0]?.toLowerCase() + file.slice(1).replace('.ts', ''));
+        const name = pluralize(
+          file[0]?.toLowerCase() + file.slice(1).replace('.ts', ''),
+        );
 
         const reduxSlice = getModelSlice({
-          modelName: file.replace('.ts', ''),
           httpClientProjectName,
+          modelName: file.replace('.ts', ''),
           typesProjectName,
         });
 
         // logger.info(`Writing ${name} Redux slice`);
 
-        await fs.writeFile(path.join(BUILD_PATH, `${name}.ts`), reduxSlice, 'utf8');
+        await fs.writeFile(
+          path.join(BUILD_PATH, `${name}.ts`),
+          reduxSlice,
+          'utf8',
+        );
       }
     }
 
     // logger.info(`Writing ${BUILD_PATH}/index.ts`);
 
     const indexFileContent = constructReduxReducersIndexScript(
-      files.filter(f => f !== 'index.ts').map(file => pluralize(file).replace('.ts', '')),
+      files
+        .filter(f => f !== 'index.ts')
+        .map(file => pluralize(file).replace('.ts', '')),
     );
 
     await fs.writeFile(
@@ -544,9 +558,8 @@ export async function buildReduxSlices({
       indexFileContent,
       'utf8',
     );
-
-    console.info('Finished building Redux state');
-  } catch (err: any) {
-    console.error(err);
+  } catch (error: any) {
+    console.error(error);
+    throw error;
   }
 }

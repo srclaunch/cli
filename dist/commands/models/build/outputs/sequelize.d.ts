@@ -3,9 +3,9 @@ export declare function getSequelizeTypeFromPrimitive(type: Primitives): "DataTy
 export declare function constructSequelizeModelClassStr(model: Model): string;
 export declare function constructTypePropsFromFields(fields: Model['fields'], sequelize?: boolean): string;
 export declare function constructSequelizeModelRelationships(modelName: string, relationships?: Relationship): string;
-export declare function constructSequelizeModelDependencies(modelName: string, relationships?: Relationship): string[];
+export declare function constructSequelizeModelDependencies(modelName: string, relationships?: Relationship): readonly string[];
 export declare function constructSequelizeModelFromModel(model: Model): string;
 export declare function buildSequelizeModels({ path: projectPath, }: {
-    path: string;
+    readonly path: string;
 }): Promise<void>;
 //# sourceMappingURL=sequelize.d.ts.map

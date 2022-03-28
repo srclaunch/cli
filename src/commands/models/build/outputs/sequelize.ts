@@ -5,11 +5,12 @@ import {
   Primitives,
   Relationship,
 } from '@srclaunch/types';
-import path from 'path';
 import fs from 'fs-extra';
+import path from 'node:path';
+
 import { constructModelExportIndexScript } from '../exports.js';
-import {  getTypescriptTypeFromPrimitive } from '../types.js';
-import { getPrimitiveImports, } from './types.js';
+import { getTypescriptTypeFromPrimitive } from '../types.js';
+import { getPrimitiveImports } from './types.js';
 
 export function getSequelizeTypeFromPrimitive(type: Primitives) {
   switch (type) {
@@ -120,7 +121,7 @@ export function constructTypePropsFromFields(
     a[0].localeCompare(b[0]),
   )) {
     fieldsStr += `  ${field[0]}${
-      field[1].required ? '' : '?' 
+      field[1].required ? '' : '?'
     }: ${getTypescriptTypeFromPrimitive(field[1].type)} ${
       field[1].required ? '' : '| null'
     };\n`;
@@ -177,10 +178,11 @@ function constructSequelizeFieldStr(
   if (fieldName) {
     return `\n  ${fieldName}: {
         allowNull: ${field?.required ? 'false' : 'true'},
-        type: ${fieldType === 'DataTypes.ENUM' && field.menu 
+        type: ${
+          fieldType === 'DataTypes.ENUM' && field.menu
             ? `DataTypes.ENUM(${field.menu
-              .map((i: MenuField) => `'${i.value}'`)
-              .join(',')})`
+                .map((i: MenuField) => `'${i.value}'`)
+                .join(',')})`
             : fieldType
         }
       },`;
@@ -216,28 +218,28 @@ export function constructSequelizeModelRelationships(
     let belongsToStr = '';
 
     if (Array.isArray(belongsTo) && belongsTo.length > 0) {
-      belongsTo.forEach(model => {
+      for (const model of belongsTo) {
         belongsToStr += `
           if (${model}) ${modelName}.belongsTo(${model});`;
-      });
+      }
     }
 
     let hasOneStr = '';
 
     if (Array.isArray(hasOne) && hasOne.length > 0) {
-      hasOne.forEach(model => {
+      for (const model of hasOne) {
         hasOneStr += `     
         if (${model}) ${modelName}.hasOne(${model});`;
-      });
+      }
     }
 
     let hasManyStr = '';
 
     if (Array.isArray(hasMany) && hasMany.length > 0) {
-      hasMany.forEach(model => {
+      for (const model of hasMany) {
         hasManyStr += `
         if (${model}) ${modelName}.hasMany(${model});`;
-      });
+      }
     }
 
     return belongsToStr + hasOneStr + hasManyStr;
@@ -249,7 +251,7 @@ export function constructSequelizeModelRelationships(
 export function constructSequelizeModelDependencies(
   modelName: string,
   relationships?: Relationship,
-): string[] {
+): readonly string[] {
   if (!relationships) {
     return [];
   }
@@ -258,9 +260,9 @@ export function constructSequelizeModelDependencies(
 
   return [
     ...new Set([
-      ...(belongsTo && belongsTo.length ? belongsTo : []),
-      ...(hasOne && hasOne.length ? hasOne : []),
-      ...(hasMany && hasMany.length ? hasMany : []),
+      ...(belongsTo && belongsTo.length > 0 ? belongsTo : []),
+      ...(hasOne && hasOne.length > 0 ? hasOne : []),
+      ...(hasMany && hasMany.length > 0 ? hasMany : []),
     ]),
   ];
 
@@ -283,9 +285,10 @@ export function constructSequelizeModelFromModel(model: Model): string {
   );
 
   let modelImports = '';
-  dependentModels.forEach(m => {
+
+  for (const m of dependentModels) {
     modelImports += `import { ${m} as ${m}Type } from './${m}';\n`;
-  });
+  }
 
   const dependentModelsStr =
     Array.isArray(dependentModels) && dependentModels.length > 0
@@ -340,7 +343,7 @@ export default (sequelize: Sequelize) => {
 export async function buildSequelizeModels({
   path: projectPath,
 }: {
-  path: string;
+  readonly path: string;
 }) {
   try {
     const APPLAB_DIRECTORY = '.applab';
@@ -365,7 +368,7 @@ export async function buildSequelizeModels({
 
     const Models = await import(MODELS_BUILD_PATH);
 
-    for (const model of [...Object.entries(Models as Record<string, Model>)]) {
+    for (const model of Object.entries(Models as Record<string, Model>)) {
       const modelName = model[1].name;
       const sequelizeModel = constructSequelizeModelFromModel(model[1]);
       const fileName = `${modelName}.ts`;
@@ -388,9 +391,8 @@ export async function buildSequelizeModels({
       indexFileContent,
       'utf8',
     );
-
-    console.info('Finished building Sequelize models');
-  } catch (err: any) {
-    console.error(err);
+  } catch (error: any) {
+    console.error(error);
+    throw error;
   }
 }
