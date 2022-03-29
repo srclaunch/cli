@@ -206,11 +206,8 @@ export async function buildHttpClient({
     const projectConfigPath = path.join(path.resolve(), 'applab.config.json');
     const projectConfigContents = await fs.readFile(projectConfigPath);
     const projectConfig = await JSON.parse(projectConfigContents.toString());
-
     const MODELS_PATH = path.join(path.resolve(), `${modelsPath}/src`);
-
     const BUILD_PATH = path.join(path.resolve(), `${projectPath}/src`);
-
     const DIST_PATH = path.join(path.resolve(), `${projectPath}/dist`);
 
     await fs.emptyDir(BUILD_PATH);

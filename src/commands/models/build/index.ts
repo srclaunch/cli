@@ -84,11 +84,11 @@ export async function buildModels() {
   });
   await buildProject(projectConfig.dependencies['http-client'].path);
 
-  // console.info('Building Redux state...');
-  // await buildReduxSlices({
-  //   httpClientProjectName: config.dependencies['http-client'].repo,
-  //   projectPath: config.dependencies['redux-state'].path,
-  //   typesProjectName: config.dependencies.types.repo,
-  // });
-  // await buildFromConfig(`.applab/${config.dependencies['redux-state'].path}`);
+  console.info('Building Redux state...');
+  await buildReduxSlices({
+    httpClientProjectName: projectConfig.dependencies['http-client'].repo,
+    projectPath: projectConfig.dependencies['redux-state'].path,
+    typesProjectName: projectConfig.dependencies.types.repo,
+  });
+  await buildProject(projectConfig.dependencies['redux-state'].path);
 }
