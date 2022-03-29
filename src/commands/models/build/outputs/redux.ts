@@ -500,7 +500,10 @@ export async function buildReduxSlices({
   readonly typesProjectName: string;
 }): Promise<void> {
   try {
-    const MODELS_PATH = path.join(path.resolve(), 'dependencies/models/src');
+    const MODELS_PATH = path.join(
+      path.resolve(),
+      '.applab/dependencies/models/src',
+    );
 
     const BUILD_PATH = path.join(path.resolve(), projectPath, 'src');
     const DIST_PATH = path.join(path.resolve(), projectPath, 'dist');
