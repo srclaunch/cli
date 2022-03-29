@@ -1,8 +1,8 @@
-import { buildModels } from './build/index.js';
-import { listModels } from './list.js';
-import { cli } from '../../index.js';
-import { ensureCwdIsApplabProject } from '../../lib/cli.js';
-import { cleanModels } from './build/clean.js';
+import { buildModels } from './build/index';
+import { listModels } from './list';
+import { cli } from '../../index';
+import { ensureCwdIsApplabProject } from '../../lib/cli';
+import { cleanModels } from './build/clean';
 
 export async function handleModelCommands(command?: string) {
   await ensureCwdIsApplabProject();

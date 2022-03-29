@@ -7,8 +7,6 @@ import { BuildConfig } from '../../types/build/index';
 export async function handleBuildCommand(
   config: BuildConfig | readonly BuildConfig[],
 ) {
-  console.log('config', config);
-
   if (Array.isArray(config) && config.length > 0) {
     let buildDirs: (string | undefined)[] = [];
 
@@ -19,7 +17,6 @@ export async function handleBuildCommand(
         buildDirs = [...buildDirs, buildConfig.buildDir];
       }
 
-      console.log('buildConfig', buildConfig);
       await build(buildConfig);
     }
   }
