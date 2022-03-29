@@ -121,7 +121,7 @@ export function getModelExports(model: Model): string {
   }
 
   if (enumStr.length > 0) {
-    str += `export {${enumStr}} from './${model.name}.js';\n`;
+    str += `export {${enumStr}} from './${model.name}';\n`;
   }
 
   return str;

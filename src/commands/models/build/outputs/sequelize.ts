@@ -340,28 +340,14 @@ export default (sequelize: Sequelize) => {
   };`;
 }
 
-export async function buildSequelizeModels({
-  path: projectPath,
-}: {
-  readonly path: string;
-}) {
+export async function buildSequelizeModels(projectPath: string) {
   try {
-    const APPLAB_DIRECTORY = '.applab';
     const MODELS_BUILD_PATH = path.join(
       path.resolve(),
-      APPLAB_DIRECTORY,
-      'dependencies/models/dist/index.js',
+      '.applab/dependencies/models/dist/index.js',
     );
-    const BUILD_PATH = path.join(
-      path.resolve(),
-      APPLAB_DIRECTORY,
-      `${projectPath}/src`,
-    );
-    const DIST_PATH = path.join(
-      path.resolve(),
-      APPLAB_DIRECTORY,
-      `${projectPath}/dist`,
-    );
+    const BUILD_PATH = path.join(path.resolve(), projectPath, 'src');
+    const DIST_PATH = path.join(path.resolve(), projectPath, 'dist');
 
     await fs.emptyDir(BUILD_PATH);
     await fs.emptyDir(DIST_PATH);

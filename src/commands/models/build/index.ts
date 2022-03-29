@@ -69,13 +69,11 @@ export async function buildModels() {
   await buildModelTypes(projectConfig.dependencies.types.path);
   await buildProject(projectConfig.dependencies.types.path);
 
-  // console.info('Creating Sequelize models...');
-  // await buildSequelizeModels({
-  //   path: config.dependencies['sequelize-models'].path,
-  // });
-  // await buildFromConfig(
-  //   `.applab/${config.dependencies['sequelize-models'].path}`,
-  // );
+  console.info('Creating Sequelize models...');
+  await buildSequelizeModels(
+    projectConfig.dependencies['sequelize-models'].path,
+  );
+  await buildProject(projectConfig.dependencies['sequelize-models'].path);
 
   // console.info('Building HTTP client...');
   // await buildHttpClient({
