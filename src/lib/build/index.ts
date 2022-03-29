@@ -43,10 +43,13 @@ export async function build({
       external: excludeLibs,
       format,
       minify,
-      outdir:  format === 'esm' && codeSplitting ? path.join(
-        path.resolve(),
-        `${buildPath ? `${buildPath}/` : ''}${buildDir}`,
-      ) : undefined,
+      outdir:
+        format === 'esm' && codeSplitting
+          ? path.join(
+              path.resolve(),
+              `${buildPath ? `${buildPath}/` : ''}${buildDir}`,
+            )
+          : undefined,
       outfile:
         format === 'esm' && codeSplitting
           ? undefined
@@ -85,9 +88,13 @@ export async function build({
         'utf8',
       );
       const tsConfig = await JSON.parse(tsConfigContents.toString());
+      const tsConfigUpdatedWithPath = {
+        ...tsConfig,
+        include: tsConfig.include.map((include: string) =>  path.join(path.resolve(), include)),
+      };
 
       const { options } = ts.parseJsonConfigFileContent(
-        tsConfig,
+        tsConfigUpdatedWithPath,
         ts.sys,
         path.join(path.resolve(), buildPath),
       );
