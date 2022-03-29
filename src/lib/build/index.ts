@@ -48,8 +48,8 @@ export async function build({
         format === 'esm' && codeSplitting
           ? path.join(
               path.resolve(),
-            //  buildPath,
-             buildDir,
+              //  buildPath,
+              buildDir,
             )
           : undefined,
       outfile:
@@ -58,9 +58,9 @@ export async function build({
           : inputScripts.length === 1
           ? path.join(
               path.resolve(),
-          //  buildPath,
-           buildDir,
-           buildFile
+              //  buildPath,
+              buildDir,
+              buildFile,
             )
           : undefined,
       platform,
@@ -92,6 +92,8 @@ export async function build({
         'utf8',
       );
       const tsConfig = await JSON.parse(tsConfigContents.toString());
+      console.log('tsConfig', tsConfig);
+
       const tsConfigUpdatedWithPath = {
         ...tsConfig,
         compilerOptions: {
@@ -103,6 +105,7 @@ export async function build({
         ),
       };
 
+      console.log('tsConfigUpdatedWithPath', tsConfigUpdatedWithPath);
       const { options } = ts.parseJsonConfigFileContent(
         tsConfigUpdatedWithPath,
         ts.sys,
