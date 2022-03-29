@@ -29,9 +29,7 @@ export async function buildProject(projectPath: string) {
         buildDir: build.buildDir
           ? path.join(projectPath, build.buildDir)
           : undefined,
-        buildPath: build.buildPath
-          ? path.join(projectPath, build.buildPath)
-          : undefined,
+        buildPath: path.join(path.resolve(), projectPath),
         inputScripts: build.inputScripts
           ? build.inputScripts.map(input => path.join(projectPath, input))
           : [],
