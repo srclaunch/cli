@@ -90,7 +90,13 @@ export async function build({
       const tsConfig = await JSON.parse(tsConfigContents.toString());
       const tsConfigUpdatedWithPath = {
         ...tsConfig,
-        include: tsConfig.include.map((include: string) =>  path.join(path.resolve(), include)),
+        compilerOptions: {
+          ...tsConfig.compilerOptions,
+          rootDir: path.join(path.resolve(), buildPath, 'src'),
+        },
+        include: tsConfig.include.map((include: string) =>
+          path.join(path.resolve(), include),
+        ),
       };
 
       const { options } = ts.parseJsonConfigFileContent(
@@ -102,7 +108,7 @@ export async function build({
       const buildFiles = (
         await fs.readdir(path.join(path.resolve(), buildPath, 'src'))
       )
-        .filter(f => f.endsWith('.ts'))
+        .filter(f => f.endsWith('.ts') || f.endsWith('.tsx'))
         .map(file => {
           return path.join(path.resolve(), buildPath, 'src', file);
         });
