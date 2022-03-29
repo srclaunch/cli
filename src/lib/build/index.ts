@@ -37,7 +37,8 @@ export async function build({
       entryPoints: inputScripts.map(script =>
         path.join(
           path.resolve(),
-          buildPath ? `${buildPath}/${script}` : `${script}`,
+          buildPath,
+          script,
         ),
       ),
       external: excludeLibs,
@@ -47,7 +48,8 @@ export async function build({
         format === 'esm' && codeSplitting
           ? path.join(
               path.resolve(),
-              `${buildPath ? `${buildPath}/` : ''}${buildDir}`,
+             buildPath,
+             buildDir,
             )
           : undefined,
       outfile:
@@ -56,7 +58,9 @@ export async function build({
           : inputScripts.length === 1
           ? path.join(
               path.resolve(),
-              `${buildPath ? `${buildPath}/` : ''}${buildDir}/${buildFile}`,
+           buildPath,
+           buildDir,
+           buildFile
             )
           : undefined,
       platform,
