@@ -100,9 +100,6 @@ export async function build({
           ...tsConfig.compilerOptions,
           rootDir: path.join(path.resolve(), buildPath, 'src'),
         },
-        include: tsConfig.include.map((include: string) =>
-          path.join(path.resolve(), include),
-        ),
       };
 
       console.log('tsConfigUpdatedWithPath', tsConfigUpdatedWithPath);
