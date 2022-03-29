@@ -135,11 +135,21 @@ export async function buildModelTypes({
   try {
     const MODELS_BUILD_PATH = path.join(
       path.resolve(),
-      '.applab/dependencies/models/dist/index.js',
+      '.applab/dependencies/models/dist/index',
     );
-    const BUILD_PATH = path.join(path.resolve(), `${projectPath}/src`);
-    const DIST_PATH = path.join(path.resolve(), `${projectPath}/dist`);
+
+    console.log('MODELS_BUILD_PATH', MODELS_BUILD_PATH);
+    const BUILD_PATH = path.join(path.resolve(), projectPath, 'src');
+
+    console.log('BUILD_PATH', BUILD_PATH);
+
+    const DIST_PATH = path.join(path.resolve(), projectPath, 'dist');
+
+    console.log('DIST_PATH', DIST_PATH);
+
     const TYPES_DIR_PATH = path.join(path.resolve(), 'types');
+
+    console.log('TYPES_DIR_PATH', TYPES_DIR_PATH);
 
     await fs.emptyDir(BUILD_PATH);
     await fs.emptyDir(DIST_PATH);
@@ -156,6 +166,8 @@ export async function buildModelTypes({
     }
 
     const Models = await import(MODELS_BUILD_PATH);
+
+    console.log('Models', Models);
 
     let exportStr = '';
 
