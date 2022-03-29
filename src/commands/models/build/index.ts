@@ -82,9 +82,7 @@ export async function buildModels() {
     path: projectConfig.dependencies['http-client'].path,
     typesProjectName: projectConfig.dependencies.types.repo,
   });
-  await buildProject(
-    `.applab/${projectConfig.dependencies['http-client'].path}`,
-  );
+  await buildProject(projectConfig.dependencies['http-client'].path);
 
   // console.info('Building Redux state...');
   // await buildReduxSlices({
