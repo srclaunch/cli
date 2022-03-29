@@ -127,11 +127,7 @@ export function getModelExports(model: Model): string {
   return str;
 }
 
-export async function buildModelTypes({
-  path: projectPath,
-}: {
-  readonly path: string;
-}) {
+export async function buildModelTypes(projectPath: string) {
   try {
     const MODELS_BUILD_PATH = path.join(
       path.resolve(),
