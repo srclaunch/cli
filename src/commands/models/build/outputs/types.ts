@@ -131,7 +131,7 @@ export async function buildModelTypes(projectPath: string) {
   try {
     const MODELS_BUILD_PATH = path.join(
       path.resolve(),
-      '.applab/dependencies/models/dist/index.js',
+      '.applab/dependencies/models/dist/index',
     );
     const BUILD_PATH = path.join(path.resolve(), projectPath, 'src');
     const DIST_PATH = path.join(path.resolve(), projectPath, 'dist');
