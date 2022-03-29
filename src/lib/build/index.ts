@@ -43,10 +43,10 @@ export async function build({
       external: excludeLibs,
       format,
       minify,
-      outdir: path.join(
+      outdir:  format === 'esm' && codeSplitting ? path.join(
         path.resolve(),
         `${buildPath ? `${buildPath}/` : ''}${buildDir}`,
-      ),
+      ) : undefined,
       outfile:
         format === 'esm' && codeSplitting
           ? undefined
