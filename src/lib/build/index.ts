@@ -55,7 +55,7 @@ export async function build({
         : undefined,
       platform,
       sourcemap: sourceMap,
-      splitting: codeSplitting,
+      splitting: format === 'esm' && codeSplitting,
       target,
       treeShaking,
     };
