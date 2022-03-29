@@ -85,15 +85,11 @@ export async function build({
     }
 
     if (buildTypes) {
-      console.info('Compiling types... ');
-
       const tsConfigContents = await fs.readFile(
         path.join(path.resolve(), tsconfigPath),
         'utf8',
       );
       const tsConfig = await JSON.parse(tsConfigContents.toString());
-      console.log('tsConfig', tsConfig);
-
       const tsConfigUpdatedWithPath = {
         ...tsConfig,
         compilerOptions: {
@@ -102,16 +98,11 @@ export async function build({
           rootDir: path.join(path.resolve(), buildPath, 'src'),
         },
       };
-
-      console.log('tsConfigUpdatedWithPath', tsConfigUpdatedWithPath);
       const { options } = ts.parseJsonConfigFileContent(
         tsConfigUpdatedWithPath,
         ts.sys,
         path.join(path.resolve(), buildPath),
       );
-
-      console.log('options', options);
-
       const srcFiles = await fs.readdir(
         path.join(path.resolve(), buildPath, 'src'),
       );
@@ -120,36 +111,31 @@ export async function build({
         .map(file => {
           return path.join(path.resolve(), buildPath, 'src', file);
         });
-
-      console.log('buildFiles', buildFiles);
       const program: Program = ts.createProgram(buildFiles, options);
       const emitResult = program.emit();
-
-      let allDiagnostics = ts
+      const allDiagnostics = ts
         .getPreEmitDiagnostics(program)
         .concat(emitResult.diagnostics);
 
-      allDiagnostics.forEach(diagnostic => {
+      for (const diagnostic of allDiagnostics) {
         if (diagnostic.file) {
-          let { line, character } = ts.getLineAndCharacterOfPosition(
-            diagnostic.file,
-            diagnostic.start!,
-          );
-          let message = ts.flattenDiagnosticMessageText(
+          const { line, character } =
+            diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+          const message = ts.flattenDiagnosticMessageText(
             diagnostic.messageText,
             '\n',
           );
-          console.info(
+          console.log(
             `${diagnostic.file.fileName} (${line + 1},${
               character + 1
             }): ${message}`,
           );
         } else {
-          console.info(
-            ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n'),
+          console.log(
+            `${ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')}`,
           );
         }
-      });
+      }
     }
   } catch (err: any) {
     console.error(err);
