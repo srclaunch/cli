@@ -8,7 +8,7 @@ var en=Object.create;var ca=Object.defineProperty;var nn=Object.getOwnPropertyDe
 export {
 ${l}};
 ${m==="sequelize"?A:""}
-`}catch(l){console.error(l)}}async function _i(a){try{let m=O.join(O.resolve(),"models"),l=O.join(O.resolve(),`${a}/src`);await V.emptyDir(l);let g=await V.readdir(m);for(let T of g){let E=await V.readFile(O.join(m,T),"utf8");if(!E.includes("fields: {"))throw new Error(`${T} is missing the fields property.`);let D=`
+`}catch(l){console.error(l)}}async function _i(a){try{let m=O.join(O.resolve(),"models"),l=O.join(O.resolve(),a,"src");await V.emptyDir(l);let g=await V.readdir(m);for(let T of g){let E=await V.readFile(O.join(m,T),"utf8");if(!E.includes("fields: {"))throw new Error(`${T} is missing the fields property.`);let D=`
     created_date: {
       label: 'Created Date',
       required: false,
@@ -36,7 +36,7 @@ ${C}`}return l+=`export type ${a.name} = {
     id?: string;${m}
   };`,l}function Lt(a){let m=`export { ${a.name} } from './${a.name}';
 `,l="";for(let[g,A]of Object.entries(a.fields))A.type===S.Menu&&A.menu&&(l+=`${a.name+(0,X.default)(Q(g))},`);return l.length>0&&(m+=`export {${l}} from './${a.name}.js';
-`),m}async function bi({path:a}){try{let m=k.join(k.resolve(),".applab/dependencies/models/dist/index");console.log("MODELS_BUILD_PATH",m);let l=k.join(k.resolve(),a,"src");console.log("BUILD_PATH",l);let g=k.join(k.resolve(),a,"dist");console.log("DIST_PATH",g);let A=k.join(k.resolve(),"types");console.log("TYPES_DIR_PATH",A),await H.emptyDir(l),await H.emptyDir(g);let C=await H.readdir(A);for(let E of C){let M=await H.readFile(k.join(A,E),"utf8");await H.writeFile(k.join(l,E),M,"utf8")}let f=await import(m);console.log("Models",f);let T="";for(let E of Object.entries(f)){let M=E[1].name,D=Ft(E[1]),P=`${M}.ts`,p=k.join(l,P);await H.writeFile(p,D,"utf8"),T+=Lt(E[1])}await H.writeFile(k.join(l,"index.ts"),T,"utf8")}catch(m){throw console.error("err",m),m}}import L from"fs-extra";import U from"path";function yi(){return`import { ModelProps, Primitives } from "@srclaunch/types";
+`),m}async function bi({path:a}){try{let m=k.join(k.resolve(),".applab/dependencies/models/dist/index");console.log("projectPath",a),console.log("MODELS_BUILD_PATH",m);let l=k.join(k.resolve(),a,"src");console.log("BUILD_PATH",l);let g=k.join(k.resolve(),a,"dist");console.log("DIST_PATH",g);let A=k.join(k.resolve(),"types");console.log("TYPES_DIR_PATH",A),await H.emptyDir(l),await H.emptyDir(g);let C=await H.readdir(A);for(let E of C){let M=await H.readFile(k.join(A,E),"utf8");await H.writeFile(k.join(l,E),M,"utf8")}let f=await import(m);console.log("Models",f);let T="";for(let E of Object.entries(f)){let M=E[1].name,D=Ft(E[1]),P=`${M}.ts`,p=k.join(l,P);await H.writeFile(p,D,"utf8"),T+=Lt(E[1])}await H.writeFile(k.join(l,"index.ts"),T,"utf8")}catch(m){throw console.error("err",m),m}}import L from"fs-extra";import U from"path";function yi(){return`import { ModelProps, Primitives } from "@srclaunch/types";
 
   export const Document: ModelProps = {
     fields: {

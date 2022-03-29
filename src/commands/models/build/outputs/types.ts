@@ -138,6 +138,8 @@ export async function buildModelTypes({
       '.applab/dependencies/models/dist/index',
     );
 
+    console.log('projectPath', projectPath);
+
     console.log('MODELS_BUILD_PATH', MODELS_BUILD_PATH);
     const BUILD_PATH = path.join(path.resolve(), projectPath, 'src');
 

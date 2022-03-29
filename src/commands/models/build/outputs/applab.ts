@@ -6,7 +6,7 @@ import { constructModelExportIndexScript } from '../exports';
 export async function buildAppLabModels(projectPath: string): Promise<void> {
   try {
     const MODELS_PATH = path.join(path.resolve(), 'models');
-    const BUILD_PATH = path.join(path.resolve(), `${projectPath}/src`);
+    const BUILD_PATH = path.join(path.resolve(), projectPath, 'src');
 
     await fs.emptyDir(BUILD_PATH);
 
