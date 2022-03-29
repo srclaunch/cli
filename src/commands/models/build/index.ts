@@ -20,6 +20,8 @@ export async function buildProject(projectPath: string) {
     'applab.config.json',
   );
 
+  console.log('fullConfigPath', fullConfigPath);
+
   try {
     const configContents = await fs.readFile(fullConfigPath);
     const config = await JSON.parse(configContents.toString());
@@ -39,6 +41,8 @@ export async function buildProject(projectPath: string) {
           : undefined,
       }),
     );
+
+    console.log('buildConfig', buildConfig);
 
     await handleBuildCommand(buildConfig);
   } catch (error) {
