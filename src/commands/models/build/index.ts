@@ -65,9 +65,9 @@ export async function buildModels() {
   await buildAppLabModels(projectConfig.dependencies.models.path);
   await buildProject(projectConfig.dependencies.models.path);
 
-  // console.info('Creating model type definitions...');
-  // await buildModelTypes({ path: config.dependencies.types.path });
-  // await buildFromConfig(`.applab/${config.dependencies.types.path}`);
+  console.info('Creating model type definitions...');
+  await buildModelTypes(projectConfig.dependencies.types.path);
+  await buildProject(projectConfig.dependencies.types.path);
 
   // console.info('Creating Sequelize models...');
   // await buildSequelizeModels({
