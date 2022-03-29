@@ -504,23 +504,13 @@ export async function buildReduxSlices({
       path.resolve(),
       '.applab/dependencies/models/src',
     );
-
-    console.log('MODELS_PATH', MODELS_PATH);
-
     const BUILD_PATH = path.join(path.resolve(), projectPath, 'src');
-
-    console.log('BUILD_PATH', BUILD_PATH);
-
     const DIST_PATH = path.join(path.resolve(), projectPath, 'dist');
-
-    console.log('DIST_PATH', DIST_PATH);
 
     await fs.emptyDir(BUILD_PATH);
     await fs.emptyDir(DIST_PATH);
 
     const files = await fs.readdir(MODELS_PATH);
-
-    console.log('files', files);
 
     for (const file of files) {
       if (file !== 'index.ts') {
