@@ -203,29 +203,15 @@ export async function buildHttpClient({
   readonly typesProjectName: string;
 }): Promise<void> {
   try {
-    const APPLAB_CONFIG_PATH = path.join(path.resolve(), 'applab.config.json');
+    const projectConfigPath = path.join(path.resolve(), 'applab.config.json');
+    const projectConfigContents = await fs.readFile(projectConfigPath);
+    const projectConfig = await JSON.parse(projectConfigContents.toString());
 
-    const APPLAB_CONFIG = await JSON.parse(
-      await (await fs.readFile(APPLAB_CONFIG_PATH)).toString(),
-    );
-    const APPLAB_DIRECTORY = '.applab';
-    const MODELS_PATH = path.join(
-      path.resolve(),
-      APPLAB_DIRECTORY,
-      `${modelsPath}/src`,
-    );
+    const MODELS_PATH = path.join(path.resolve(), `${modelsPath}/src`);
 
-    const BUILD_PATH = path.join(
-      path.resolve(),
-      APPLAB_DIRECTORY,
-      `${projectPath}/src`,
-    );
+    const BUILD_PATH = path.join(path.resolve(), `${projectPath}/src`);
 
-    const DIST_PATH = path.join(
-      path.resolve(),
-      APPLAB_DIRECTORY,
-      `${projectPath}/dist`,
-    );
+    const DIST_PATH = path.join(path.resolve(), `${projectPath}/dist`);
 
     await fs.emptyDir(BUILD_PATH);
     await fs.emptyDir(DIST_PATH);
@@ -255,7 +241,7 @@ export async function buildHttpClient({
     // logger.info(`Writing ${BUILD_PATH}/index.ts`);
 
     const indexFileContent = constructHttpClientIndexScript({
-      environments: APPLAB_CONFIG['core-api'].environments,
+      environments: projectConfig['core-api'].environments,
       models: files
         .filter(f => f !== 'index.ts')
         .map(file => pluralize(file.toLowerCase()).replace('.ts', '')),

@@ -75,14 +75,16 @@ export async function buildModels() {
   );
   await buildProject(projectConfig.dependencies['sequelize-models'].path);
 
-  // console.info('Building HTTP client...');
-  // await buildHttpClient({
-  //   httpClientProjectName: config.dependencies['http-client'].repo,
-  //   modelsPath: config.dependencies.models.path,
-  //   path: config.dependencies['http-client'].path,
-  //   typesProjectName: config.dependencies.types.repo,
-  // });
-  // await buildFromConfig(`.applab/${config.dependencies['http-client'].path}`);
+  console.info('Building HTTP client...');
+  await buildHttpClient({
+    httpClientProjectName: projectConfig.dependencies['http-client'].repo,
+    modelsPath: projectConfig.dependencies.models.path,
+    path: projectConfig.dependencies['http-client'].path,
+    typesProjectName: projectConfig.dependencies.types.repo,
+  });
+  await buildProject(
+    `.applab/${projectConfig.dependencies['http-client'].path}`,
+  );
 
   // console.info('Building Redux state...');
   // await buildReduxSlices({
