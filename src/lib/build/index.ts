@@ -98,6 +98,7 @@ export async function build({
         ...tsConfig,
         compilerOptions: {
           ...tsConfig.compilerOptions,
+          declarationDir: path.join(path.resolve(), buildPath, 'dist'),
           rootDir: path.join(path.resolve(), buildPath, 'src'),
         },
       };
@@ -109,16 +110,18 @@ export async function build({
         path.join(path.resolve(), buildPath),
       );
 
-      console.log('options', options)
+      console.log('options', options);
 
-      const srcFiles = await fs.readdir(path.join(path.resolve(), buildPath, 'src'))
+      const srcFiles = await fs.readdir(
+        path.join(path.resolve(), buildPath, 'src'),
+      );
       const buildFiles = srcFiles
         .filter(f => f.endsWith('.ts') || f.endsWith('.tsx'))
         .map(file => {
           return path.join(path.resolve(), buildPath, 'src', file);
         });
 
-        console.log('buildFiles', buildFiles)
+      console.log('buildFiles', buildFiles);
       const program: Program = ts.createProgram(buildFiles, options);
       const emitResult = program.emit();
 
