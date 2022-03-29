@@ -47,12 +47,15 @@ export async function build({
         path.resolve(),
         `${buildPath ? `${buildPath}/` : ''}${buildDir}`,
       ),
-      outfile: codeSplitting
-        ? undefined
-        : inputScripts.length === 1
-        ? path.join(
-          path.resolve(),`${buildPath ? `${buildPath}/` : ''}${buildDir}/${buildFile}`)
-        : undefined,
+      outfile:
+        format === 'esm' && codeSplitting
+          ? undefined
+          : inputScripts.length === 1
+          ? path.join(
+              path.resolve(),
+              `${buildPath ? `${buildPath}/` : ''}${buildDir}/${buildFile}`,
+            )
+          : undefined,
       platform,
       sourcemap: sourceMap,
       splitting: format === 'esm' && codeSplitting,
