@@ -131,7 +131,7 @@ export function constructTypePropsFromFields(
 }
 
 function constructSequelizeClassPropsWithTypes(model: Model): string {
-  let fieldsStr = ` declare readonly id!: string;
+  let fieldsStr = ` declare readonly id: string;
 
   public static associate: (models: Record<string, ModelStatic<Model>>) => void;
 `;
@@ -139,7 +139,7 @@ function constructSequelizeClassPropsWithTypes(model: Model): string {
   for (const field of [...Object.entries(model.fields)].sort((a, b) =>
     a[0].localeCompare(b[0]),
   )) {
-    fieldsStr += `  declare ${field[0]}!: ${getTypescriptTypeFromPrimitive(
+    fieldsStr += `  declare ${field[0]}: ${getTypescriptTypeFromPrimitive(
       field[1].type,
     )}${!field[1].required ? ' | null' : ''};\n`;
   }
