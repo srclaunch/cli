@@ -29,8 +29,8 @@
     }
   },
   "scripts": {
-    "build:cjs": "esbuild --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.cjs.js --format=cjs --target=es2020 --platform=node src/index.ts",
-    "build:es": "esbuild --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=es2020 --platform=node src/index.ts",
+    "build:cjs": "esbuild --external:'chalk' --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.cjs.js --format=cjs --target=es2020 --platform=node src/index.ts",
+    "build:es": "esbuild --external:'chalk' --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=es2020 --platform=node src/index.ts",
     "build:types": "tsc --build --force",
     "build": "yarn clean && yarn build:cjs && yarn build:es && yarn build:types",
     "clean": "rm -fr ./dist && mkdir dist",
