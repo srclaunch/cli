@@ -25,14 +25,13 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs.js"
+      "require": "./dist/index.js"
     }
   },
   "scripts": {
-    "build:cjs": "esbuild --external:'chalk' --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.cjs.js --format=cjs --target=es2020 --platform=node src/index.ts",
-    "build:es": "esbuild --external:'chalk' --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=es2020 --platform=node src/index.ts",
+    "build:es": "esbuild --external:'chalk' --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=esnext --platform=node src/index.ts",
     "build:types": "tsc --build --force",
-    "build": "yarn clean && yarn build:cjs && yarn build:es && yarn build:types",
+    "build": "yarn clean && yarn build:es && yarn build:types",
     "clean": "rm -fr ./dist && mkdir dist",
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
     "git:push": "git push --follow-tags origin main",
