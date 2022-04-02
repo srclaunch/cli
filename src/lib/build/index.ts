@@ -30,10 +30,18 @@ export async function build({
       `Compiling and bundling JS to ${format.toLocaleUpperCase()} format...`,
     );
 
+    const defineValue: BuildConfig['define'] = define
+      ? Object.entries(define).reduce((acc, [key, value]) => {
+        // @ts-ignore
+          acc[key] = JSON.stringify(value);
+          return acc;
+        }, {})
+      : {};
+
     const config = {
       bundle,
       color,
-      define,
+      define: defineValue,
       entryPoints: inputScripts.map(script =>
         path.join(
           path.resolve(),
