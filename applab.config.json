@@ -3,38 +3,35 @@
     {
       "buildDir": "dist",
       "buildFile": "index.js",
-      "buildTypes": false,
+      "buildTypes": true,
       "bundle": true,
       "codeSplitting": true,
-      "define": {
-        "navigator": "\\{\\}"
-      },
-      "excludeLibs": ["sequelize"],
+      "define": {},
+      "excludeLibs": ["chalk", "sequelize"],
       "format": "esm",
-      "inputScripts": ["./src/index.ts"],
+      "inputScripts": ["src/index.ts"],
       "minify": true,
       "platform": "node",
       "sourceMap": true,
-      "target": "es2017",
-      "treeShaking": true
+      "target": "esnext",
+      "treeShaking": true,
+      "tsconfigPath": "tsconfig.json"
     },
     {
       "buildDir": "dist",
       "buildFile": "index.cjs.js",
-      "buildTypes": false,
+      "buildTypes": true,
       "bundle": true,
-      "codeSplitting": false,
-      "define": {
-        "navigator": "\\{\\}"
-      },
-      "excludeLibs": ["sequelize"],
+      "define": {},
+      "excludeLibs": ["chalk", "sequelize"],
       "format": "cjs",
-      "inputScripts": ["./src/index.ts"],
+      "inputScripts": ["src/index.ts"],
       "minify": true,
       "platform": "node",
       "sourceMap": true,
       "target": "es2015",
-      "treeShaking": true
+      "treeShaking": true,
+      "tsconfigPath": "tsconfig.json"
     }
   ]
 }
