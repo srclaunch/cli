@@ -7,7 +7,7 @@ export type BuildConfig = {
   bundleCSS?: boolean;
   codeSplitting?: boolean;
   color?: boolean;
-  define?: Record<string, string>;
+  define?: { [key: string]: string; };
   excludeLibs?: string[];
   emptyBuildDir?: boolean;
   format?: 'iife' | 'cjs' | 'esm';
