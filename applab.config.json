@@ -1,34 +1,40 @@
 {
-  "build": [{
-    "buildDir": "dist",
-    "buildFile": "index.js",
-    "buildTypes": false,
-    "bundle": true,
-    "codeSplitting": true,
-    "define": {},
-    "excludeLibs": ["sequelize"],
-    "format": "esm",
-    "inputScripts": ["./src/index.ts"],
-    "minify": true,
-    "platform": "node",
-    "sourceMap": true,
-    "target": "es2017",
-    "treeShaking": true
-  },
-  {
-    "buildDir": "dist",
-    "buildFile": "index.cjs.js",
-    "buildTypes": false,
-    "bundle": true,
-    "codeSplitting": false,
-    "define": {},
-    "excludeLibs": [ "sequelize"],
-    "format": "cjs",
-    "inputScripts": ["./src/index.ts"],
-    "minify": true,
-    "platform": "node",
-    "sourceMap": true,
-    "target": "es2015",
-    "treeShaking": true
-  }]
+  "build": [
+    {
+      "buildDir": "dist",
+      "buildFile": "index.js",
+      "buildTypes": false,
+      "bundle": true,
+      "codeSplitting": true,
+      "define": {
+        "navigator": "\\{\\}"
+      },
+      "excludeLibs": ["sequelize"],
+      "format": "esm",
+      "inputScripts": ["./src/index.ts"],
+      "minify": true,
+      "platform": "node",
+      "sourceMap": true,
+      "target": "es2017",
+      "treeShaking": true
+    },
+    {
+      "buildDir": "dist",
+      "buildFile": "index.cjs.js",
+      "buildTypes": false,
+      "bundle": true,
+      "codeSplitting": false,
+      "define": {
+        "navigator": "\\{\\}"
+      },
+      "excludeLibs": ["sequelize"],
+      "format": "cjs",
+      "inputScripts": ["./src/index.ts"],
+      "minify": true,
+      "platform": "node",
+      "sourceMap": true,
+      "target": "es2015",
+      "treeShaking": true
+    }
+  ]
 }
