@@ -6,29 +6,8 @@ on:
       - main
 
 jobs:
-  env-vars:
-    name: Initialize environment variables
-    runs-on: ubuntu-latest
-    outputs:
-      commit-message: ${{ steps.get-commit.outputs.message }}
-      release: ${{ steps.get-release.outputs.version }}
-    steps:
-      - name: Get commit
-        id: get-commit
-        run: |
-          echo "::set-output name=message::${{ format(github.event.head_commit.message, 'chore(release): ', '') }}"
-
-      - name: Get release version
-        id: get-release
-        run: |
-          KEYWORD="chore(release): "
-          ESCAPED_KEYWORD=$(printf '%s\n' "$KEYWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
-          VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
-          echo "::set-output name=version::$VERSION"
-
-  build:
-    name: Build package
-    needs: [env-vars]
+  install:
+    name: Install package dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

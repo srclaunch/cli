@@ -25,15 +25,15 @@ jobs:
           ESCAPED_KEYWORD=$(printf '%s\n' "$KEYWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
           VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
           echo "::set-output name=version::$VERSION"
-  package:
+  publish:
     name: Publish package
-    needs: [env-vars, build]
+    needs: [env-vars]
     runs-on: ubuntu-latest
     steps:
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-${{ needs.env-vars.outputs.release }}-build'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-${{ needs.env-vars.outputs.branch }}-build'
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2

@@ -10,9 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs:
+      branch: ${{ steps.get-branch.outputs.name }}
       commit-message: ${{ steps.get-commit.outputs.message }}
       release: ${{ steps.get-release.outputs.version }}
     steps:
+      - name: Get branch name
+        id: get-branch
+        run: |
+          echo "::set-output name=name::${GITHUB_REF#refs/heads/}"
+
       - name: Get commit
         id: get-commit
         run: |
@@ -67,7 +73,7 @@ jobs:
       - name: Upload release artifact
         uses: actions/upload-artifact@v3
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-${{ needs.env-vars.outputs.release }}-build'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-build'
           path: |
             dist
             package.json
