@@ -1,7 +1,12 @@
 import { Command, CommandType } from '../lib/command';
-import { build as esbuild, ESBuildOptions } from '../lib/build/esbuild';
-import { build as vite, ViteBuildOptions } from '../lib/build/vite';
-import { BuildOptions, Project } from '@srclaunch/types';
+import { build as esbuild } from '../lib/build/esbuild';
+import { build as vite } from '../lib/build/vite';
+import {
+  BuildOptions,
+  ESBuildOptions,
+  Project,
+  ViteBuildOptions,
+} from '@srclaunch/types';
 
 export default new Command({
   name: 'build',

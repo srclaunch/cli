@@ -1,19 +1,19 @@
 import { build as buildCommand, Format } from 'esbuild';
-
+import { build as buildTypes } from './types';
 import {
   BuildFormat,
   BuildOptions,
   BuildPlatform,
   BuildTarget,
   BundleOptions,
+  // ESBuildOptions,
 } from '@srclaunch/types';
 import path from 'path';
 import { getFormatFileExtension } from './formats';
 
 export interface ESBuildOptions extends Omit<BuildOptions, 'formats' | 'tool'> {
-  format: BuildFormat.CJS | BuildFormat.ESM | BuildFormat.UMD;
+  readonly format: BuildFormat.CJS | BuildFormat.ESM | BuildFormat.UMD;
 }
-
 export async function build({
   bundle = true,
   format = BuildFormat.ESM,
@@ -25,6 +25,7 @@ export async function build({
   splitting = true,
   target = BuildTarget.ESNext,
   treeShaking = true,
+  types = true,
 }: ESBuildOptions) {
   try {
     console.info(
@@ -75,7 +76,12 @@ export async function build({
       });
     }
 
-    console.info(`Finished compiling to ${format} format.`);
+    if (types) {
+      console.info('Compiling TS definitions...');
+      await buildTypes({ input, types, output });
+    }
+
+    console.info(`Finished building to ${format} format.`);
   } catch (err: any) {
     console.error(`Error occurred while building: ${err.name}`, err);
   }

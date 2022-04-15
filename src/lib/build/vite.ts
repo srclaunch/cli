@@ -1,18 +1,25 @@
 import { build as buildCommand } from 'vite';
+import react from '@vitejs/plugin-react';
+import { build as buildTypes } from './types';
 import path from 'node:path';
-import { BuildOptions } from '@srclaunch/types';
-import { BuildFormat, BuildPlatform, BuildTarget } from '@srclaunch/types';
+import {
+  BuildFormat,
+  BuildOptions,
+  BuildPlatform,
+  BuildTarget,
+  // ViteBuildOptions,
+} from '@srclaunch/types';
 
 export interface ViteBuildOptions
   extends Omit<
     BuildOptions,
-    'bundle' | 'format' | 'platform' | 'splitting' | 'tool' | 'treeShaking'
+    'bundle' | 'format' | 'splitting' | 'tool' | 'treeShaking'
   > {
-  bundle?: {
-    exclude?: string[];
-    optimize?: string[];
+  readonly bundle?: {
+    readonly exclude?: readonly string[];
+    readonly optimize?: readonly string[];
   };
-  format: BuildFormat.CJS | BuildFormat.ESM | BuildFormat.UMD;
+  readonly format: BuildFormat.CJS | BuildFormat.ESM | BuildFormat.UMD;
 }
 
 export async function build({
@@ -25,9 +32,11 @@ export async function build({
   manifest = true,
   minify = true,
   output,
+  platform = BuildPlatform.Browser,
   rootDir = path.resolve(),
   sourcemap = true,
   target = BuildTarget.ESNext,
+  types = true,
   webApp,
 }: ViteBuildOptions) {
   try {
@@ -81,6 +90,12 @@ export async function build({
     });
 
     console.log(result);
+
+    if (types) {
+      console.info('Compiling TS definitions...');
+      await buildTypes({ input, types, output });
+    }
+
     // if (result.errors) {
     //   result.errors.forEach(error => {
     //     console.error(error.text);
@@ -88,7 +103,7 @@ export async function build({
     // }
 
     console.info(
-      `Finished compiling to ${
+      `Finished building to ${
         formats && formats.length > 0
           ? `${formats.join(', ').toLocaleUpperCase()} formats.`
           : `${format.toLocaleUpperCase()} format.`
