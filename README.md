@@ -1,6 +1,6 @@
 # @srclaunch/cli
 
-![example workflow](https://github.com/srclaunch/cli/actions/workflows/deploy-package/badge.svg)
+![Deploy Package](https://github.com/srclaunch/cli/workflows/deploy-package.yml/badge.svg)
 
 Command line tool for managing SrcLaunch Workspaces and Projects.
 
