@@ -1,13 +1,14 @@
 name: Publish
 on:
   workflow_run:
-    workflows: [Test]
+    workflows: [Tests]
     types:
       - completed
 jobs:
   env-vars:
     name: Initialize environment variables
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs:
       commit-message: ${{ steps.get-commit.outputs.message }}
       release: ${{ steps.get-release.outputs.version }}
