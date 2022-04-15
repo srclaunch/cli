@@ -3,26 +3,25 @@ import base from './.eslintrc.js';
 export default {
   ...base,
   env: {
+    ...base.env,
     browser: true,
     webextensions: true,
   },
   extends: [
     ...base.extends,
-    // 'plugin:@microsoft/sdl/react', // Microsoft SDL React rules
+    'plugin:@microsoft/sdl/react', // Microsoft SDL React rules
     'plugin:jsx-a11y/recommended',
-    // 'plugin:better-styled-components/recommended',
+    'plugin:better-styled-components/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:testing-library/react',
   ],
-  ignorePatterns: [...base.ignorePatterns],
-  parserOptions: { ...base.parserOptions },
   plugins: [
     ...base.plugins,
     'better-styled-components',
     'jsx-a11y',
-    // 'react',
-    // 'react-hooks',
+    'react',
+    'react-hooks',
   ],
   rules: {
     ...base.rules,
@@ -40,9 +39,7 @@ export default {
     ],
     'react/jsx-uses-react': 'off',
     'react/jsx-wrap-multilines': 'error',
-    //https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
     'react/react-in-jsx-scope': 'off',
-
     'react/self-closing-comp': 'error',
     'react/sort-prop-types': [
       'error',
@@ -53,7 +50,7 @@ export default {
         requiredFirst: true,
         sortShapeProp: true,
       },
-    ], //https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
+    ], 
     'testing-library/prefer-screen-queries': 'off',
   },
   settings: {
