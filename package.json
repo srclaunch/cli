@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "build:es": "esbuild --sourcemap --bundle --minify --outfile=dist/index.js --external:esbuild --external:'fs-extra' --external:meow --external:vite --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
+    "build:es": "esbuild --sourcemap --bundle --minify --outfile=dist/index.js --external:esbuild --external:'fs-extra' --external:meow --external:'update-notifier' --external:vite --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
     "build:types": "tsc --build --force",
     "build": "yarn clean && yarn build:es && yarn build:types",
     "clean": "rm -fr ./dist && mkdir dist",
