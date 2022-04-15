@@ -5,10 +5,7 @@ on:
     workflows: [Build]
     types:
       - completed
-on:
-  push:
-    branches:
-      - main
+
 jobs:
   test:
     name: Run tests
