@@ -14,26 +14,60 @@ Command line tool for managing SrcLaunch Workspaces and Projects.
 
 Commands for building a project.
 
-`esbuild`
-`vite`
+**Sub-commands**
 
-###### `types`
-
----
-
-**models**
+- `esbuild` - Builds project using ESBuild
+- `vite` - Builds project using Vite
+- `types` - Builds TypeScript definitions
 
 ---
 
-**dev**
+#### `changesets`
+
+Commands for building a project.
+
+**Sub-commands**
+
+- `esbuild` - Builds project using ESBuild
 
 ---
 
-**projects**
+#### `dev`
+
+Commands for building a project.
+
+**Sub-commands**
+
+- `esbuild` - Builds project using ESBuild
+
+---
+
+#### `help`
+
+---
+
+#### `infrastructure`
+
+---
+
+#### `models`
+
+---
+
+#### `preview`
+
+---
+
+#### `projects`
 
 - create - Create a new SrcLaunch project
 
 ---
 
-**release**
+#### `release`
+
 Collect changes, bump and tag version, and deploy
+
+---
+
+### `serve`
