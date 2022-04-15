@@ -1,5 +1,7 @@
 # @srclaunch/cli
 
+![example workflow](https://github.com/srclaunch/cli/actions/workflows/deploy-package/badge.svg)
+
 Command line tool for managing SrcLaunch Workspaces and Projects.
 
 ## Commands
