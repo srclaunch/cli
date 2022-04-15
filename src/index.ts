@@ -1,7 +1,5 @@
 import meow from 'meow';
 import updateNotifier, { Package } from 'update-notifier';
-import fs from 'fs';
-import path from 'path';
 import build from './commands/build';
 import changesets from './commands/changesets';
 import dev from './commands/dev';
@@ -19,6 +17,9 @@ import {
   inWorkspaceDirectory,
 } from './lib/config';
 import { Command, CommandType, handleCommand } from './lib/command';
+
+export type { Command };
+export { CommandType };
 
 export const helpMessage = `
 Usage
@@ -46,7 +47,6 @@ updateNotifier({ pkg: cli.pkg as Package }).notify();
 
 const command = cli.input;
 const flags = cli.flags;
-
 const inWorkspaceDir = await inWorkspaceDirectory();
 
 try {
