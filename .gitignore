@@ -4,6 +4,9 @@
 # Mac OS artifacts
 .DS_Store
 
+# NPM dependencies
+node_modules
+
 # Yarn 2 files
 .yarn/*
 !.yarn/cache
