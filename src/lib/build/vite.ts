@@ -86,6 +86,7 @@ export async function build({
             ? (bundle?.optimize as string[]) ?? []
             : [],
       },
+      plugins: webApp?.react ? [react()] : [],
       root: path.join(path.resolve(), rootDir),
     });
 
