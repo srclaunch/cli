@@ -6,6 +6,33 @@ on:
     types:
       - completed
 jobs:
+  env-vars:
+    name: Initialize environment variables
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      branch: ${{ steps.get-branch.outputs.name }}
+      commit-message: ${{ steps.get-commit.outputs.message }}
+      release: ${{ steps.get-release.outputs.version }}
+    steps:
+      - name: Get branch name
+        id: get-branch
+        run: |
+          echo "::set-output name=name::${GITHUB_REF#refs/heads/}"
+
+      - name: Get commit
+        id: get-commit
+        run: |
+          echo "::set-output name=message::${{ format(github.event.head_commit.message, 'chore(release): ', '') }}"
+
+      - name: Get release version
+        id: get-release
+        run: |
+          KEYWORD="chore(release): "
+          ESCAPED_KEYWORD=$(printf '%s\n' "$KEYWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
+          VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
+          echo "::set-output name=version::$VERSION"
+
   test:
     name: Run tests
     runs-on: ubuntu-latest
@@ -54,8 +81,14 @@ jobs:
       - name: Run tests and collect testing coverage
         run: yarn test:coverage
 
+          path: |
+            dist
+            package.json
+            README.md
+            yarn.lock
+
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
         with:
-          name: code-coverage-report
-          path: coverage
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-code-coverage.json'
+          path: coverage/coverage-summary.json
