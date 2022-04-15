@@ -1,6 +1,6 @@
 // const test = require('ava');
 import test from 'ava';
 
-test('add-tests', (t) => {
+test('pass-tests', t => {
   t.pass();
 });
