@@ -2,19 +2,19 @@
 
 Command line tool for managing SrcLaunch Workspaces and Projects.
 
-## Usage
+## Commands
+
+### Usage
 
 `$ srclaunch <command>`
 
-## Commands
-
 ---
 
-#### `build`
+### `build`
 
 Commands for building a project.
 
-**Sub-commands**
+##### Sub-commands
 
 - `esbuild` - Builds project using ESBuild
 - `vite` - Builds project using Vite
@@ -22,52 +22,87 @@ Commands for building a project.
 
 ---
 
-#### `changesets`
+### `changesets`
+
+Commands for managing changes.
+
+##### Sub-commands
+
+- `create` - Create a new changeset and add uncommited changes
+- `list` - List changesets (default --pending=true)
+- `help` - Displays help information changeset commands
+
+---
+
+### `dev`
 
 Commands for building a project.
 
-**Sub-commands**
+##### Sub-commands
 
-- `esbuild` - Builds project using ESBuild
-
----
-
-#### `dev`
-
-Commands for building a project.
-
-**Sub-commands**
-
-- `esbuild` - Builds project using ESBuild
+- `start`
+- `help`
 
 ---
 
-#### `help`
+### `help`
 
 ---
 
-#### `infrastructure`
+### `infrastructure`
+
+##### Sub-commands
+
+- `deploy`
+- `help`
 
 ---
 
-#### `models`
+### `models`
+
+##### Sub-commands
+
+- `clean`
+- `create`
+- `build`
+- `list`
+- `help`
 
 ---
 
-#### `preview`
+### `preview`
+
+##### Sub-commands
+
+- `start`
+- `help`
 
 ---
 
-#### `projects`
+### `projects`
 
-- create - Create a new SrcLaunch project
+##### Sub-commands
+
+- `create` - Create a new SrcLaunch project
+- `list` - List SrcLaunch projects
+- `help` - Shows project command help information
 
 ---
 
-#### `release`
+### `release`
 
 Collect changes, bump and tag version, and deploy
+
+##### Sub-commands
+
+- `create` - Commits all changesets, bumps package version and pushes changes to the remote repository.
 
 ---
 
 ### `serve`
+
+##### Sub-commands
+
+- `web-app` - Serves a Web application through via static files or SSR.
+- `web-service` - Starts a Web service listener
+- `help` - Shows serve command help information
