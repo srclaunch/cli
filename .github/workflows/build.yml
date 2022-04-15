@@ -1,7 +1,8 @@
 name: Build
 on:
   workflow_run:
-    workflows: [Install]
+    workflows:
+      - Install
     types:
       - completed
 jobs:
@@ -58,7 +59,10 @@ jobs:
       - uses: actions/cache@v3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            !${{ steps.yarn-cache-dir-path.outputs.dir }}/esbuild-*
+
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
