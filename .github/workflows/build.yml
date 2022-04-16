@@ -14,7 +14,21 @@ jobs:
       branch: ${{ steps.get-branch.outputs.name }}
       commit-message: ${{ steps.get-commit.outputs.message }}
       release: ${{ steps.get-release.outputs.version }}
+      version: ${{ steps.get-version.outputs.tag }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+
+      - name: Get package.json version
+        id: get-version
+        run: |
+          echo "::set-output name=tag::$(jq -r .version package.json)"
+
       - name: Get branch name
         id: get-branch
         run: |
@@ -24,12 +38,6 @@ jobs:
         id: get-commit
         run: |
           echo "::set-output name=message::${{ format(github.event.head_commit.message, 'chore(release): ', '') }}"
-
-      - name: Get release version
-        id: get-release
-        run: |
-          VERSION=$(grep \"version\"\: ${GITHUB_WORKSPACE}/package.json | sed 's/.*"version": "\(.*\)".*/\1/')
-          echo "::set-output name=version::$VERSION"
 
   build:
     name: Build package
@@ -82,7 +90,7 @@ jobs:
       - name: Upload release artifact
         uses: actions/upload-artifact@v3
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-${{ needs.env-vars.outputs.release  }}-build'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-${{ needs.env-vars.outputs.version  }}-build'
           path: |
             dist
             package.json
