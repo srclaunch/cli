@@ -28,7 +28,7 @@ jobs:
       - name: Get release version
         id: get-release
         run: |
-          VERSION=$(grep \"version\"\: package.json | sed 's/.*"version": "\(.*\)".*/\1/'))
+          VERSION=$(grep \"version\"\: package.json | sed 's/.*"version": "\(.*\)".*/\1/')
           echo "::set-output name=version::$VERSION"
 
   build:
@@ -82,7 +82,7 @@ jobs:
       - name: Upload release artifact
         uses: actions/upload-artifact@v3
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-build'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-${{ needs.env-vars.outputs.release  }}-build'
           path: |
             dist
             package.json
