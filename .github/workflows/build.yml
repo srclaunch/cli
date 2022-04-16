@@ -16,17 +16,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
         with:
           node-version: '16.x'
-
       - name: Get package.json version
         id: get-version
         run: |
           echo "::set-output name=tag::$(jq -r .version package.json)"
-
       - name: Get branch name
         id: get-branch
         run: |
