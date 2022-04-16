@@ -28,7 +28,7 @@ jobs:
       - name: Get release version
         id: get-release
         run: |
-          VERSION=$(grep \"version\"\: ./package.json | sed 's/.*"version": "\(.*\)".*/\1/')
+          VERSION=$(grep \"version\"\: ${GITHUB_WORKSPACE}/package.json | sed 's/.*"version": "\(.*\)".*/\1/')
           echo "::set-output name=version::$VERSION"
 
   build:
@@ -58,7 +58,7 @@ jobs:
         id: npm-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: |
-            node_modules
+            ${GITHUB_WORKSPACE}/node_modules
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
