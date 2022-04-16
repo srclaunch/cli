@@ -28,9 +28,7 @@ jobs:
       - name: Get release version
         id: get-release
         run: |
-          KEYWORD="chore(release): "
-          ESCAPED_KEYWORD=$(printf '%s\n' "$KEYWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
-          VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
+          VERSION=$(grep \"version\"\: package.json | sed 's/.*"version": "\(.*\)".*/\1/'))
           echo "::set-output name=version::$VERSION"
 
   build:
