@@ -12,26 +12,18 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs:
       branch: ${{ steps.get-branch.outputs.name }}
-      commit-message: ${{ steps.get-commit.outputs.message }}
-      release: ${{ steps.get-release.outputs.version }}
+      version: ${{ steps.get-version.outputs.tag }}
     steps:
       - name: Get branch name
         id: get-branch
         run: |
           echo "::set-output name=name::${GITHUB_REF#refs/heads/}"
 
-      - name: Get commit
-        id: get-commit
+      - name: Get package.json version
+        id: get-version
         run: |
-          echo "::set-output name=message::${{ format(github.event.head_commit.message, 'chore(release): ', '') }}"
+          echo "::set-output name=tag::$(jq -r .version package.json)"
 
-      - name: Get release version
-        id: get-release
-        run: |
-          KEYWORD="chore(release): "
-          ESCAPED_KEYWORD=$(printf '%s\n' "$KEYWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
-          VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
-          echo "::set-output name=version::$VERSION"
   publish:
     name: Publish package
     needs: [env-vars]
@@ -40,7 +32,7 @@ jobs:
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-build'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-${{ needs.env-vars.outputs.version }}-build'
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
