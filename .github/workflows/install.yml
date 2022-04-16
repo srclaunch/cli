@@ -29,15 +29,6 @@ jobs:
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
       - uses: actions/cache@v3
-        id: npm-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: |
-            ${GITHUB_WORKSPACE}/node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
-
-      - uses: actions/cache@v3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: |
@@ -47,5 +38,5 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && steps.npm-cache.outputs.cache-hit != 'true' }}
+        if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
         run: yarn install
