@@ -7,6 +7,7 @@ import {
   Project,
   ViteBuildOptions,
 } from '@srclaunch/types';
+import { emptyDirectory } from '../lib/file-system';
 
 export default new Command({
   name: 'build',
@@ -20,11 +21,15 @@ export default new Command({
 
         if (!buildOptions) {
           throw new Error(
-            'You must provide build configuration in your `srclaunch.config.ts` file.',
+            'You must provide build configuration in a `srclaunch.config.ts` file.',
           );
         }
 
         if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
+          if (buildOptions.output?.clean) {
+            await emptyDirectory(buildOptions.output.directory);
+          }
+
           if (buildOptions.formats && buildOptions.formats?.length > 0) {
             for (const format of buildOptions.formats) {
               await esbuild({
@@ -38,7 +43,20 @@ export default new Command({
         } else if (Array.isArray(buildOptions)) {
           if (buildOptions) {
             for (const build of buildOptions) {
-              await esbuild(build as ESBuildOptions);
+              if (build.output?.clean) {
+                await emptyDirectory(build.output.directory);
+              }
+
+              if (build.formats && build.formats?.length > 0) {
+                for (const format of build.formats) {
+                  await esbuild({
+                    ...buildOptions,
+                    format,
+                  } as ESBuildOptions);
+                }
+              } else {
+                await esbuild(build as ESBuildOptions);
+              }
             }
           }
         }
