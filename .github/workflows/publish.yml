@@ -1,29 +1,29 @@
-name: Publish
+name: Build, test and publish to NPM
 on:
-  workflow_run:
-    workflows:
-      - Tests
-    types:
-      - completed
+  push:
+    branches:
+      - main
 jobs:
   env-vars:
     name: Initialize environment variables
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs:
       branch: ${{ steps.get-branch.outputs.name }}
       version: ${{ steps.get-version.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
         with:
           node-version: '16.x'
+
       - name: Get branch name
         id: get-branch
         run: |
           echo "::set-output name=name::${GITHUB_REF#refs/heads/}"
+
       - name: Get package.json version
         id: get-version
         run: |
