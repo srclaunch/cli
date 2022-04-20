@@ -1,4 +1,4 @@
-import { mkdir, readFileSync, rm } from 'node:fs';
+import fs, { emptyDir } from 'fs-extra';
 import path from 'node:path';
 
 export async function emptyDirectory(directory: string): Promise<void> {
@@ -11,8 +11,7 @@ export async function emptyDirectory(directory: string): Promise<void> {
   }
 
   try {
-    await rm(directory, err => {});
-    await mkdir(directory, err => {});
+    await emptyDir(directory);
   } catch (err) {
     throw new Error(`Could not empty directory: ${directory}`);
   }
@@ -26,7 +25,7 @@ export async function readFile(filePath: string) {
   try {
     path.join(path.resolve(), '.srclaunch', 'config.json');
 
-    return await readFileSync(filePath);
+    return await fs.readFile(filePath);
   } catch (err) {
     throw new Error(`Could not read file: ${filePath}`);
   }
