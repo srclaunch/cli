@@ -3,7 +3,7 @@
   "description": "Command line tools used by SrcLaunch applications and services",
   "author": "Steven Bennett <steven@srclaunch.com>",
   "license": "ISC",
-  "version": "0.1.147",
+  "version": "0.1.148",
   "engines": {
     "node": ">=18"
   },
