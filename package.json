@@ -31,7 +31,7 @@
   "scripts": {
     "build:es": "esbuild  --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:vite  --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
     "build:self": "node ./dist/index.js build",
-    "build": "yarn build:es && yarn build:self",
+    "build": "yarn build:self",
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
     "git:push": "git push --follow-tags origin main",
     "qr": "yarn build && git add . && git commit -m \"Quick release - patch\" && yarn release",
