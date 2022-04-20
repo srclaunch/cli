@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 
-import { constructModelExportIndexScript } from '../exports';
+import { constructModelExportIndexScript } from '../exports.js';
 
 export async function buildSrcLaunchModels(
   modelsPath: string,

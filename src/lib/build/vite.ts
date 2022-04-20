@@ -1,6 +1,6 @@
 import { build as buildCommand } from 'vite';
 import react from '@vitejs/plugin-react';
-import { build as buildTypes } from './types';
+import { build as buildTypes } from './types.js';
 import path from 'node:path';
 import {
   BuildFormat,
@@ -9,6 +9,7 @@ import {
   BuildTarget,
   // ViteBuildOptions,
 } from '@srclaunch/types';
+import { emptyDirectory } from '../file-system.js';
 
 export interface ViteBuildOptions
   extends Omit<
@@ -53,6 +54,10 @@ export async function build({
         ? formats?.map(f => (f === BuildFormat.ESM ? 'es' : f))
         : [format === BuildFormat.ESM ? 'es' : format]
     ) as ('cjs' | 'es' | 'iife' | 'umd')[];
+
+    if (output?.clean) {
+      await emptyDirectory(output.directory);
+    }
 
     const result = await buildCommand({
       build: {

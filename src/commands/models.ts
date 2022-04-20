@@ -1,8 +1,8 @@
-import { Command, CommandType } from '../lib/command';
+import { Command, CommandType } from '../lib/command.js';
 
-import { buildModels } from '../lib/models/build';
-import { listModels } from '../lib/models/list';
-import { cleanModels } from '../lib/models/build/clean';
+import { buildModels } from '../lib/models/build/index.js';
+import { listModels } from '../lib/models/list.js';
+import { cleanModels } from '../lib/models/build/clean.js';
 import { Project, Workspace } from '@srclaunch/types';
 import path from 'path';
 

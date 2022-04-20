@@ -1,22 +1,18 @@
 import meow from 'meow';
 import updateNotifier, { Package } from 'update-notifier';
-import build from './commands/build';
-import changesets from './commands/changesets';
-import dev from './commands/dev';
-import help from './commands/help';
-import infrastructure from './commands/infrastructure';
-import models from './commands/models';
-import preview from './commands/preview';
-import projects from './commands/projects';
-import release from './commands/release';
-import serve from './commands/serve';
+import * as buildCommands from './commands/build.js';
+import * as changesetCommands from './commands/changesets.js';
+import * as devCommands from './commands/dev.js';
+import * as helpCommands from './commands/help.js';
+import * as infrastructureCommands from './commands/infrastructure.js';
+import * as modelCommands from './commands/models.js';
+import * as previewCommands from './commands/preview.js';
+import * as projectCommands from './commands/projects.js';
+import * as releaseCommands from './commands/release.js';
+import * as serveCommands from './commands/serve.js';
 
-import {
-  getProjectConfig,
-  getWorkspaceConfig,
-  inWorkspaceDirectory,
-} from './lib/config';
-import { Command, CommandType, handleCommand } from './lib/command';
+import { getSrcLaunchConfig } from './lib/config.js';
+import { Command, CommandType, handleCommand } from './lib/command.js';
 
 export type { Command };
 export { CommandType };
@@ -39,7 +35,23 @@ To get help for a specific command type help after the command name, for example
 `;
 
 export const cli = meow(helpMessage, {
-  flags: {},
+  flags: {
+    clean: {
+      type: 'boolean',
+    },
+    config: {
+      type: 'string',
+      alias: 'c',
+    },
+    help: {
+      type: 'boolean',
+      alias: 'h',
+    },
+    version: {
+      type: 'boolean',
+      alias: 'v',
+    },
+  },
   importMeta: import.meta,
 });
 
@@ -47,29 +59,26 @@ updateNotifier({ pkg: cli.pkg as Package }).notify();
 
 const command = cli.input;
 const flags = cli.flags;
-const inWorkspaceDir = await inWorkspaceDirectory();
+const config = await getSrcLaunchConfig();
 
 try {
   await handleCommand({
     cli,
     command,
     commands: [
-      build,
-      changesets,
-      dev,
-      help,
-      infrastructure,
-      models,
-      preview,
-      projects,
-      release,
-      serve,
+      buildCommands.default,
+      changesetCommands.default,
+      devCommands.default,
+      helpCommands.default,
+      infrastructureCommands.default,
+      modelCommands.default,
+      previewCommands.default,
+      projectCommands.default,
+      releaseCommands.default,
+      serveCommands.default,
     ],
-    config: inWorkspaceDir
-      ? await getWorkspaceConfig()
-      : await getProjectConfig(),
+    config,
     flags,
-    type: inWorkspaceDir ? CommandType.Workspace : CommandType.Project,
   });
 } catch (error) {
   // const { waitUntilExit } = render(

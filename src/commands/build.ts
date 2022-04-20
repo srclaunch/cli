@@ -1,13 +1,13 @@
-import { Command, CommandType } from '../lib/command';
-import { build as esbuild } from '../lib/build/esbuild';
-import { build as vite } from '../lib/build/vite';
+import { Command, CommandType } from '../lib/command.js';
+import { build as esbuild } from '../lib/build/esbuild.js';
+import { build as vite } from '../lib/build/vite.js';
 import {
   BuildOptions,
   ESBuildOptions,
   Project,
   ViteBuildOptions,
 } from '@srclaunch/types';
-import { emptyDirectory } from '../lib/file-system';
+import { TypedFlags } from 'meow';
 
 export default new Command({
   name: 'build',
@@ -16,24 +16,29 @@ export default new Command({
     new Command<Project>({
       name: 'esbuild',
       description: 'Compiles and optionally bundles a package using esbuild',
-      run: async ({ config, flags }) => {
+      run: async ({
+        config,
+        flags,
+      }: {
+        config: Project;
+        flags: TypedFlags<{
+          clean?: {
+            type: 'boolean';
+          };
+        }>;
+      }) => {
         const buildOptions = config.build as BuildOptions | BuildOptions[];
 
         if (!buildOptions) {
-          throw new Error(
-            'You must provide build configuration in a `srclaunch.config.ts` file.',
-          );
+          throw new Error('Missing build configuration');
         }
 
         if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
-          if (buildOptions.output?.clean) {
-            await emptyDirectory(buildOptions.output.directory);
-          }
-
           if (buildOptions.formats && buildOptions.formats?.length > 0) {
             for (const format of buildOptions.formats) {
               await esbuild({
                 ...buildOptions,
+                clean: flags.clean,
                 format,
               } as ESBuildOptions);
             }
@@ -43,14 +48,11 @@ export default new Command({
         } else if (Array.isArray(buildOptions)) {
           if (buildOptions) {
             for (const build of buildOptions) {
-              if (build.output?.clean) {
-                await emptyDirectory(build.output.directory);
-              }
-
               if (build.formats && build.formats?.length > 0) {
                 for (const format of build.formats) {
                   await esbuild({
                     ...buildOptions,
+                    clean: flags.clean,
                     format,
                   } as ESBuildOptions);
                 }
@@ -69,9 +71,7 @@ export default new Command({
         const buildOptions = config.build;
 
         if (!buildOptions) {
-          throw new Error(
-            'You must provide build configuration in your `srclaunch.config.ts` file.',
-          );
+          throw new Error('Missing build configuration');
         }
 
         if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {

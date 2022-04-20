@@ -1,7 +1,7 @@
 import { Project } from '@srclaunch/types';
 import { render } from 'ink';
-import { AppContainer } from '../components/AppContainer';
-import { Command, CommandType } from '../lib/command';
+import { AppContainer } from '../components/AppContainer.js';
+import { Command, CommandType } from '../lib/command.js';
 
 export default new Command({
   name: 'dev',

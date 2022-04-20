@@ -1672,10 +1672,10 @@ __metadata:
   dependencies:
     "@srclaunch/dx": ^0.1.19
     "@srclaunch/exceptions": ^0.1.42
-    "@srclaunch/types": ^0.1.63
+    "@srclaunch/types": ^0.1.64
     "@types/fs-extra": ^9.0.13
     "@types/luxon": ^2.3.1
-    "@types/node": 17.0.25
+    "@types/node": ^17.0.25
     "@types/node-emoji": ^1.8.1
     "@types/pluralize": ^0.0.29
     "@types/react": ^18.0.5
@@ -1735,11 +1735,12 @@ __metadata:
     stylelint-order: ^5.0.0
     terminal-link: ^3.0.0
     ts-node: ^10.7.0
+    tslib: ^2.3.1
     typescript: ^4.6.3
     update-notifier: ^5.1.0
     vite: ^2.9.5
   bin:
-    srclaunch: dist/index.js
+    srclaunch: dist/index.mjs
   languageName: unknown
   linkType: soft
 
@@ -1773,10 +1774,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.63":
-  version: 0.1.63
-  resolution: "@srclaunch/types@npm:0.1.63"
-  checksum: a86c4ac89eccba22b225bba812222281116e31787d90a97331afeadc9ba2dc78998bee78de0835a2cdb8c749f924ba4feaac4fab94f10600ba9a45281c2641d8
+"@srclaunch/types@npm:^0.1.64":
+  version: 0.1.64
+  resolution: "@srclaunch/types@npm:0.1.64"
+  checksum: 9746ca37271a8b2863fb610896b57cba48e9ad708df88d9bb4d0f05f8ddef5fc78eee993a6a4008cf21db4508d878455180b77c2b3b43050471ec96db83e0a58
   languageName: node
   linkType: hard
 
@@ -1922,7 +1923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:17.0.25":
+"@types/node@npm:^17.0.25":
   version: 17.0.25
   resolution: "@types/node@npm:17.0.25"
   checksum: 6a820bd624e69ea772f52a6cdb326484eff5829443dc981939373929ade109f58c21698b9f0a831bd6ceea799e722a75dc49c5fa7a6bc32a81e1cbdfc6507b64
@@ -9605,7 +9606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3":
+"tslib@npm:^2.0.3, tslib@npm:^2.3.1":
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9

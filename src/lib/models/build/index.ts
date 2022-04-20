@@ -2,17 +2,17 @@
 // import path from 'node:path';
 // import { Exception } from '@srclaunch/exceptions';
 import { BuildFormat, BuildOptions, Workspace } from '@srclaunch/types';
-import { build as esbuild, ESBuildOptions } from '../../build/esbuild';
+import { build as esbuild, ESBuildOptions } from '../../build/esbuild.js';
 // import { build as vite, ViteBuildOptions } from '../../build/vite';
 // import { build as buildTypes, TypesBuildOptions } from '../../build/types';
 // import { cleanModels } from './clean';
-import { buildSrcLaunchModels } from './outputs/srclaunch';
+import { buildSrcLaunchModels } from './outputs/srclaunch.js';
 // import { buildHttpClient } from './outputs/http-client';
 // // import { buildJSONModels } from './outputs/json';
 // import { buildReduxSlices } from './outputs/redux';
 // import { buildSequelizeModels } from './outputs/sequelize';
 // import { buildModelTypes } from './outputs/types';
-import { copyStubModels } from './stubs/index';
+import { copyStubModels } from './stubs/index.js';
 
 export type ModelsBuildOptions = {
   paths: {

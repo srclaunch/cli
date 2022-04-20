@@ -1,4 +1,3 @@
-import { Project, Workspace } from '@srclaunch/types';
 import { Result, TypedFlags } from 'meow';
 
 export enum CommandType {
@@ -57,14 +56,12 @@ export async function handleCommand({
   command,
   commands,
   flags,
-  type = CommandType.Project,
 }: {
   cli: Result<{}>;
   command: string[];
   commands?: Command<any>[];
   config: unknown;
   flags: TypedFlags<{}> & Record<string, unknown>;
-  type: CommandType;
 }): Promise<void> {
   if (!command || command.length === 0 || !command[0]) {
     console.error('No command specified');
@@ -97,7 +94,6 @@ export async function handleCommand({
       command: command.slice(1),
       commands: matchingCommand.commands,
       flags,
-      type,
     });
   }
 }

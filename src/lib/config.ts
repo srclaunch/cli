@@ -1,58 +1,26 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 
-export async function getProjectConfig() {
+export async function getSrcLaunchConfig() {
   try {
-    const configPath = path.join(
-      path.resolve(),
-      '.srclaunch',
-      'project.config.ts',
-    );
+    // const configFormats = ['js', 'json', 'ts'];
 
-    const projectConfig = await fs.readFile(configPath);
+    try {
+      const configPath = path.join(path.resolve(), '.srclaunch', 'config.js');
 
-    return JSON.parse(projectConfig.toString());
-  } catch (err) {
-    throw new Error(
-      'Please run this command from a SrcLaunch project directory.',
-    );
-  }
-}
+      const config = await import(configPath);
 
-export async function inProjectDirectory() {
-  const configPath = path.join(
-    path.resolve(),
-    '.srclaunch',
-    'project.config.ts',
-  );
+      return config.default;
+    } catch (err) {
+      const configPath = path.join(path.resolve(), '.srclaunch', 'config.json');
 
-  return await fs.statSync(configPath);
-}
+      const config = await fs.readFile(configPath);
 
-export async function getWorkspaceConfig() {
-  try {
-    const configPath = path.join(
-      path.resolve(),
-      '.srclaunch',
-      'workspace.config.ts',
-    );
-
-    const workspaceConfig = await fs.readFile(configPath);
-
-    return JSON.parse(workspaceConfig.toString());
+      return await JSON.parse(config.toString());
+    }
   } catch (err) {
     throw new Error(
       'Please run this command from a SrcLaunch workspace directory.',
     );
   }
-}
-
-export async function inWorkspaceDirectory() {
-  const configPath = path.join(
-    path.resolve(),
-    '.srclaunch',
-    'workspace.config.ts',
-  );
-
-  return await fs.statSync(configPath);
 }

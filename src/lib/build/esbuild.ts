@@ -1,5 +1,5 @@
 import { build as buildCommand, Format } from 'esbuild';
-import { build as buildTypes } from './types';
+import { build as buildTypes } from './types.js';
 import {
   BuildFormat,
   BuildOptions,
@@ -9,7 +9,8 @@ import {
   // ESBuildOptions,
 } from '@srclaunch/types';
 import path from 'path';
-import { getFormatFileExtension } from './formats';
+import { getFormatFileExtension } from './formats.js';
+import { emptyDirectory } from '../file-system.js';
 
 export interface ESBuildOptions extends Omit<BuildOptions, 'formats' | 'tool'> {
   readonly format: BuildFormat.CJS | BuildFormat.ESM | BuildFormat.UMD;
@@ -17,9 +18,16 @@ export interface ESBuildOptions extends Omit<BuildOptions, 'formats' | 'tool'> {
 export async function build({
   bundle = true,
   format = BuildFormat.ESM,
-  input,
+  input = {
+    directory: 'src',
+    file: 'index.ts',
+  },
   minify = true,
-  output,
+  output = {
+    clean: true,
+    directory: 'dist',
+    file: 'index.esm.js',
+  },
   platform = BuildPlatform.Browser,
   sourcemap = true,
   splitting = true,
@@ -46,6 +54,10 @@ export async function build({
           )
         : []),
     ];
+
+    if (output?.clean) {
+      await emptyDirectory(output.directory);
+    }
 
     const result = await buildCommand({
       bundle: Boolean(bundle),
@@ -81,7 +93,7 @@ export async function build({
       await buildTypes({ input, types, output });
     }
 
-    console.info(`Finished building to ${format} format.`);
+    console.info(`Finished building to ${format.toLocaleUpperCase()} format.`);
   } catch (err: any) {
     console.error(`Error occurred while building: ${err.name}`, err);
   }

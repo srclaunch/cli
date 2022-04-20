@@ -1,5 +1,5 @@
 import { Project } from '@srclaunch/types';
-import { Command, CommandType } from '../lib/command';
+import { Command, CommandType } from '../lib/command.js';
 
 export default new Command<Project>({
   name: 'serve',
