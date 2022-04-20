@@ -29,10 +29,6 @@ export async function build({
   types = true,
 }: ESBuildOptions) {
   try {
-    console.info(
-      `Compiling and bundling JS to ${format.toLocaleUpperCase()} format...`,
-    );
-
     const entryPoints = [
       ...[
         path.join(
