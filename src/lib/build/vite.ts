@@ -89,7 +89,21 @@ export async function build({
       root: rootDir,
     });
 
-    console.log(result);
+    if (typeof result === 'string') {
+      console.log(result);
+    } else if (typeof result === 'object') {
+      if (Array.isArray(result) && result.length > 0) {
+        for (const output of result) {
+          if (Array.isArray(output) && output.length > 0) {
+            for (const line of output) {
+              console.log(line);
+            }
+          } else {
+            console.log(output);
+          }
+        }
+      }
+    }
 
     if (types) {
       console.info('Compiling TS definitions...');
