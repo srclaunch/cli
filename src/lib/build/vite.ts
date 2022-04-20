@@ -32,10 +32,10 @@ export async function build({
 }: ViteBuildOptions) {
   try {
     console.info(
-      `Compiling and bundling JS to ${
+      `Compiling and bundling to ${
         formats && formats.length > 0
-          ? `${formats.join(', ').toLocaleUpperCase()} formats.`
-          : `${format.toLocaleUpperCase()} format.`
+          ? `${formats.join(', ').toLocaleUpperCase()} formats...`
+          : `${format.toLocaleUpperCase()} format...`
       }`,
     );
 
@@ -44,8 +44,6 @@ export async function build({
         ? formats?.map(f => (f === BuildFormat.ESM ? 'es' : f))
         : [format === BuildFormat.ESM ? 'es' : format]
     ) as ('cjs' | 'es' | 'iife' | 'umd')[];
-
-    console.log('viteFormats', viteFormats);
 
     await buildCommand({
       build: {
