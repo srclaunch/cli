@@ -52,6 +52,7 @@ export default new Command({
 
           for (const format of formats) {
             const clean = buildOptions.output?.clean ?? run === 0;
+            const types = buildOptions.types ?? run === 0;
 
             await esbuild({
               ...buildOptions,
@@ -62,6 +63,7 @@ export default new Command({
                 clean,
               },
               format: format,
+              types,
             } as ESBuildOptions);
 
             run = run + 1;
@@ -84,6 +86,7 @@ export default new Command({
 
             for (const format of formats) {
               const clean = build.output?.clean ?? run === 0;
+              const types = build.types ?? run === 0;
 
               await esbuild({
                 ...build,
@@ -94,6 +97,7 @@ export default new Command({
                   clean,
                 },
                 format,
+                types,
               } as ESBuildOptions);
               run = run + 1;
             }
@@ -128,6 +132,7 @@ export default new Command({
           if (buildOptions.formats && buildOptions.formats?.length > 0) {
             for (const format of buildOptions.formats) {
               const clean = buildOptions.output?.clean ?? run === 0;
+              const types = buildOptions.types ?? run === 0;
 
               await esbuild({
                 ...buildOptions,
@@ -135,8 +140,10 @@ export default new Command({
                   directory: 'dist',
                   file: 'index',
                   ...buildOptions.output,
+                  clean,
                 },
                 format,
+                types,
               } as ESBuildOptions);
 
               run = run = 1;
@@ -150,6 +157,7 @@ export default new Command({
               if (build.formats && build.formats?.length > 0) {
                 for (const format of build.formats) {
                   const clean = build.output?.clean ?? run === 0;
+                  const types = build.types ?? run === 0;
 
                   await esbuild({
                     ...build,
@@ -160,6 +168,7 @@ export default new Command({
                       clean,
                     },
                     format,
+                    types,
                   } as ESBuildOptions);
 
                   run = run = 1;
@@ -167,6 +176,7 @@ export default new Command({
               } else {
                 const clean =
                   (build.output?.clean || Boolean(flags.clean)) && run === 0;
+                const types = build.types ?? run === 0;
 
                 await esbuild({
                   ...build,
@@ -176,6 +186,7 @@ export default new Command({
                     ...build.output,
                     clean,
                   },
+                  types,
                 } as ESBuildOptions);
               }
             }
