@@ -97,6 +97,11 @@ export async function build({
           if (Array.isArray(output) && output.length > 0) {
             for (const line of output) {
               console.log(line);
+              if (line.output) {
+                for (const line of output.output) {
+                  console.log(line);
+                }
+              }
             }
           } else if (typeof output === 'object') {
             if (output.output) {
