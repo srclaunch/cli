@@ -8,7 +8,6 @@ import {
   BuildTarget,
   ViteBuildOptions,
 } from '@srclaunch/types';
-import { emptyDirectory } from '../file-system.js';
 import { getViteFormatFileExtension } from './formats.js';
 
 export async function build({
@@ -45,10 +44,6 @@ export async function build({
         ? formats?.map(f => (f === BuildFormat.ESM ? 'es' : f))
         : [format === BuildFormat.ESM ? 'es' : format]
     ) as ('cjs' | 'es' | 'iife' | 'umd')[];
-
-    if (output?.clean) {
-      await emptyDirectory(output.directory);
-    }
 
     console.log('viteFormats', viteFormats);
 
