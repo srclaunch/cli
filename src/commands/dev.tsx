@@ -1,6 +1,6 @@
 import { Project } from '@srclaunch/types';
-import { render } from 'ink';
-import { AppContainer } from '../components/AppContainer.js';
+// import { render } from 'ink';
+// import { AppContainer } from '../components/AppContainer.js';
 import { Command, CommandType } from '../lib/command.js';
 
 export default new Command({
@@ -11,11 +11,10 @@ export default new Command({
       name: 'start',
       description: 'Launches the local development environment.',
       run: async ({ cli, flags }) => {
-        const { waitUntilExit } = render(
-          <AppContainer cliVersion={cli.pkg.version} flags={flags} />,
-        );
-
-        await waitUntilExit();
+        // const { waitUntilExit } = render(
+        //   <AppContainer cliVersion={cli.pkg.version} flags={flags} />,
+        // );
+        // await waitUntilExit();
       },
       type: CommandType.Project,
     }),

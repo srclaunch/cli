@@ -2,7 +2,9 @@ import { Command, CommandType } from '../lib/command.js';
 import { build as esbuild } from '../lib/build/esbuild.js';
 import { build as vite } from '../lib/build/vite.js';
 import {
+  BuildFormat,
   BuildOptions,
+  BuildTool,
   ESBuildOptions,
   Project,
   ProjectType,
@@ -13,6 +15,71 @@ import { TypedFlags } from 'meow';
 export default new Command({
   name: 'build',
   description: 'Commands for building various types of projects',
+  run: async ({
+    config,
+    flags,
+  }: {
+    config: Project;
+    flags: TypedFlags<{
+      clean?: {
+        type: 'boolean';
+      };
+    }>;
+  }) => {
+    const buildOptions = config.build as BuildOptions | BuildOptions[];
+
+    if (!buildOptions) {
+      throw new Error('Missing build configuration');
+    }
+
+    if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
+      switch (buildOptions.tool) {
+        case BuildTool.Vite:
+          await vite({
+            ...buildOptions,
+            library:
+              config.type === ProjectType.Library ||
+              config.type == ProjectType.CLIApplication,
+          } as ViteBuildOptions);
+          break;
+        case BuildTool.ESBuild:
+        default:
+          for (const format of buildOptions?.formats ?? buildOptions.format
+            ? [buildOptions.format]
+            : [BuildFormat.ESM]) {
+            await esbuild({
+              ...buildOptions,
+              clean: flags.clean,
+              format,
+            } as ESBuildOptions);
+          }
+      }
+    } else if (Array.isArray(buildOptions)) {
+      for (const build of buildOptions) {
+        switch (build.tool) {
+          case BuildTool.Vite:
+            await vite({
+              ...build,
+              library:
+                config.type === ProjectType.Library ||
+                config.type == ProjectType.CLIApplication,
+            } as ViteBuildOptions);
+            break;
+          case BuildTool.ESBuild:
+          default:
+            for (const format of build?.formats ?? build.format
+              ? [build.format]
+              : [BuildFormat.ESM]) {
+              await esbuild({
+                ...build,
+                clean: flags.clean,
+                format,
+              } as ESBuildOptions);
+            }
+        }
+      }
+    }
+  },
   commands: [
     new Command<Project>({
       name: 'esbuild',

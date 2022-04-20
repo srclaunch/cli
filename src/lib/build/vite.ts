@@ -28,7 +28,10 @@ export async function build({
   bundle,
   format = BuildFormat.ESM,
   formats,
-  input,
+  input = {
+    file: 'index.ts',
+    directory: 'src',
+  },
   library = false,
   manifest = true,
   minify = true,
@@ -61,7 +64,9 @@ export async function build({
 
     const result = await buildCommand({
       build: {
-        assetsDir: path.join(path.resolve(), assets?.directory ?? 'assets'),
+        assetsDir: assets?.directory
+          ? path.join(path.resolve(), assets?.directory)
+          : undefined,
         emptyOutDir: output?.clean ?? true,
         outDir: output?.directory ?? 'dist',
         lib: Boolean(library)
@@ -78,6 +83,7 @@ export async function build({
           : false,
         manifest,
         minify,
+
         sourcemap,
         ssrManifest: manifest && webApp?.ssr,
         target,
@@ -92,7 +98,7 @@ export async function build({
             : [],
       },
       plugins: webApp?.react ? [react()] : [],
-      root: path.join(path.resolve(), rootDir),
+      root: rootDir,
     });
 
     console.log(result);

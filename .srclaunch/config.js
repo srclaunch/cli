@@ -1,8 +1,8 @@
 import {
   BuildFormat,
   BuildPlatform,
+  BuildTarget,
   BuildTool,
-  Project,
   ProjectType,
 } from '@srclaunch/types';
 
@@ -13,19 +13,20 @@ export default {
   build: {
     bundle: {
       exclude: [
-        '@vitejs/plugin-react-refresh',
-        'fs-extra',
-        'fsevents',
         'esbuild',
         'esbuild-css-modules-plugin',
+        'fs-extra',
         'meow',
         'typescript',
         'update-notifier',
+        'vite',
+        '@vitejs/plugin-react',
       ],
     },
     format: BuildFormat.ESM,
     platform: BuildPlatform.Node,
     sourcemap: true,
+    target: BuildTarget.ES2020,
     tool: BuildTool.ESBuild,
   },
-} as Project;
+};

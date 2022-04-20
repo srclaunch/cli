@@ -19,4 +19,7 @@ export declare const cli: import("meow").Result<{
         alias: string;
     };
 }>;
+export declare function main(): Promise<void>;
+declare const _default: Promise<void>;
+export default _default;
 //# sourceMappingURL=index.d.ts.map

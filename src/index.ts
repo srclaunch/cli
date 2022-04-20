@@ -55,37 +55,41 @@ export const cli = meow(helpMessage, {
   importMeta: import.meta,
 });
 
-updateNotifier({ pkg: cli.pkg as Package }).notify();
+export async function main() {
+  updateNotifier({ pkg: cli.pkg as Package }).notify();
 
-const command = cli.input;
-const flags = cli.flags;
-const config = await getSrcLaunchConfig();
+  const command = cli.input;
+  const flags = cli.flags;
+  const config = await getSrcLaunchConfig();
 
-try {
-  await handleCommand({
-    cli,
-    command,
-    commands: [
-      buildCommands.default,
-      changesetCommands.default,
-      devCommands.default,
-      helpCommands.default,
-      infrastructureCommands.default,
-      modelCommands.default,
-      previewCommands.default,
-      projectCommands.default,
-      releaseCommands.default,
-      serveCommands.default,
-    ],
-    config,
-    flags,
-  });
-} catch (error) {
-  // const { waitUntilExit } = render(
-  //   // <FullScreen>
-  //   <Text>{err.message}</Text>,
-  //   // </FullScreen>,
-  // );
-  // await waitUntilExit();
-  console.error(error);
+  try {
+    await handleCommand({
+      cli,
+      command,
+      commands: [
+        buildCommands.default,
+        changesetCommands.default,
+        devCommands.default,
+        helpCommands.default,
+        infrastructureCommands.default,
+        modelCommands.default,
+        previewCommands.default,
+        projectCommands.default,
+        releaseCommands.default,
+        serveCommands.default,
+      ],
+      config,
+      flags,
+    });
+  } catch (error) {
+    // const { waitUntilExit } = render(
+    //   // <FullScreen>
+    //   <Text>{err.message}</Text>,
+    //   // </FullScreen>,
+    // );
+    // await waitUntilExit();
+    console.error(error);
+  }
 }
+
+export default main();
