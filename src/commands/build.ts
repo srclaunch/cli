@@ -47,7 +47,7 @@ export default new Command({
                   }
                 : false,
           } as ViteBuildOptions);
-          break;
+          return;
         case BuildTool.ESBuild:
         default:
           const formats = buildOptions.formats ?? [
