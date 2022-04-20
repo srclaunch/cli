@@ -26,7 +26,7 @@ export default {
     format: BuildFormat.ESM,
     platform: BuildPlatform.Node,
     sourcemap: true,
-    target: BuildTarget.ES2020,
+    target: BuildTarget.ESNext,
     tool: BuildTool.ESBuild,
   },
 };
