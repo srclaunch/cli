@@ -45,6 +45,7 @@ export async function build({
         : [format === BuildFormat.ESM ? 'es' : format]
     ) as ('cjs' | 'es' | 'iife' | 'umd')[];
 
+    console.log('viteFormats', viteFormats);
     console.log({
       build: {
         assetsDir: assets?.directory

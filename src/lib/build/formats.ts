@@ -41,6 +41,6 @@ export function getViteFormatFileExtension(
     case 'umd':
       return '.umd.js';
     default:
-      return `${format}.js`;
+      return `unknown-${format}.js`;
   }
 }
