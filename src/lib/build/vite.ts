@@ -89,6 +89,8 @@ export async function build({
       root: rootDir,
     });
 
+    console.log('result', result);
+
     if (Array.isArray(result) && result.length > 0 && result[0]) {
       for (const output of result) {
         if (Array.isArray(output) && output.length > 0) {
