@@ -1,8 +1,8 @@
 // import fs from 'fs-extra';
 // import path from 'node:path';
 // import { Exception } from '@srclaunch/exceptions';
-import { BuildFormat, BuildOptions, Workspace } from '@srclaunch/types';
-import { build as esbuild, ESBuildOptions } from '../../build/esbuild.js';
+import { BuildFormat, Workspace } from '@srclaunch/types';
+import { build as esbuild } from '../../build/esbuild.js';
 // import { build as vite, ViteBuildOptions } from '../../build/vite';
 // import { build as buildTypes, TypesBuildOptions } from '../../build/types';
 // import { cleanModels } from './clean';

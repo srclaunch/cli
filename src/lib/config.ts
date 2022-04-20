@@ -11,6 +11,7 @@ export async function getSrcLaunchConfig() {
 
       return config.default;
     } catch (jsImportError: any) {
+      console.log('jsImportError', jsImportError);
       const configPath = path.join(path.resolve(), '.srclaunch', 'config.json');
 
       try {

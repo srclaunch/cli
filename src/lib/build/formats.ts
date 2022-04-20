@@ -3,14 +3,14 @@ import { BuildFormat } from '@srclaunch/types';
 export function getFormatFileExtension(format: BuildFormat) {
   switch (format) {
     case BuildFormat.CJS:
-      return 'cjs.js';
+      return '.cjs';
     case BuildFormat.ESM:
-      return 'esm.js';
+      return '.mjs';
     case BuildFormat.IIFE:
-      return 'iife.js';
+      return '.iife.js';
     case BuildFormat.UMD:
-      return 'umd.js';
+      return '.umd.js';
     default:
-      return 'js';
+      return '.js';
   }
 }

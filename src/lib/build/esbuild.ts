@@ -6,15 +6,12 @@ import {
   BuildPlatform,
   BuildTarget,
   BundleOptions,
-  // ESBuildOptions,
+  ESBuildOptions,
 } from '@srclaunch/types';
 import path from 'path';
 import { getFormatFileExtension } from './formats.js';
 import { emptyDirectory } from '../file-system.js';
 
-export interface ESBuildOptions extends Omit<BuildOptions, 'formats' | 'tool'> {
-  readonly format: BuildFormat.CJS | BuildFormat.ESM | BuildFormat.UMD;
-}
 export async function build({
   bundle = true,
   format = BuildFormat.ESM,
@@ -23,11 +20,7 @@ export async function build({
     file: 'index.ts',
   },
   minify = true,
-  output = {
-    clean: true,
-    directory: 'dist',
-    file: 'index',
-  },
+  output,
   platform = BuildPlatform.Browser,
   sourcemap = true,
   splitting = true,
@@ -65,10 +58,12 @@ export async function build({
       external: typeof bundle === 'object' ? (bundle.exclude as string[]) : [],
       format: format as Format,
       minify,
-      outdir: output?.directory ?? 'dist',
+      outdir: splitting ? output?.directory ?? 'dist' : undefined,
       outfile: splitting
         ? undefined
-        : `${output?.file ?? 'index'}${getFormatFileExtension(format)}`,
+        : `${output?.directory ?? 'dist'}/${
+            output?.file ?? 'index'
+          }${getFormatFileExtension(format)}`,
       platform,
       sourcemap,
       splitting: format === 'esm' && splitting,

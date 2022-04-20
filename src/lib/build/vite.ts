@@ -7,21 +7,9 @@ import {
   BuildOptions,
   BuildPlatform,
   BuildTarget,
-  // ViteBuildOptions,
+  ViteBuildOptions,
 } from '@srclaunch/types';
 import { emptyDirectory } from '../file-system.js';
-
-export interface ViteBuildOptions
-  extends Omit<
-    BuildOptions,
-    'bundle' | 'format' | 'splitting' | 'tool' | 'treeShaking'
-  > {
-  readonly bundle?: {
-    readonly exclude?: readonly string[];
-    readonly optimize?: readonly string[];
-  };
-  readonly format: BuildFormat.CJS | BuildFormat.ESM | BuildFormat.UMD;
-}
 
 export async function build({
   assets,
@@ -29,8 +17,8 @@ export async function build({
   format = BuildFormat.ESM,
   formats,
   input = {
-    file: 'index.ts',
     directory: 'src',
+    file: 'index.ts',
   },
   library = false,
   manifest = true,

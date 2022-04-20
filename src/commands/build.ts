@@ -23,6 +23,7 @@ export default new Command({
     flags: TypedFlags<{
       clean?: {
         type: 'boolean';
+        default: true;
       };
     }>;
   }) => {
@@ -32,6 +33,7 @@ export default new Command({
       throw new Error('Missing build configuration');
     }
 
+    let run = 0;
     if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
       switch (buildOptions.tool) {
         case BuildTool.Vite:
@@ -44,14 +46,25 @@ export default new Command({
           break;
         case BuildTool.ESBuild:
         default:
-          for (const format of buildOptions?.formats ?? buildOptions.format
-            ? [buildOptions.format]
-            : [BuildFormat.ESM]) {
+          const formats = buildOptions.formats ?? [
+            buildOptions.format ?? BuildFormat.ESM,
+          ];
+
+          for (const format of formats) {
+            const clean = buildOptions.output?.clean ?? run === 0;
+
             await esbuild({
               ...buildOptions,
-              clean: flags.clean,
-              format,
+              output: {
+                directory: 'dist',
+                file: 'index',
+                ...buildOptions.output,
+                clean,
+              },
+              format: format,
             } as ESBuildOptions);
+
+            run = run + 1;
           }
       }
     } else if (Array.isArray(buildOptions)) {
@@ -67,14 +80,22 @@ export default new Command({
             break;
           case BuildTool.ESBuild:
           default:
-            for (const format of build?.formats ?? build.format
-              ? [build.format]
-              : [BuildFormat.ESM]) {
+            const formats = build?.formats ?? [build.format ?? BuildFormat.ESM];
+
+            for (const format of formats) {
+              const clean = build.output?.clean ?? run === 0;
+
               await esbuild({
                 ...build,
-                clean: flags.clean,
+                output: {
+                  directory: 'dist',
+                  file: 'index',
+                  ...build.output,
+                  clean,
+                },
                 format,
               } as ESBuildOptions);
+              run = run + 1;
             }
         }
       }
@@ -92,6 +113,7 @@ export default new Command({
         flags: TypedFlags<{
           clean?: {
             type: 'boolean';
+            default: true;
           };
         }>;
       }) => {
@@ -101,14 +123,23 @@ export default new Command({
           throw new Error('Missing build configuration');
         }
 
+        let run = 0;
         if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
           if (buildOptions.formats && buildOptions.formats?.length > 0) {
             for (const format of buildOptions.formats) {
+              const clean = buildOptions.output?.clean ?? run === 0;
+
               await esbuild({
                 ...buildOptions,
-                clean: flags.clean,
+                output: {
+                  directory: 'dist',
+                  file: 'index',
+                  ...buildOptions.output,
+                },
                 format,
               } as ESBuildOptions);
+
+              run = run = 1;
             }
           } else {
             await esbuild(buildOptions as ESBuildOptions);
@@ -118,14 +149,34 @@ export default new Command({
             for (const build of buildOptions) {
               if (build.formats && build.formats?.length > 0) {
                 for (const format of build.formats) {
+                  const clean = build.output?.clean ?? run === 0;
+
                   await esbuild({
-                    ...buildOptions,
-                    clean: flags.clean,
+                    ...build,
+                    output: {
+                      directory: 'dist',
+                      file: 'index',
+                      ...build.output,
+                      clean,
+                    },
                     format,
                   } as ESBuildOptions);
+
+                  run = run = 1;
                 }
               } else {
-                await esbuild(build as ESBuildOptions);
+                const clean =
+                  (build.output?.clean || Boolean(flags.clean)) && run === 0;
+
+                await esbuild({
+                  ...build,
+                  output: {
+                    directory: 'dist',
+                    file: 'index',
+                    ...build.output,
+                    clean,
+                  },
+                } as ESBuildOptions);
               }
             }
           }
