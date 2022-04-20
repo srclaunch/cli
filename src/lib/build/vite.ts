@@ -89,34 +89,32 @@ export async function build({
       root: rootDir,
     });
 
-    if (result) {
-      if (Array.isArray(result) && result.length > 0) {
-        for (const output of result) {
-          if (Array.isArray(output) && output.length > 0) {
-            for (const line of output) {
-              if (line.output) {
-                for (const line of output.output) {
-                  if (line.type === 'asset') {
-                    `Wrote asset ${line.fileName}...`;
-                  } else {
-                    console.log(
-                      `Wrote chunk ${line.fileName}... ${
-                        line.code.length / 1024
-                      } kb`,
-                    );
-                  }
+    if (Array.isArray(result) && result.length > 0 && result[0]) {
+      for (const output of result) {
+        if (Array.isArray(output) && output.length > 0) {
+          for (const line of output) {
+            if (line.output) {
+              for (const line of output.output) {
+                if (line.type === 'asset') {
+                  `Wrote asset ${line.fileName}...`;
+                } else {
+                  console.log(
+                    `Wrote chunk ${line.fileName}... ${
+                      line.code.length / 1024
+                    } kb`,
+                  );
                 }
               }
             }
           }
-          //  else if (typeof output === 'object') {
-          //   if (output.output) {
-          //     for (const line of output.output) {
-          //       console.log(line);
-          //     }
-          //   }
-          // }
         }
+        //  else if (typeof output === 'object') {
+        //   if (output.output) {
+        //     for (const line of output.output) {
+        //       console.log(line);
+        //     }
+        //   }
+        // }
       }
     }
 
