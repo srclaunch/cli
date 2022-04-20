@@ -6,7 +6,7 @@ export async function getSrcLaunchConfig() {
     // const configFormats = ['js', 'json', 'ts'];
 
     try {
-      const configPath = path.join(path.resolve(), '.srclaunch', 'config.js');
+      const configPath = path.join(path.resolve(), './.srclaunch/config.js');
       const config = await import(configPath);
 
       return config.default;
