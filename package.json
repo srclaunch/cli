@@ -3,7 +3,7 @@
   "description": "Command line tools used by SrcLaunch applications and services",
   "author": "Steven Bennett <steven@srclaunch.com>",
   "license": "ISC",
-  "version": "0.1.136",
+  "version": "0.1.135",
   "engines": {
     "node": ">=16"
   },
@@ -23,11 +23,8 @@
   ],
   "module": "./dist/index.js",
   "scripts": {
-    "build:es": "esbuild --sourcemap --bundle --minify --outfile=dist/index.mjs --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --external:@vitejs/plugin-react-refresh --external:vite --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
-    "build:types": "tsc --build --force",
     "build:self": "ts-node-esm --transpileOnly --cwdMode src/index.ts build esbuild",
     "build": "yarn build:self",
-    "clean": "rm -fr ./dist && mkdir dist",
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
     "git:push": "git push --follow-tags origin main",
     "qr": "yarn build && git add . && git commit -m \"Quick release - patch\" && yarn release",
