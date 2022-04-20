@@ -50,7 +50,9 @@ export async function build({
       await emptyDirectory(output.directory);
     }
 
-    const result = await buildCommand({
+    console.log('viteFormats', viteFormats);
+
+    await buildCommand({
       build: {
         assetsDir: assets?.directory
           ? path.join(path.resolve(), assets?.directory)
@@ -71,7 +73,6 @@ export async function build({
           : false,
         manifest,
         minify,
-
         sourcemap,
         ssrManifest: manifest && webApp?.ssr,
         target,
@@ -89,36 +90,36 @@ export async function build({
       root: rootDir,
     });
 
-    console.log('result', result);
+    // console.log('result', result);
 
-    if (Array.isArray(result) && result.length > 0 && result[0]) {
-      for (const output of result) {
-        if (Array.isArray(output) && output.length > 0) {
-          for (const line of output) {
-            if (line.output) {
-              for (const line of output.output) {
-                if (line.type === 'asset') {
-                  `Wrote asset ${line.fileName}...`;
-                } else {
-                  console.log(
-                    `Wrote chunk ${line.fileName}... ${
-                      line.code.length / 1024
-                    } kb`,
-                  );
-                }
-              }
-            }
-          }
-        }
-        //  else if (typeof output === 'object') {
-        //   if (output.output) {
-        //     for (const line of output.output) {
-        //       console.log(line);
-        //     }
-        //   }
-        // }
-      }
-    }
+    // if (Array.isArray(result) && result.length > 0 && result[0]) {
+    //   for (const output of result) {
+    //     if (Array.isArray(output) && output.length > 0) {
+    //       for (const line of output) {
+    //         if (line.output) {
+    //           for (const line of output.output) {
+    //             if (line.type === 'asset') {
+    //               `Wrote asset ${line.fileName}...`;
+    //             } else {
+    //               console.log(
+    //                 `Wrote chunk ${line.fileName}... ${
+    //                   line.code.length / 1024
+    //                 } kb`,
+    //               );
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //     //  else if (typeof output === 'object') {
+    //     //   if (output.output) {
+    //     //     for (const line of output.output) {
+    //     //       console.log(line);
+    //     //     }
+    //     //   }
+    //     // }
+    //   }
+    // }
 
     if (types) {
       console.info('Compiling TS definitions...');
