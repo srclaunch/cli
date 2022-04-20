@@ -1739,7 +1739,7 @@ __metadata:
     update-notifier: ^5.1.0
     vite: ^2.9.5
   bin:
-    srclaunch: dist/index.js
+    srclaunch: dist/index.mjs
   languageName: unknown
   linkType: soft
 
