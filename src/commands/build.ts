@@ -213,7 +213,11 @@ export default new Command({
             ...buildOptions,
             library:
               config.type === ProjectType.Library ||
-              config.type == ProjectType.CLIApplication,
+              config.type === ProjectType.CLIApplication
+                ? {
+                    name: config.name,
+                  }
+                : false,
           } as ViteBuildOptions);
         } else if (Array.isArray(buildOptions)) {
           if (buildOptions) {
@@ -222,7 +226,11 @@ export default new Command({
                 ...build,
                 library:
                   config.type === ProjectType.Library ||
-                  config.type == ProjectType.CLIApplication,
+                  config.type === ProjectType.CLIApplication
+                    ? {
+                        name: config.name,
+                      }
+                    : false,
               } as ViteBuildOptions);
             }
           }
