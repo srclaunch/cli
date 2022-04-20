@@ -1,6 +1,6 @@
 # @srclaunch/cli
 
-![Issues](https://img.shields.io/github/issues/srclaunch/cli?label=Issues) ![Build](https://github.com/srclaunch/cli/actions/workflows/build.yml/badge.svg) ![Tests](https://github.com/srclaunch/cli/actions/workflows/tests.yml/badge.svg)
+![Issues](https://img.shields.io/github/issues/srclaunch/cli?label=Issues) ![Build](https://github.com/srclaunch/cli/actions/workflows/publish.yml/badge.svg))
 
 Command line tool for managing SrcLaunch Workspaces and Projects.
 
