@@ -4,12 +4,12 @@ import { build as buildTypes } from './types.js';
 import path from 'node:path';
 import {
   BuildFormat,
-  BuildOptions,
   BuildPlatform,
   BuildTarget,
   ViteBuildOptions,
 } from '@srclaunch/types';
 import { emptyDirectory } from '../file-system.js';
+import { getViteFormatFileExtension } from './formats.js';
 
 export async function build({
   assets,
@@ -66,7 +66,7 @@ export async function build({
               ),
               formats: viteFormats,
               name: typeof library === 'object' ? library.name : undefined,
-              fileName: format => `index.${format}.js`,
+              fileName: format => `index${getViteFormatFileExtension(format)}`,
             }
           : false,
         manifest,

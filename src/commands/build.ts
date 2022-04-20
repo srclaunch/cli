@@ -41,7 +41,11 @@ export default new Command({
             ...buildOptions,
             library:
               config.type === ProjectType.Library ||
-              config.type == ProjectType.CLIApplication,
+              config.type === ProjectType.CLIApplication
+                ? {
+                    name: config.name,
+                  }
+                : false,
           } as ViteBuildOptions);
           break;
         case BuildTool.ESBuild:
@@ -207,14 +211,18 @@ export default new Command({
         if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
           await vite({
             ...buildOptions,
-            library: config.type === ProjectType.Library,
+            library:
+              config.type === ProjectType.Library ||
+              config.type == ProjectType.CLIApplication,
           } as ViteBuildOptions);
         } else if (Array.isArray(buildOptions)) {
           if (buildOptions) {
             for (const build of buildOptions) {
               await vite({
                 ...build,
-                library: config.type === ProjectType.Library,
+                library:
+                  config.type === ProjectType.Library ||
+                  config.type == ProjectType.CLIApplication,
               } as ViteBuildOptions);
             }
           }
