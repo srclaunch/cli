@@ -5,6 +5,7 @@ import {
   BuildOptions,
   ESBuildOptions,
   Project,
+  ProjectType,
   ViteBuildOptions,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
@@ -75,11 +76,17 @@ export default new Command({
         }
 
         if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
-          await vite(buildOptions as ViteBuildOptions);
+          await vite({
+            ...buildOptions,
+            library: config.type === ProjectType.Library,
+          } as ViteBuildOptions);
         } else if (Array.isArray(buildOptions)) {
           if (buildOptions) {
             for (const build of buildOptions) {
-              await vite(build);
+              await vite({
+                ...build,
+                library: config.type === ProjectType.Library,
+              } as ViteBuildOptions);
             }
           }
         }
