@@ -91,15 +91,19 @@ export async function build({
 
     if (typeof result === 'string') {
       console.log(result);
-    } else if (typeof result === 'object') {
+    } else if (result) {
       if (Array.isArray(result) && result.length > 0) {
         for (const output of result) {
           if (Array.isArray(output) && output.length > 0) {
             for (const line of output) {
               console.log(line);
             }
-          } else {
-            console.log(output);
+          } else if (typeof output === 'object') {
+            if (output.output) {
+              for (const line of output.output) {
+                console.log(line);
+              }
+            }
           }
         }
       }
