@@ -23,7 +23,7 @@ export default {
         '@vitejs/plugin-react',
       ],
     },
-    formats: [BuildFormat.ESM, BuildFormat.CJS],
+    formats: [BuildFormat.ESM, BuildFormat.UMD],
     platform: BuildPlatform.Node,
     sourcemap: true,
     splitting: false,
