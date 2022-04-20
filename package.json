@@ -62,7 +62,8 @@
     "shelljs": "^0.8.5",
     "terminal-link": "^3.0.0",
     "typescript": "^4.6.3",
-    "update-notifier": "^5.1.0"
+    "update-notifier": "^5.1.0",
+    "vite": "^2.9.5"
   },
   "devDependencies": {
     "@srclaunch/dx": "^0.1.19",
@@ -112,8 +113,7 @@
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-order": "^5.0.0",
     "ts-node": "^10.7.0",
-    "tslib": "^2.3.1",
-    "vite": "^2.9.5"
+    "tslib": "^2.3.1"
   },
   "resolve": {
     "alias": {
