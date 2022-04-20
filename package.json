@@ -12,27 +12,21 @@
     "registry": "https://registry.npmjs.org/"
   },
   "bin": {
-    "srclaunch": "dist/index.mjs"
+    "srclaunch": "dist/index.esm.js"
   },
   "type": "module",
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "files": [
     "package.json",
     "dist"
   ],
-  "module": "./dist/index.mjs",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.mjs"
-    }
-  },
+  "module": "./dist/index.esm.js",
   "scripts": {
     "build:es": "esbuild --sourcemap --bundle --minify --outfile=dist/index.mjs --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:'update-notifier' --external:@vitejs/plugin-react-refresh --external:vite --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
     "build:types": "tsc --build --force",
     "build:self": "ts-node-esm --transpileOnly --cwdMode src/index.ts build esbuild",
-    "build": "yarn build:self && yarn build:types",
+    "build": "yarn build:self",
     "clean": "rm -fr ./dist && mkdir dist",
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
     "git:push": "git push --follow-tags origin main",

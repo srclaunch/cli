@@ -5,7 +5,7 @@ export function getFormatFileExtension(format: BuildFormat) {
     case BuildFormat.CJS:
       return 'cjs.js';
     case BuildFormat.ESM:
-      return 'mjs';
+      return 'esm.js';
     case BuildFormat.IIFE:
       return 'iife.js';
     case BuildFormat.UMD:

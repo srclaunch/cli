@@ -26,7 +26,7 @@ export async function build({
   output = {
     clean: true,
     directory: 'dist',
-    file: 'index.esm.js',
+    file: 'index',
   },
   platform = BuildPlatform.Browser,
   sourcemap = true,
