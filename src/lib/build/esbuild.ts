@@ -15,10 +15,7 @@ import { emptyDirectory } from '../file-system.js';
 export async function build({
   bundle = true,
   format = BuildFormat.ESM,
-  input = {
-    directory: 'src',
-    file: 'index.ts',
-  },
+  input,
   minify = true,
   output,
   platform = BuildPlatform.Browser,

@@ -15,10 +15,7 @@ export async function build({
   bundle,
   format = BuildFormat.ESM,
   formats,
-  input = {
-    directory: 'src',
-    file: 'index.ts',
-  },
+  input,
   library = false,
   manifest = true,
   minify = true,
