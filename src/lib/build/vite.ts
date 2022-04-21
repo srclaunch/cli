@@ -101,7 +101,16 @@ export async function build({
               ),
               formats: viteFormats,
               name: typeof library === 'object' ? library.name : undefined,
-              fileName: format => `index${getViteFormatFileExtension(format)}`,
+              fileName: format => {
+                console.log(
+                  `${output?.file ?? 'index'}${getViteFormatFileExtension(
+                    format,
+                  )}`,
+                );
+                return `${output?.file ?? 'index'}${getViteFormatFileExtension(
+                  format,
+                )}`;
+              },
             }
           : false,
         manifest,

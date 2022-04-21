@@ -61,8 +61,6 @@ export default new Command({
             await esbuild({
               ...buildOptions,
               output: {
-                directory: 'dist',
-                file: 'index',
                 ...buildOptions.output,
                 clean,
               },
@@ -81,7 +79,11 @@ export default new Command({
               ...build,
               library:
                 config.type === ProjectType.Library ||
-                config.type == ProjectType.CLIApplication,
+                config.type === ProjectType.CLIApplication
+                  ? {
+                      name: config.name,
+                    }
+                  : false,
             } as ViteBuildOptions);
             break;
           case BuildTool.ESBuild:
@@ -95,8 +97,6 @@ export default new Command({
               await esbuild({
                 ...build,
                 output: {
-                  directory: 'dist',
-                  file: 'index',
                   ...build.output,
                   clean,
                 },
@@ -141,8 +141,6 @@ export default new Command({
               await esbuild({
                 ...buildOptions,
                 output: {
-                  directory: 'dist',
-                  file: 'index',
                   ...buildOptions.output,
                   clean,
                 },
