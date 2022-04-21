@@ -17,6 +17,7 @@ export async function build({
   formats,
   input,
   library = false,
+  optimize,
   manifest = true,
   minify = true,
   output,
@@ -69,6 +70,9 @@ export async function build({
           : false,
         manifest,
         minify,
+        rollupOptions: {
+          external: (bundle?.exclude ?? []) as string[],
+        },
         sourcemap,
         ssrManifest: manifest && webApp?.ssr,
         target,
@@ -76,12 +80,8 @@ export async function build({
       configFile: false,
       envPrefix: 'SRCLAUNCH_',
       optimizeDeps: {
-        exclude:
-          typeof bundle === 'object' ? (bundle?.exclude as string[]) ?? [] : [],
-        include:
-          typeof bundle === 'object'
-            ? (bundle?.optimize as string[]) ?? []
-            : [],
+        exclude: (optimize?.exclude ?? []) as string[],
+        include: (optimize?.include ?? []) as string[],
       },
       plugins: webApp?.react ? [react()] : [],
       root: rootDir ?? path.resolve(),
