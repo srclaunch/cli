@@ -10,6 +10,7 @@ import * as previewCommands from './commands/preview.js';
 import * as projectCommands from './commands/projects.js';
 import * as releaseCommands from './commands/release.js';
 import * as serveCommands from './commands/serve.js';
+import * as testCommands from './commands/test.js';
 
 import { getSrcLaunchConfig } from './lib/config.js';
 import { Command, CommandType, handleCommand } from './lib/command.js';
@@ -25,13 +26,10 @@ Commands
   build - Build SrcLaunch project if srclaunch.config.json is found in the current directory
   models
     * build - Build models into Sequelize models, Typescript definitions and JSON
-  dev - Start Web/mobile apps in development mode.
-  project
-    * create - Create a new SrcLaunch project  
-  release - Collect changes, bump and tag version, and deploy
+  test - Run tests and collect coverage
 
-To get help for a specific command type help after the command name, for example:
-  $ srclaunch dev help
+To view information for a specific command add "help" after the command name, for example:
+  $ srclaunch build help
 `;
 
 export const cli = meow(helpMessage, {
@@ -77,6 +75,7 @@ export async function main() {
         projectCommands.default,
         releaseCommands.default,
         serveCommands.default,
+        testCommands.default,
       ],
       config,
       flags,
