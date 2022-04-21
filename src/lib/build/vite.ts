@@ -61,16 +61,10 @@ export async function build({
                 library && typeof library === 'object'
                   ? library?.name
                   : undefined,
-              fileName: format => {
-                console.log(
-                  `${output?.file ?? 'index'}${getViteFormatFileExtension(
-                    format,
-                  )}`,
-                );
-                return `${output?.file ?? 'index'}${getViteFormatFileExtension(
+              fileName: format =>
+                `${output?.file ?? 'index'}${getViteFormatFileExtension(
                   format,
-                )}`;
-              },
+                )}`,
             }
           : false,
         manifest,
