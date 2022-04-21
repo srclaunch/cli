@@ -45,7 +45,7 @@ export async function build({
     ];
 
     if (output?.clean) {
-      await emptyDirectory(output.directory);
+      await emptyDirectory(output?.directory ?? 'dist');
     }
 
     const result = await buildCommand({
@@ -86,6 +86,6 @@ export async function build({
 
     console.info(`Finished building to ${format.toLocaleUpperCase()} format.`);
   } catch (err: any) {
-    console.error(`Error occurred while building: ${err.name}`, err);
+    console.error(err);
   }
 }

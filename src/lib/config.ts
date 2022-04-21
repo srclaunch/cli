@@ -9,12 +9,15 @@ export async function getSrcLaunchConfig() {
       const configPath = path.join(path.resolve(), './.srclaunch/config.js');
       const config = await import(configPath);
 
+      console.info(`Loaded config from ${configPath}`);
       return config.default;
     } catch (jsImportError: any) {
       const configPath = path.join(path.resolve(), '.srclaunch', 'config.json');
 
       try {
         const config = await readFile(configPath);
+
+        console.info(`Loaded config from ${configPath}`);
 
         return await JSON.parse(config.toString());
       } catch (jsonReadError: any) {
