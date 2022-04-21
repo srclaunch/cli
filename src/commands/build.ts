@@ -27,18 +27,18 @@ export default new Command({
       };
     }>;
   }) => {
-    const buildOptions = config.build as BuildOptions | BuildOptions[];
+    const options = config.build as BuildOptions | BuildOptions[];
 
-    if (!buildOptions) {
+    if (!options) {
       throw new Error('Missing build configuration');
     }
 
     let run = 0;
-    if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
-      switch (buildOptions.tool) {
+    if (typeof options === 'object' && !Array.isArray(options)) {
+      switch (options.tool) {
         case BuildTool.Vite:
           await vite({
-            ...buildOptions,
+            ...options,
             library:
               config.type === ProjectType.Library ||
               config.type === ProjectType.CLIApplication
@@ -50,18 +50,18 @@ export default new Command({
           return;
         case BuildTool.ESBuild:
         default:
-          const formats = buildOptions.formats ?? [
-            buildOptions.format ?? BuildFormat.ESM,
+          const formats = options.formats ?? [
+            options.format ?? BuildFormat.ESM,
           ];
 
           for (const format of formats) {
-            const clean = buildOptions.output?.clean ?? run === 0;
-            const types = buildOptions.types ?? run === 0;
+            const clean = options.output?.clean ?? run === 0;
+            const types = options.types ?? run === 0;
 
             await esbuild({
-              ...buildOptions,
+              ...options,
               output: {
-                ...buildOptions.output,
+                ...options.output,
                 clean,
               },
               format: format,
@@ -71,8 +71,8 @@ export default new Command({
             run = run + 1;
           }
       }
-    } else if (Array.isArray(buildOptions)) {
-      for (const build of buildOptions) {
+    } else if (Array.isArray(options)) {
+      for (const build of options) {
         switch (build.tool) {
           case BuildTool.Vite:
             await vite({
@@ -125,23 +125,23 @@ export default new Command({
           };
         }>;
       }) => {
-        const buildOptions = config.build as BuildOptions | BuildOptions[];
+        const options = config.build as BuildOptions | BuildOptions[];
 
-        if (!buildOptions) {
+        if (!options) {
           throw new Error('Missing build configuration');
         }
 
         let run = 0;
-        if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
-          if (buildOptions.formats && buildOptions.formats?.length > 0) {
-            for (const format of buildOptions.formats) {
-              const clean = buildOptions.output?.clean ?? run === 0;
-              const types = buildOptions.types ?? run === 0;
+        if (typeof options === 'object' && !Array.isArray(options)) {
+          if (options.formats && options.formats?.length > 0) {
+            for (const format of options.formats) {
+              const clean = options.output?.clean ?? run === 0;
+              const types = options.types ?? run === 0;
 
               await esbuild({
-                ...buildOptions,
+                ...options,
                 output: {
-                  ...buildOptions.output,
+                  ...options.output,
                   clean,
                 },
                 format,
@@ -151,11 +151,11 @@ export default new Command({
               run = run = 1;
             }
           } else {
-            await esbuild(buildOptions as ESBuildOptions);
+            await esbuild(options as ESBuildOptions);
           }
-        } else if (Array.isArray(buildOptions)) {
-          if (buildOptions) {
-            for (const build of buildOptions) {
+        } else if (Array.isArray(options)) {
+          if (options) {
+            for (const build of options) {
               if (build.formats && build.formats?.length > 0) {
                 for (const format of build.formats) {
                   const clean = build.output?.clean ?? run === 0;
@@ -200,15 +200,15 @@ export default new Command({
       name: 'vite',
       description: 'Compiles and bundles a package using Vite',
       run: async ({ config, flags }) => {
-        const buildOptions = config.build;
+        const options = config.build;
 
-        if (!buildOptions) {
+        if (!options) {
           throw new Error('Missing build configuration');
         }
 
-        if (typeof buildOptions === 'object' && !Array.isArray(buildOptions)) {
+        if (typeof options === 'object' && !Array.isArray(options)) {
           await vite({
-            ...buildOptions,
+            ...options,
             library:
               config.type === ProjectType.Library ||
               config.type === ProjectType.CLIApplication
@@ -217,9 +217,9 @@ export default new Command({
                   }
                 : false,
           } as ViteBuildOptions);
-        } else if (Array.isArray(buildOptions)) {
-          if (buildOptions) {
-            for (const build of buildOptions) {
+        } else if (Array.isArray(options)) {
+          if (options) {
+            for (const build of options) {
               await vite({
                 ...build,
                 library:
