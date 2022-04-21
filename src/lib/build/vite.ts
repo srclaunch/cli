@@ -46,44 +46,6 @@ export async function build({
     ) as ('cjs' | 'es' | 'iife' | 'umd')[];
 
     console.log('viteFormats', viteFormats);
-    console.log({
-      build: {
-        assetsDir: assets?.directory
-          ? path.join(path.resolve(), assets?.directory)
-          : undefined,
-        emptyOutDir: output?.clean ?? true,
-        outDir: output?.directory ?? 'dist',
-        lib: Boolean(library)
-          ? {
-              entry: path.join(
-                path.resolve(),
-                input?.directory ?? 'src',
-                input?.file ?? 'index.ts',
-              ),
-              formats: viteFormats,
-              name: typeof library === 'object' ? library.name : undefined,
-              fileName: (format: 'es' | 'cjs' | 'iife' | 'umd') =>
-                `index${getViteFormatFileExtension(format)}`,
-            }
-          : false,
-        manifest,
-        minify,
-        sourcemap,
-        ssrManifest: manifest && webApp?.ssr,
-        target,
-      },
-      envPrefix: 'SRCLAUNCH_',
-      optimizeDeps: {
-        exclude:
-          typeof bundle === 'object' ? (bundle?.exclude as string[]) ?? [] : [],
-        include:
-          typeof bundle === 'object'
-            ? (bundle?.optimize as string[]) ?? []
-            : [],
-      },
-      plugins: webApp?.react ? [react()] : [],
-      root: rootDir,
-    });
 
     await buildCommand({
       build: {
@@ -100,7 +62,10 @@ export async function build({
                 input?.file ?? 'index.ts',
               ),
               formats: viteFormats,
-              name: typeof library === 'object' ? library.name : undefined,
+              name:
+                library && typeof library === 'object'
+                  ? library?.name
+                  : undefined,
               fileName: format => {
                 console.log(
                   `${output?.file ?? 'index'}${getViteFormatFileExtension(
@@ -119,6 +84,7 @@ export async function build({
         ssrManifest: manifest && webApp?.ssr,
         target,
       },
+      configFile: false,
       envPrefix: 'SRCLAUNCH_',
       optimizeDeps: {
         exclude:
