@@ -71,7 +71,9 @@ export async function build({
         manifest,
         minify,
         rollupOptions: {
-          external: (bundle?.exclude ?? []) as string[],
+          external: (typeof bundle === 'object'
+            ? bundle.exclude ?? []
+            : []) as string[],
         },
         sourcemap,
         ssrManifest: manifest && webApp?.ssr,
