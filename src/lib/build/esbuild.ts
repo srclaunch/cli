@@ -77,7 +77,7 @@ export async function build({
     }
 
     if (types) {
-      console.info('Compiling TS definitions...');
+      console.info('Building types...');
       await buildTypes({ input, types, output });
     }
 
