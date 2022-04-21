@@ -21,7 +21,7 @@ export async function build({
   minify = true,
   output,
   platform = BuildPlatform.Browser,
-  rootDir = path.resolve(),
+  rootDir,
   sourcemap = true,
   target = BuildTarget.ESNext,
   types = true,
@@ -92,7 +92,7 @@ export async function build({
             : [],
       },
       plugins: webApp?.react ? [react()] : [],
-      root: rootDir,
+      root: rootDir ?? path.resolve(),
     });
 
     // console.log('result', result);
