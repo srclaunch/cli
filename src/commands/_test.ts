@@ -1,5 +1,6 @@
 import { Command, CommandType } from '../lib/command.js';
 import { run as runAvaTests } from '../lib/test/ava.js';
+import { run as runC8Coverage } from '../lib/test/c8.js';
 import { run as runJestTests } from '../lib/test/jest.js';
 import { TestOptions, Project, ProjectType } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
@@ -106,10 +107,10 @@ export default new Command<Project, TestFlags>({
           | TestOptions[];
 
         if (typeof options === 'object' && !Array.isArray(options)) {
-          await runJestTests(options, flags.match);
+          await runC8Coverage(options);
         } else if (Array.isArray(options)) {
           for (const test of options) {
-            await runJestTests(test, flags.match);
+            await runC8Coverage(test);
           }
         }
       },
