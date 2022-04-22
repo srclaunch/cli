@@ -115,12 +115,20 @@ jobs:
       - name: Run tests and collect testing coverage
         run: yarn test:coverage
 
-      - name: Archive code coverage results
+      - id: archive-code-coverage-results
+        name: Archive code coverage results
         uses: actions/upload-artifact@v2
         with:
           name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-code-coverage.json'
           path: coverage/coverage-summary.json
 
+      - name: Upload test coverage to Codecov
+        uses: actions/codecov@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          commit: ${{ github.event.pull_request.head.sha }}
+          coverage_file: |
+            ${{ steps.archive-code-coverage-results.outputs.name }}
   publish:
     name: Publish package
     needs: [env-vars, build, test]

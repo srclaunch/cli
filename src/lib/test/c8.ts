@@ -9,14 +9,18 @@ export async function run(
 ): Promise<Report> {
   try {
     const srcDir = path.join(process.cwd(), srcPath ?? 'src');
+    const coverageDir = path.join(
+      process.cwd(),
+      config.coverage?.directory ?? 'coverage',
+    );
 
     await ensureDir(srcDir);
 
     const report = new Report({
       all: true,
-      reportsDirectory: path.resolve(process.cwd(), 'coverage'),
-      src: [path.join(process.cwd(), srcPath ?? 'src')],
-      tempDirectory: path.resolve(process.cwd(), 'coverage'),
+      reportsDirectory: coverageDir,
+      src: [srcDir],
+      tempDirectory: coverageDir,
       reporter: ['json'],
     });
 
