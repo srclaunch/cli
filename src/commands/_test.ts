@@ -36,9 +36,8 @@ export default new Command<Project, TestFlags>({
   name: 'test',
   description: 'Commands for running tests',
   run: async ({ config, flags }: { config: Project; flags: TestFlags }) => {
-    const options = (config.test ?? defaultTestOptions) as
-      | TestOptions
-      | TestOptions[];
+    const options = ({ ...defaultTestOptions, ...config.test } ??
+      defaultTestOptions) as TestOptions | TestOptions[];
 
     if (typeof options === 'object' && !Array.isArray(options)) {
       switch (options.tool) {
@@ -49,6 +48,10 @@ export default new Command<Project, TestFlags>({
         default:
           await runAvaTests(options, flags.match);
       }
+
+      if (options.coverage) {
+        await runC8Coverage(options);
+      }
     } else if (Array.isArray(options)) {
       for (const test of options) {
         switch (test.tool) {
@@ -58,6 +61,10 @@ export default new Command<Project, TestFlags>({
           case TestTool.Ava:
           default:
             await runAvaTests(test, flags.match);
+        }
+
+        if (test.coverage) {
+          await runC8Coverage(test);
         }
       }
     }

@@ -1,5 +1,6 @@
 import { spawn } from 'child_process';
 import { TestOptions } from '@srclaunch/types';
+import chalk from 'chalk';
 
 export async function run(config: TestOptions, match?: string) {
   try {
@@ -20,11 +21,11 @@ export async function run(config: TestOptions, match?: string) {
     ]);
 
     process.stdout.on('data', data => {
-      if (data) console.log(data.toString());
+      if (data) chalk(data);
     });
 
     process.stderr.on('data', data => {
-      if (data) console.log(data.toString());
+      if (data) chalk(data);
     });
 
     // console.log('process', process);
