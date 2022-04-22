@@ -12,6 +12,7 @@ export async function run(config: TestOptions, match?: string) {
       match,
       maxConcurrency: config.concurrency ?? 5,
       rootDir: path.resolve(process.cwd()),
+      testPathIgnorePatterns: ['/src/tests/**'],
       verbose: config.verbose ?? true,
     };
 
