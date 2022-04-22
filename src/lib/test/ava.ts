@@ -20,11 +20,11 @@ export async function run(config: TestOptions, match?: string) {
     ]);
 
     process.stdout.on('data', data => {
-      if (data) console.log(data);
+      if (data) console.log(data.toString());
     });
 
     process.stderr.on('data', data => {
-      if (data) console.log(data);
+      if (data) console.log(data.toString());
     });
 
     // console.log('process', process);
