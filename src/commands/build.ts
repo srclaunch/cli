@@ -12,21 +12,19 @@ import {
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 
-export default new Command({
+type BuildFlags = TypedFlags<{
+  clean: {
+    alias: 'c';
+    default: true;
+    description: 'Clean build directory before building';
+    type: 'boolean';
+  };
+}>;
+
+export default new Command<Project, BuildFlags>({
   name: 'build',
   description: 'Commands for building various types of projects',
-  run: async ({
-    config,
-    flags,
-  }: {
-    config: Project;
-    flags: TypedFlags<{
-      clean?: {
-        type: 'boolean';
-        default: true;
-      };
-    }>;
-  }) => {
+  run: async ({ config, flags }: { config: Project; flags: BuildFlags }) => {
     const options = config.build as BuildOptions | BuildOptions[];
 
     if (!options) {
@@ -110,7 +108,7 @@ export default new Command({
     }
   },
   commands: [
-    new Command<Project>({
+    new Command<Project, BuildFlags>({
       name: 'esbuild',
       description: 'Compiles and optionally bundles a package using esbuild',
       run: async ({
@@ -118,12 +116,7 @@ export default new Command({
         flags,
       }: {
         config: Project;
-        flags: TypedFlags<{
-          clean?: {
-            type: 'boolean';
-            default: true;
-          };
-        }>;
+        flags: BuildFlags;
       }) => {
         const options = config.build as BuildOptions | BuildOptions[];
 
@@ -158,7 +151,8 @@ export default new Command({
             for (const build of options) {
               if (build.formats && build.formats?.length > 0) {
                 for (const format of build.formats) {
-                  const clean = build.output?.clean ?? run === 0;
+                  const clean =
+                    (build.output?.clean || Boolean(flags.clean)) ?? run === 0;
                   const types = build.types ?? run === 0;
 
                   await esbuild({
@@ -196,7 +190,7 @@ export default new Command({
         }
       },
     }),
-    new Command<Project>({
+    new Command<Project, BuildFlags>({
       name: 'vite',
       description: 'Compiles and bundles a package using Vite',
       run: async ({ config, flags }) => {

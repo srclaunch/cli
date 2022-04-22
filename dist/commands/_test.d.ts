@@ -2,12 +2,11 @@ import { Command } from '../lib/command.js';
 import { Project } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 declare const _default: Command<Project, TypedFlags<{
-    clean: {
-        alias: "c";
-        default: true;
-        description: "Clean build directory before building";
-        type: "boolean";
+    match: {
+        alias: "m";
+        description: "Run tests matching the specified pattern";
+        type: "string";
     };
 }>>;
 export default _default;
-//# sourceMappingURL=build.d.ts.map
+//# sourceMappingURL=_test.d.ts.map

@@ -13,9 +13,12 @@ export default {
   build: {
     bundle: {
       exclude: [
+        'c8',
         'esbuild',
         'esbuild-css-modules-plugin',
         'fs-extra',
+        'jest-cli',
+        // 'jest-pnp-resolver',
         'meow',
         'typescript',
         'update-notifier',

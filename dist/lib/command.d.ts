@@ -1,36 +1,36 @@
-import { Result, TypedFlags } from 'meow';
+import { AnyFlags, Result, TypedFlags } from 'meow';
 export declare enum CommandType {
     Project = "project",
     Workspace = "workspace"
 }
-export declare type RunArguments<T, F = TypedFlags<{}>> = {
-    cli: Result<{}>;
-    config: T;
+export declare type RunArguments<C, F> = {
+    cli: Result<AnyFlags>;
+    config: C;
     flags: F;
 };
-export declare type RunFunction<T, F = TypedFlags<{}>> = (args: RunArguments<T, F>) => Promise<void>;
-export declare type CommandConstructorArgs<T, F = TypedFlags<{}>> = {
+export declare type RunFunction<C, F> = (args: RunArguments<C, F>) => Promise<void>;
+export declare type CommandConstructorArgs<C, F> = {
     description: string;
     flags?: F;
     name: string;
-    run?: RunFunction<T, F>;
-    commands?: Command<T, F>[];
+    run?: RunFunction<C, F>;
+    commands?: Command<C, F>[];
     type?: CommandType;
 };
-export declare class Command<T, F = TypedFlags<{}>> {
+export declare class Command<C, F = TypedFlags<AnyFlags> & Record<string, unknown>> {
     flags?: F;
     name: string;
     private runFunction?;
-    commands: CommandConstructorArgs<T, F>['commands'];
+    commands: CommandConstructorArgs<C, F>['commands'];
     type: CommandType;
-    constructor(options: CommandConstructorArgs<T, F>);
-    run({ cli, config, flags }: RunArguments<T, F>): Promise<void>;
+    constructor(options: CommandConstructorArgs<C, F>);
+    run({ cli, config, flags }: RunArguments<C, F>): Promise<void>;
 }
 export declare function handleCommand({ cli, config, command, commands, flags, }: {
-    cli: Result<{}>;
+    cli: Result<AnyFlags>;
     command: string[];
-    commands?: Command<any>[];
-    config: unknown;
-    flags: TypedFlags<{}> & Record<string, unknown>;
+    commands?: Command<any, TypedFlags<AnyFlags> & Record<string, unknown>>[];
+    config: Record<string, unknown>;
+    flags: TypedFlags<AnyFlags> & Record<string, unknown>;
 }): Promise<void>;
 //# sourceMappingURL=command.d.ts.map

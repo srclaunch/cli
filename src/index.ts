@@ -1,4 +1,4 @@
-import meow from 'meow';
+import meow, { AnyFlags, TypedFlags } from 'meow';
 import updateNotifier, { Package } from 'update-notifier';
 import * as buildCommands from './commands/build.js';
 import * as changesetCommands from './commands/changesets.js';
@@ -10,10 +10,11 @@ import * as previewCommands from './commands/preview.js';
 import * as projectCommands from './commands/projects.js';
 import * as releaseCommands from './commands/release.js';
 import * as serveCommands from './commands/serve.js';
-import * as testCommands from './commands/test.js';
+import * as testCommands from './commands/_test.js';
 
 import { getSrcLaunchConfig } from './lib/config.js';
 import { Command, CommandType, handleCommand } from './lib/command.js';
+import { Project } from '@srclaunch/types';
 
 export type { Command };
 export { CommandType };
@@ -33,23 +34,6 @@ To view information for a specific command add "help" after the command name, fo
 `;
 
 export const cli = meow(helpMessage, {
-  flags: {
-    clean: {
-      type: 'boolean',
-    },
-    config: {
-      type: 'string',
-      alias: 'c',
-    },
-    help: {
-      type: 'boolean',
-      alias: 'h',
-    },
-    version: {
-      type: 'boolean',
-      alias: 'v',
-    },
-  },
   importMeta: import.meta,
 });
 
@@ -76,7 +60,7 @@ export async function main() {
         releaseCommands.default,
         serveCommands.default,
         testCommands.default,
-      ],
+      ] as Command<any, TypedFlags<AnyFlags> & Record<string, unknown>>[],
       config,
       flags,
     });

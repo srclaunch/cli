@@ -1,49 +1,48 @@
-import { Result, TypedFlags } from 'meow';
+import { Project } from '@srclaunch/types';
+import { AnyFlag, AnyFlags, Flag, Result, TypedFlags } from 'meow';
 
 export enum CommandType {
   Project = 'project',
   Workspace = 'workspace',
 }
 
-export type RunArguments<T, F = TypedFlags<{}>> = {
-  cli: Result<{}>;
-  config: T;
+export type RunArguments<C, F> = {
+  cli: Result<AnyFlags>;
+  config: C;
   flags: F;
 };
 
-export type RunFunction<T, F = TypedFlags<{}>> = (
-  args: RunArguments<T, F>,
-) => Promise<void>;
+export type RunFunction<C, F> = (args: RunArguments<C, F>) => Promise<void>;
 
-export type CommandConstructorArgs<T, F = TypedFlags<{}>> = {
+export type CommandConstructorArgs<C, F> = {
   description: string;
   flags?: F;
   name: string;
-  run?: RunFunction<T, F>;
-  commands?: Command<T, F>[];
+  run?: RunFunction<C, F>;
+  commands?: Command<C, F>[];
   type?: CommandType;
 };
 
-export class Command<T, F = TypedFlags<{}>> {
+export class Command<C, F = TypedFlags<AnyFlags> & Record<string, unknown>> {
   flags?: F;
   name: string;
-  private runFunction?: RunFunction<T, F>;
-  commands: CommandConstructorArgs<T, F>['commands'];
+  private runFunction?: RunFunction<C, F>;
+  commands: CommandConstructorArgs<C, F>['commands'];
   type: CommandType = CommandType.Project;
 
-  constructor(options: CommandConstructorArgs<T, F>) {
+  constructor(options: CommandConstructorArgs<C, F>) {
     this.name = options.name;
     this.commands = options.commands;
     this.flags = options.flags;
     this.type = options.type ?? CommandType.Project;
-    this.runFunction = options.run as RunFunction<T, F>;
+    this.runFunction = options.run;
   }
 
-  public async run({ cli, config, flags }: RunArguments<T, F>): Promise<void> {
+  public async run({ cli, config, flags }: RunArguments<C, F>): Promise<void> {
     if (this.runFunction) {
       return await this.runFunction({
         cli,
-        config: config as T,
+        config,
         flags,
       });
     }
@@ -57,11 +56,11 @@ export async function handleCommand({
   commands,
   flags,
 }: {
-  cli: Result<{}>;
+  cli: Result<AnyFlags>;
   command: string[];
-  commands?: Command<any>[];
-  config: unknown;
-  flags: TypedFlags<{}> & Record<string, unknown>;
+  commands?: Command<any, TypedFlags<AnyFlags> & Record<string, unknown>>[];
+  config: Record<string, unknown>;
+  flags: TypedFlags<AnyFlags> & Record<string, unknown>;
 }): Promise<void> {
   if (!command || command.length === 0 || !command[0]) {
     console.error('No command specified');
@@ -92,7 +91,7 @@ export async function handleCommand({
       cli,
       config,
       command: command.slice(1),
-      commands: matchingCommand.commands,
+      commands: matchingCommand?.commands,
       flags,
     });
   }

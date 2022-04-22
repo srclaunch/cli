@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "build:es": "esbuild  --external:'meow' --external:'fs-extra' --external:'esbuild-css-modules-plugin' --external:'typescript' --external:'esbuild' --external:vite  --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
+    "build:es": "esbuild  --external:'c8' --external:'meow' --external:'fs-extra' --external:'jest-cli' --external:'esbuild-css-modules-plugin' --external:'jest' --external:'jest-pnp-resolver' --external:'typescript' --external:'esbuild'  --external:vite --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
     "build:self": "node ./dist/index.js build",
     "build": "yarn build:es && yarn build:self",
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
@@ -57,6 +57,7 @@
     "ink": "^3.2.0",
     "ink-spinner": "^4.0.3",
     "jest": "^27.5.1",
+    "jest-cli": "^27.5.1",
     "luxon": "^2.3.2",
     "meow": "^10.1.2",
     "nanoid": "^3.3.3",
@@ -72,7 +73,9 @@
     "@srclaunch/dx": "^0.1.36",
     "@srclaunch/types": "^0.1.88",
     "@types/fs-extra": "^9.0.13",
+    "@types/jest-cli": "^24.3.0",
     "@types/luxon": "^2.3.1",
+    "@types/meow": "^6.0.0",
     "@types/node": "^17.0.25",
     "@types/node-emoji": "^1.8.1",
     "@types/pluralize": "^0.0.29",
