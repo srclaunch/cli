@@ -134,6 +134,7 @@ jobs:
           commit: ${{ github.event.pull_request.head.sha }}
           coverage_file: |
             ${{ steps.archive-code-coverage-results.outputs.name }}
+
   publish:
     name: Publish package
     needs: [env-vars, build, test]
