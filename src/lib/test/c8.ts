@@ -9,7 +9,9 @@ export async function run(
   try {
     const report = new Report({
       all: true,
+      reportsDirectory: path.resolve(process.cwd(), 'coverage'),
       src: [path.join(process.cwd(), srcPath ?? 'src')],
+      tempDirectory: path.resolve(process.cwd(), 'coverage'),
       reporter: ['json'],
     });
 
