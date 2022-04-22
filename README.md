@@ -1,12 +1,12 @@
 # @srclaunch/cli
 
-![GitHub Repo stars](https://img.shields.io/github/stars/srclaunch/cli?label=GitHub%20Stars) ![Issues](https://img.shields.io/github/issues/srclaunch/cli?label=Issues) ![Build](https://github.com/srclaunch/cli/actions/workflows/publish.yml/badge.svg) ![Coveralls](https://img.shields.io/coveralls/github/srclaunch/cli?label=Test%20Coverage) ![npms.io (final)](https://img.shields.io/npms-io/final-score/@srclaunch/cli?label=NPMS%20Score)
+![Issues](https://img.shields.io/github/issues/srclaunch/cli?label=Issues) ![Coveralls](https://img.shields.io/coveralls/github/srclaunch/cli?label=Test%20Coverage) ![Build](https://github.com/srclaunch/cli/actions/workflows/publish.yml/badge.svg) ![npms.io (final)](https://img.shields.io/npms-io/final-score/@srclaunch/cli?label=NPMS%20Score)
 
 Command line tool for managing SrcLaunch Workspaces and Projects.
 
-## Commands
+---
 
-### Usage
+## Usage
 
 `$ srclaunch <command>`
 
