@@ -10,6 +10,7 @@ export async function run(config: TestOptions, match?: string) {
     const failNoTests = config?.failNoTests ? ['--failWithoutAssertions'] : [];
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
     const verbose = config?.verbose ? ['--verbose'] : [];
+
     const process = spawn('ava', [
       ...concurrencyArg,
       ...failFast,

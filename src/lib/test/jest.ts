@@ -6,22 +6,13 @@ export async function run(config: TestOptions, match?: string) {
   try {
     const jestConfig = {
       bail: config?.failFast,
+      extensionsToTreatAsEsm: ['.ts', '.tsx'],
+      failWithoutAssertions: config?.failNoTests,
+      match,
       maxConcurrency: config.concurrency ?? 5,
+      rootDir: path.resolve(process.cwd()),
+      verbose: config.verbose ?? true,
     };
-    // const concurrencyArg = config?.concurrency
-    //   ? ['--concurrency', config.concurrency.toString()]
-    //   : [];
-    // const failFast = config?.failFast ? ['bail', true] : [];
-    // const failNoTests = config?.failNoTests ? ['--failWithoutAssertions'] : [];
-    // const matchFlag = match ? [`--match=${match.toString()}`] : [];
-    // const verbose = config?.verbose ? ['--verbose'] : [];
-    // const process = spawn('ava', [
-    //   ...concurrencyArg,s
-    //   ...failFast,
-    //   ...failNoTests,
-    //   ...matchFlag,
-    //   ...verbose,
-    // ]);
 
     await runJest(jestConfig as any, path.resolve());
   } catch (err) {
