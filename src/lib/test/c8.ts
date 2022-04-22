@@ -23,7 +23,7 @@ export async function run(
       reportsDirectory: coverageDir,
       src: [srcDir],
       tempDirectory: coverageDir,
-      reporter: ['json'],
+      reporter: ['lcov', 'json'],
     });
 
     await report.run();
