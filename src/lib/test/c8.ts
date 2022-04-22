@@ -1,5 +1,6 @@
 import { TestOptions } from '@srclaunch/types';
 import { Report } from 'c8';
+import { ensureDir } from 'fs-extra';
 import path from 'path';
 
 export async function run(
@@ -7,6 +8,10 @@ export async function run(
   srcPath?: string,
 ): Promise<Report> {
   try {
+    const srcDir = path.join(process.cwd(), srcPath ?? 'src');
+
+    await ensureDir(srcDir);
+
     const report = new Report({
       all: true,
       reportsDirectory: path.resolve(process.cwd(), 'coverage'),
