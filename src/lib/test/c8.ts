@@ -19,6 +19,7 @@ export async function run(
 
     const report = new Report({
       all: true,
+      exclude: ['src/tests/**'],
       reportsDirectory: coverageDir,
       src: [srcDir],
       tempDirectory: coverageDir,
