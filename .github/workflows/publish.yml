@@ -122,6 +122,11 @@ jobs:
           name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ needs.env-vars.outputs.branch }}-code-coverage.json'
           path: coverage/coverage-summary.json
 
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload test coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
