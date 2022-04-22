@@ -6,6 +6,7 @@ export async function run(config: TestOptions, match?: string) {
   try {
     const jestConfig = {
       bail: config?.failFast,
+      coveragePathIgnorePatterns: ['/src/tests/**'],
       extensionsToTreatAsEsm: ['.ts', '.tsx'],
       failWithoutAssertions: config?.failNoTests,
       match,
