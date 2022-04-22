@@ -15,6 +15,7 @@ export async function run(
     );
 
     await ensureDir(srcDir);
+    await ensureDir(coverageDir);
 
     const report = new Report({
       all: true,
