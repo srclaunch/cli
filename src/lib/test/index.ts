@@ -19,20 +19,7 @@ export const DEFAULT_TEST_OPTIONS = {
     noTests: false,
   },
   files: {
-    exclude: [
-      '**/__tests__/**/__helper__/**/*',
-      '**/__tests__/**/__helpers__/**/*',
-      '**/__tests__/**/__fixture__/**/*',
-      '**/__tests__/**/__fixtures__/**/*',
-      '**/test/**/helper/**/*',
-      '**/test/**/helpers/**/*',
-      '**/test/**/fixture/**/*',
-      '**/test/**/fixtures/**/*',
-      '**/tests/**/helper/**/*',
-      '**/tests/**/helpers/**/*',
-      '**/tests/**/fixture/**/*',
-      '**/tests/**/fixtures/**/*',
-    ],
+    exclude: [],
     include: [
       '**/*.spec.js',
       '**/*.test.js',

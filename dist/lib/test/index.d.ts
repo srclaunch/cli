@@ -18,7 +18,7 @@ export declare const DEFAULT_TEST_OPTIONS: {
         noTests: boolean;
     };
     files: {
-        exclude: string[];
+        exclude: never[];
         include: string[];
     };
     tool: TestTool;
