@@ -5,6 +5,7 @@ import { DEFAULT_TEST_OPTIONS } from '.';
 
 export async function run(config: TestOptions, match?: string) {
   try {
+    const all = ['--all'];
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
@@ -20,8 +21,8 @@ export async function run(config: TestOptions, match?: string) {
       : [config.verbose ? '--verbose' : ''];
 
     const process = spawn('ava', [
-      include.join(' '),
-      exclude.map(e => `!${e}`).join(' '),
+      include.join(' ').concat(exclude.map(e => `!${e}`).join(' ')),
+      ...all,
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
