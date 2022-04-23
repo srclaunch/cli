@@ -6,6 +6,8 @@ import path from 'path';
 
 export async function run(config: TestOptions, match?: string) {
   try {
+    console.log('config', config);
+
     const all = ['--all'];
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
@@ -21,9 +23,7 @@ export async function run(config: TestOptions, match?: string) {
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
 
-    const files = [include, exclude.concat(exclude.map(e => `!${e}`))].join(
-      ' ',
-    );
+    const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
 
     const args = [
       files,
