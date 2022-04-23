@@ -10,7 +10,7 @@ import * as previewCommands from './commands/preview.js';
 import * as projectCommands from './commands/projects.js';
 import * as releaseCommands from './commands/release.js';
 import * as serveCommands from './commands/serve.js';
-import * as testCommands from './commands/_test.js';
+import * as testCommands from './commands/test.js';
 
 import { getSrcLaunchConfig } from './lib/config.js';
 import { Command, CommandType, handleCommand } from './lib/command.js';

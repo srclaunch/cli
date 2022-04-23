@@ -2,7 +2,7 @@ import { Command, CommandType } from '../lib/command.js';
 import { run as runAvaTests } from '../lib/test/ava.js';
 import { run as runC8Coverage } from '../lib/test/c8.js';
 import { run as runJestTests } from '../lib/test/jest.js';
-import { TestOptions, Project, ProjectType } from '@srclaunch/types';
+import { Project } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { TestTool } from '@srclaunch/types';
 
@@ -14,47 +14,26 @@ type TestFlags = TypedFlags<{
   };
 }>;
 
-const defaultTestOptions: TestOptions = {
-  concurrency: undefined,
-  coverage: {
-    thresholds: {
-      global: {
-        branches: 0,
-        functions: 0,
-        lines: 0,
-        statements: 0,
-      },
-    },
-  },
-  failFast: true,
-  failNoTests: false,
-  tool: TestTool.Ava,
-  verbose: true,
-};
-
 export default new Command<Project, TestFlags>({
   name: 'test',
   description: 'Commands for running tests',
   run: async ({ config, flags }: { config: Project; flags: TestFlags }) => {
-    const options = ({ ...defaultTestOptions, ...config.test } ??
-      defaultTestOptions) as TestOptions | TestOptions[];
-
     console.info('Running tests...');
-    if (typeof options === 'object' && !Array.isArray(options)) {
-      switch (options.tool) {
+    if (typeof config.test === 'object' && !Array.isArray(config.test)) {
+      switch (config.test.tool) {
         case TestTool.Jest:
-          await runJestTests(options, flags.match);
+          await runJestTests(config.test, flags.match);
           return;
         case TestTool.Ava:
         default:
-          await runAvaTests(options, flags.match);
+          await runAvaTests(config.test, flags.match);
       }
 
-      if (options.coverage) {
-        await runC8Coverage(options);
+      if (config.test.coverage) {
+        await runC8Coverage(config.test);
       }
-    } else if (Array.isArray(options)) {
-      for (const test of options) {
+    } else if (Array.isArray(config.test)) {
+      for (const test of config.test) {
         switch (test.tool) {
           case TestTool.Jest:
             await runJestTests(test, flags.match);
@@ -75,14 +54,10 @@ export default new Command<Project, TestFlags>({
       name: 'ava',
       description: 'Run tests using Ava',
       run: async ({ config, flags }: { config: Project; flags: TestFlags }) => {
-        const options = (config.test ?? defaultTestOptions) as
-          | TestOptions
-          | TestOptions[];
-
-        if (typeof options === 'object' && !Array.isArray(options)) {
-          await runAvaTests(options, flags.match);
-        } else if (Array.isArray(options)) {
-          for (const test of options) {
+        if (typeof config.test === 'object' && !Array.isArray(config.test)) {
+          await runAvaTests(config.test, flags.match);
+        } else if (Array.isArray(config.test)) {
+          for (const test of config.test) {
             await runAvaTests(test, flags.match);
           }
         }
@@ -92,14 +67,10 @@ export default new Command<Project, TestFlags>({
       name: 'jest',
       description: 'Runs tests using Jest',
       run: async ({ config, flags }) => {
-        const options = (config.test ?? defaultTestOptions) as
-          | TestOptions
-          | TestOptions[];
-
-        if (typeof options === 'object' && !Array.isArray(options)) {
-          await runJestTests(options, flags.match);
-        } else if (Array.isArray(options)) {
-          for (const test of options) {
+        if (typeof config.test === 'object' && !Array.isArray(config.test)) {
+          await runJestTests(config.test, flags.match);
+        } else if (Array.isArray(config.test)) {
+          for (const test of config.test) {
             await runJestTests(test, flags.match);
           }
         }
@@ -110,14 +81,10 @@ export default new Command<Project, TestFlags>({
       name: 'c8',
       description: 'Generates coverage reports',
       run: async ({ config, flags }) => {
-        const options = (config.test ?? defaultTestOptions) as
-          | TestOptions
-          | TestOptions[];
-
-        if (typeof options === 'object' && !Array.isArray(options)) {
-          await runC8Coverage(options);
-        } else if (Array.isArray(options)) {
-          for (const test of options) {
+        if (typeof config.test === 'object' && !Array.isArray(config.test)) {
+          await runC8Coverage(config.test);
+        } else if (Array.isArray(config.test)) {
+          for (const test of config.test) {
             await runC8Coverage(test);
           }
         }

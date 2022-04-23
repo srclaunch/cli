@@ -1,19 +1,23 @@
 import { TestOptions } from '@srclaunch/types';
 import { run as runJest } from 'jest-cli';
 import path from 'path';
+import { DEFAULT_TEST_OPTIONS } from '.';
 
 export async function run(config: TestOptions, match?: string) {
   try {
     const jestConfig = {
-      bail: config?.failFast,
-      coveragePathIgnorePatterns: ['/src/tests/**'],
+      bail: config?.fail?.fast ?? DEFAULT_TEST_OPTIONS.fail.fast,
+      coveragePathIgnorePatterns:
+        config.files?.include ?? DEFAULT_TEST_OPTIONS.files.include,
       extensionsToTreatAsEsm: ['.ts', '.tsx'],
-      failWithoutAssertions: config?.failNoTests,
+      failWithoutAssertions:
+        config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests,
       match,
       maxConcurrency: config.concurrency ?? 5,
       rootDir: path.resolve(process.cwd()),
-      testPathIgnorePatterns: ['/src/tests/**'],
-      testMatch: config.files ?? ['**/*.test.ts', '**/*.test.tsx'],
+      testPathIgnorePatterns:
+        config.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude,
+      testMatch: config.files?.include ?? DEFAULT_TEST_OPTIONS.files.include,
       verbose: config.verbose ?? true,
     };
 

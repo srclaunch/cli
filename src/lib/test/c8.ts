@@ -2,28 +2,25 @@ import { TestOptions } from '@srclaunch/types';
 import { Report } from 'c8';
 import { ensureDir } from 'fs-extra';
 import path from 'path';
+import { DEFAULT_TEST_OPTIONS } from '.';
 
-export async function run(
-  config: TestOptions,
-  srcPath?: string,
-): Promise<Report> {
+export async function run(config: TestOptions): Promise<Report> {
   try {
-    const srcDir = path.join(process.cwd(), srcPath ?? 'src');
     const coverageDir = path.join(
       process.cwd(),
       config.coverage?.directory ?? 'coverage',
     );
 
-    await ensureDir(srcDir);
     await ensureDir(coverageDir);
 
     const report = new Report({
       all: true,
-      exclude: ['src/tests/**'],
+      exclude: config.files?.include ?? DEFAULT_TEST_OPTIONS.files.include,
       reportsDirectory: coverageDir,
-      src: [srcDir],
+      src: ['src'],
       tempDirectory: coverageDir,
-      reporter: ['lcov', 'json'],
+      reporter:
+        config.coverage?.reporters ?? DEFAULT_TEST_OPTIONS.coverage.reporters,
     });
 
     await report.run();

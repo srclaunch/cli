@@ -9,4 +9,4 @@ declare const _default: Command<Project, TypedFlags<{
     };
 }>>;
 export default _default;
-//# sourceMappingURL=_test.d.ts.map
+//# sourceMappingURL=test.d.ts.map

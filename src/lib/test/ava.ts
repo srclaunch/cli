@@ -1,32 +1,37 @@
 import { spawn } from 'child_process';
 import { TestOptions } from '@srclaunch/types';
 import chalk from 'chalk';
+import { DEFAULT_TEST_OPTIONS } from '.';
 
 export async function run(config: TestOptions, match?: string) {
   try {
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
-    const failFast = config?.failFast ? ['--fail-fast'] : [];
-    const failNoTests = config?.failNoTests ? ['--failWithoutAssertions'] : [];
-    const files = config?.files ?? ['**/*.test.ts', '**/*.test.tsx'];
+    const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
+    const exclude =
+      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
+    const include =
+      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
-    const verbose = config?.verbose ? ['--verbose'] : [];
+    const verbose = config?.verbose
+      ? ['--verbose']
+      : [config.verbose ? '--verbose' : ''];
 
     console.log([
-      files.join(' '),
+      include.join(' '),
+      exclude.map(e => `!e`).join(' '),
       ...concurrencyArg,
       ...failFast,
-      ...failNoTests,
       ...matchFlag,
       ...verbose,
     ]);
 
     const process = spawn('ava', [
-      files.join(' '),
+      include.join(' '),
+      exclude.map(e => `!e`).join(' '),
       ...concurrencyArg,
       ...failFast,
-      ...failNoTests,
       ...matchFlag,
       ...verbose,
     ]);
