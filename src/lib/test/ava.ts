@@ -33,6 +33,7 @@ export async function run(config: TestOptions, match?: string) {
       ...verbose,
       '--nodeArguments --loader=ts-node/esm',
       '--require ts-node/register',
+      '--extensions ts=module tsx=module',
     ];
 
     console.log('args', args);
