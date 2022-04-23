@@ -14,6 +14,7 @@ export async function run(config: TestOptions, match?: string) {
     const include =
       config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
+    // const tapReporter = ['--tap'];
     const verbose = config?.verbose
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
