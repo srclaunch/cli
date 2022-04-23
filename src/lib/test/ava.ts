@@ -21,7 +21,7 @@ export async function run(config: TestOptions, match?: string) {
 
     console.log([
       include.join(' '),
-      exclude.map(e => `!e`).join(' '),
+      exclude.map(e => `!${e}`).join(' '),
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
@@ -30,7 +30,7 @@ export async function run(config: TestOptions, match?: string) {
 
     const process = spawn('ava', [
       include.join(' '),
-      exclude.map(e => `!e`).join(' '),
+      exclude.map(e => `!${e}`).join(' '),
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
