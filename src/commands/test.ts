@@ -18,7 +18,6 @@ export default new Command<Project, TestFlags>({
   name: 'test',
   description: 'Commands for running tests',
   run: async ({ config, flags }: { config: Project; flags: TestFlags }) => {
-    console.info('Running tests...');
     if (typeof config.test === 'object' && !Array.isArray(config.test)) {
       switch (config.test.tool) {
         case TestTool.Jest:
@@ -78,7 +77,7 @@ export default new Command<Project, TestFlags>({
       type: CommandType.Project,
     }),
     new Command<Project, TestFlags>({
-      name: 'c8',
+      name: 'coverage',
       description: 'Generates coverage reports',
       run: async ({ config, flags }) => {
         if (typeof config.test === 'object' && !Array.isArray(config.test)) {
