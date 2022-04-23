@@ -11,18 +11,24 @@ export async function run(config: TestOptions, match?: string) {
       ? ['--concurrency', config.concurrency.toString()]
       : [];
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
-    const exclude = (
-      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude
-    ).map(f => path.resolve(f));
-    const include = (
-      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include
-    ).map(f => path.resolve(f));
+    const exclude =
+      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
+    const include =
+      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
     // const tapReporter = ['--tap'];
     const verbose = config?.verbose
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
 
+    console.log('args', [
+      include.join(' ').concat(exclude.map(e => `!${e}`).join(' ')),
+      ...all,
+      ...concurrencyArg,
+      ...failFast,
+      ...matchFlag,
+      ...verbose,
+    ]);
     const process = spawn('ava', [
       include.join(' ').concat(exclude.map(e => `!${e}`).join(' ')),
       ...all,
