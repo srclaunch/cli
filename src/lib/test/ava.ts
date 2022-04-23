@@ -38,10 +38,12 @@ export async function run(config: TestOptions, match?: string) {
     ]);
 
     process.stdout.on('data', data => {
+      console.log(data);
       if (data) chalk.white(data);
     });
 
     process.stderr.on('data', data => {
+      console.log(data);
       if (data) chalk.white(data);
     });
 

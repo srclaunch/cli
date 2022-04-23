@@ -7,6 +7,12 @@ import { TypedFlags } from 'meow';
 import { TestTool } from '@srclaunch/types';
 
 type TestFlags = TypedFlags<{
+  coverage: {
+    alias: 'c';
+    default: false;
+    description: 'Collect test coverage after test run';
+    type: 'boolean';
+  };
   match: {
     alias: 'm';
     description: 'Run tests matching the specified pattern';
@@ -28,7 +34,7 @@ export default new Command<Project, TestFlags>({
           await runAvaTests(config.test, flags.match);
       }
 
-      if (config.test.coverage) {
+      if (config.test.coverage || flags.coverage) {
         await runC8Coverage(config.test);
       }
     } else if (Array.isArray(config.test)) {
@@ -42,7 +48,7 @@ export default new Command<Project, TestFlags>({
             await runAvaTests(test, flags.match);
         }
 
-        if (test.coverage) {
+        if (test.coverage || flags.coverage) {
           await runC8Coverage(test);
         }
       }
