@@ -6,8 +6,6 @@ import path from 'path';
 
 export async function run(config: TestOptions, match?: string) {
   try {
-    console.log('config', config);
-
     const all = ['--all'];
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
@@ -18,6 +16,7 @@ export async function run(config: TestOptions, match?: string) {
     const include =
       config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
+
     // const tapReporter = ['--tap'];
     const verbose = config?.verbose
       ? ['--verbose']
@@ -32,6 +31,8 @@ export async function run(config: TestOptions, match?: string) {
       ...failFast,
       ...matchFlag,
       ...verbose,
+      '--nodeArguments --loader=ts-node/esm',
+      '--require ts-node/register',
     ];
 
     console.log('args', args);

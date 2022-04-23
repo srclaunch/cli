@@ -1,5 +1,5 @@
 import { Project } from '@srclaunch/types';
-import { TypedFlags } from 'meow';
+import { AnyFlag, TypedFlags } from 'meow';
 import Git, { SimpleGit } from 'simple-git';
 import { Command, CommandType } from '../lib/command.js';
 import { render } from 'ink';
@@ -17,6 +17,18 @@ export default new Command({
           message: {
             alias: 'm';
             description: 'A message describing the changes';
+            isRequired: true;
+            type: 'string';
+          };
+          scope: {
+            alias: 's';
+            description: 'The scope of the changes';
+            isRequired: true;
+            type: 'string';
+          };
+          type: {
+            alias: 't';
+            description: 'The type of changes made';
             isRequired: true;
             type: 'string';
           };
