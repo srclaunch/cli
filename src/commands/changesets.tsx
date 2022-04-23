@@ -1,8 +1,10 @@
 import { Project } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
+import Git, { CleanOptions, SimpleGit } from 'simple-git';
 import { Command, CommandType } from '../lib/command.js';
 import { render } from 'ink';
 import { AppContainer } from '../containers/AppContainer.js';
+import { InteractiveModeFlag } from '../lib/flags.js';
 
 export default new Command({
   name: 'changesets',
@@ -10,27 +12,40 @@ export default new Command({
   commands: [
     new Command<
       Project,
-      TypedFlags<{
-        message: {
-          alias: 'm';
-          description: 'A message describing the changes';
-          type: 'string';
-        };
-      }>
+      TypedFlags<
+        InteractiveModeFlag & {
+          message: {
+            alias: 'm';
+            description: 'A message describing the changes';
+            isRequired: true;
+            type: 'string';
+          };
+        }
+      >
     >({
       name: 'add',
-      description: 'Add a changeset',
+      description: 'Create a changeset',
       run: async ({ cli, config, flags }) => {
         const message = flags.message;
 
-        const { waitUntilExit } = render(
-          <AppContainer
-            initialTab="Changes"
-            cliVersion={cli.pkg.version}
-            flags={flags}
-          />,
-        );
-        await waitUntilExit();
+        if (flags.interactive) {
+          const { waitUntilExit } = render(
+            <AppContainer
+              initialTab="Changes"
+              cliVersion={cli.pkg.version}
+              flags={flags}
+            />,
+          );
+          await waitUntilExit();
+        } else {
+          try {
+            const git: SimpleGit = Git();
+            await git.add('.');
+            await git.commit(message);
+          } catch (err) {
+            console.error(err);
+          }
+        }
       },
       type: CommandType.Project,
     }),

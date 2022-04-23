@@ -15,6 +15,7 @@ import * as testCommands from './commands/test.js';
 import { getSrcLaunchConfig } from './lib/config.js';
 import { Command, CommandType, handleCommand } from './lib/command.js';
 import { Project } from '@srclaunch/types';
+import { InteractiveModeFlag } from './lib/flags.js';
 
 export type { Command };
 export { CommandType };
@@ -40,7 +41,7 @@ export const cli = meow(helpMessage, {
 export async function main() {
   try {
     const command = cli.input;
-    const flags = cli.flags;
+    const flags = cli.flags as TypedFlags<InteractiveModeFlag>;
     const config = await getSrcLaunchConfig();
 
     updateNotifier({ pkg: cli.pkg as Package }).notify();

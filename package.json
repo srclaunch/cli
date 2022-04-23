@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "build:es": "esbuild --external:'c8' --external:'esbuild-css-modules-plugin' --external:'fs-extra' --external:ink --external:jest  --external:'jest-cli' --external:'jest-pnp-resolver' --external:'meow' --external:'typescript' --external:'esbuild'  --external:vite --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
+    "build:es": "esbuild --external:'c8' --external:'esbuild-css-modules-plugin' --external:'fs-extra' --external:ink --external:jest  --external:'jest-cli' --external:'jest-pnp-resolver' --external:'meow' --external:'simple-git' --external:'typescript' --external:'esbuild'  --external:vite --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.js --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
     "build:self": "node ./dist/index.js build",
     "build": "yarn build:es && yarn build:self",
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
@@ -65,6 +65,7 @@
     "pluralize": "^8.0.0",
     "react": "^18.0.0",
     "shelljs": "^0.8.5",
+    "simple-git": "^3.7.1",
     "terminal-link": "^3.0.0",
     "typescript": "^4.6.3",
     "update-notifier": "^5.1.0",

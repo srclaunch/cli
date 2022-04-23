@@ -20,6 +20,7 @@ export default {
         'ink',
         'jest-cli', // 'jest-pnp-resolver',
         'meow',
+        'simple-git',
         'typescript',
         'update-notifier',
         'vite',
