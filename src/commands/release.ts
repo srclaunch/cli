@@ -3,32 +3,28 @@ import standardVersion from 'standard-version';
 import Git, { SimpleGit } from 'simple-git';
 import { Command, CommandType } from '../lib/command.js';
 
-export default new Command({
+export default new Command<Project>({
   name: 'release',
-  description: 'Manage releases',
+  description: 'Create a release',
   run: async ({ config }: { config: Project }) => {
     try {
       const git: SimpleGit = Git();
+
+      const result = await standardVersion({
+        noVerify: true,
+        infile: 'docs/CHANGELOG.md',
+        silent: true,
+      });
+
+      console.log('sv result', result);
+
       await git.push();
     } catch (err) {
       console.error(err);
     }
   },
+  type: CommandType.Project,
   commands: [
-    new Command<Project>({
-      name: 'create',
-      description: 'Create a release',
-      run: async ({ config, flags }) => {
-        try {
-          const git: SimpleGit = Git();
-          await git.add('.');
-          await git.commit(message);
-        } catch (err) {
-          console.error(err);
-        }
-      },
-      type: CommandType.Project,
-    }),
     new Command<Project>({
       name: 'help',
       description: 'Shows help for release commands',

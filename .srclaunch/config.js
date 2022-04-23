@@ -21,6 +21,7 @@ export default {
         'jest-cli', // 'jest-pnp-resolver',
         'meow',
         'simple-git',
+        'standard-version',
         'typescript',
         'update-notifier',
         'vite',
