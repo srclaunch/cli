@@ -21,22 +21,18 @@ export async function run(config: TestOptions, match?: string) {
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
 
-    console.log('args', [
-      include.join(' ').concat(exclude.map(e => `!${e}`).join(' ')),
+    const files = include.join(' ').concat(exclude.map(e => `!${e}`).join(' '));
+    const args = [
+      files,
       ...all,
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
       ...verbose,
-    ]);
-    const process = spawn('ava', [
-      include.join(' ').concat(exclude.map(e => `!${e}`).join(' ')),
-      ...all,
-      ...concurrencyArg,
-      ...failFast,
-      ...matchFlag,
-      ...verbose,
-    ]);
+    ];
+
+    console.log('args', args);
+    const process = spawn('ava', args);
 
     process.stdout.on('data', data => {
       console.log(data.toString());
