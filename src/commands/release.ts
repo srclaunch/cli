@@ -9,16 +9,17 @@ export default new Command<Project>({
   run: async ({ config }: { config: Project }) => {
     try {
       const git: SimpleGit = Git();
+      const currentBranch = await git.branchLocal();
 
       const result = await standardVersion({
         noVerify: true,
         infile: 'docs/CHANGELOG.md',
-        silent: true,
+        silent: false,
       });
 
       console.log('sv result', result);
 
-      await git.push();
+      await git.pushTags(currentBranch.current);
     } catch (err) {
       console.error(err);
     }
