@@ -21,9 +21,9 @@ export async function run(config: TestOptions, match?: string) {
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
 
-    const includedFiles = include.join(' ');
-    const excludedFiles = exclude.concat(exclude.map(e => `!${e}`));
-    const files = [includedFiles, excludedFiles].join(' ');
+    const files = [include, exclude.concat(exclude.map(e => `!${e}`))].join(
+      ' ',
+    );
 
     const args = [
       files,
