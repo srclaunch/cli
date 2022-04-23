@@ -13,6 +13,15 @@ export async function run(config: TestOptions, match?: string) {
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
     const verbose = config?.verbose ? ['--verbose'] : [];
 
+    console.log([
+      files.join(' '),
+      ...concurrencyArg,
+      ...failFast,
+      ...failNoTests,
+      ...matchFlag,
+      ...verbose,
+    ]);
+
     const process = spawn('ava', [
       files.join(' '),
       ...concurrencyArg,

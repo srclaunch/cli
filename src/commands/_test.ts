@@ -39,6 +39,7 @@ export default new Command<Project, TestFlags>({
     const options = ({ ...defaultTestOptions, ...config.test } ??
       defaultTestOptions) as TestOptions | TestOptions[];
 
+    console.info('Running tests...');
     if (typeof options === 'object' && !Array.isArray(options)) {
       switch (options.tool) {
         case TestTool.Jest:
