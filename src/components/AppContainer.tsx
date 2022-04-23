@@ -1,13 +1,15 @@
-import { Box, Newline, Text, useInput } from 'ink';
+import { Box, Newline, Static, Text, useInput } from 'ink';
 import { TypedFlags } from 'meow';
 import { ReactElement, useEffect, useState } from 'react';
 import { Worker } from 'worker_threads';
+import MultiSelect from 'ink-multi-select';
 
 // import { getAppLabMetadata } from '../applab';
 // import { startThread } from '../worker-thread';
 
 import { FullScreen } from './FullScreen.js';
 import { Scrollable } from './Scrollable.js';
+import { Tab, Tabs } from './Tabs.js';
 // import { Tab, Tabs } from './Tabs.js';
 
 type AppContainerProps = {
@@ -53,7 +55,7 @@ export const AppContainer = ({
 
   useEffect(() => {
     const handleFlags = async () => {
-      addToLogs(`🧬 AppLab CLI v${cliVersion}`);
+      addToLogs(``);
       // addToLogs('Initializing services...');
       //
       // const { name, type } = await getAppLabMetadata();
@@ -96,38 +98,72 @@ export const AppContainer = ({
   }, []);
 
   return (
-    <FullScreen>
-      <Box flexGrow={0} minHeight={'100%'} flexDirection={'row'}>
-        <Box flexDirection="row">
+    <FullScreen
+      borderStyle="round"
+      borderColor="lightgrey"
+      flexDirection="column"
+    >
+      <Tabs title={`🧬 SrcLaunch CLI ${cliVersion}`}>
+        <Tab label="Build">
           <Box
-            flexDirection={'column'}
             flexGrow={1}
-            borderStyle={'round'}
-            borderColor={'gray'}
+            borderStyle="round"
+            borderColor="gray"
             marginLeft={1}
           >
             <Scrollable items={mainOutput} />
           </Box>
+        </Tab>
+        <Tab label="Tests"></Tab>
+        <Tab label="Changes">
           <Box
+            borderStyle="round"
+            borderColor="blue"
             flexDirection="column"
-            alignItems="flex-start"
             width={30}
             padding={1}
             paddingLeft={2}
           >
             {/* <Box flexGrow={1}></Box> */}
 
-            <Text>
-              Log Level
-              <Newline />
-              <Text backgroundColor={'#000000'} color={'#dc54e9'}>
-                {' Debug ▼ '}
+            <Box>
+              <Text>
+                Change type
+                {/* items.length: {items.length} - lineCount: {lineCount} */}
               </Text>
-              {/* items.length: {items.length} - lineCount: {lineCount} */}
-            </Text>
+            </Box>
+
+            <Box>
+              <Text>New Feature</Text>
+              <Text>Bugfix</Text>
+              <Text>Documentation</Text>
+              <Text>Formatting</Text>
+              <Text>Refactor</Text>
+              <Text>Performance</Text>
+              <Text>Testing</Text>
+              <Text>Chore</Text>
+            </Box>
+            {/* 
+            <MultiSelect
+              items={[
+                {
+                  label: 'First',
+                  value: 'first',
+                },
+                {
+                  label: 'Second',
+                  value: 'second',
+                },
+                {
+                  label: 'Third',
+                  value: 'third',
+                },
+              ]}
+              // onSubmit={() => {}}
+            /> */}
           </Box>
-        </Box>
-      </Box>
+        </Tab>
+      </Tabs>
     </FullScreen>
   );
 };

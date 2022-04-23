@@ -12,9 +12,15 @@ export type RunArguments<C, F> = {
   flags: F;
 };
 
-export type RunFunction<C, F> = (args: RunArguments<C, F>) => Promise<void>;
+export type RunFunction<
+  C,
+  F = TypedFlags<AnyFlags> & Record<string, unknown>,
+> = (args: RunArguments<C, F>) => Promise<void>;
 
-export type CommandConstructorArgs<C, F> = {
+export type CommandConstructorArgs<
+  C,
+  F = TypedFlags<AnyFlags> & Record<string, unknown>,
+> = {
   description: string;
   flags?: F;
   name: string;
@@ -26,19 +32,38 @@ export type CommandConstructorArgs<C, F> = {
 export class Command<C, F = TypedFlags<AnyFlags> & Record<string, unknown>> {
   flags?: F;
   name: string;
-  private runFunction?: RunFunction<C, F>;
-  commands: CommandConstructorArgs<C, F>['commands'];
+  private runFunction?: RunFunction<
+    C,
+    TypedFlags<AnyFlags> & Record<string, unknown>
+  >;
+  commands: CommandConstructorArgs<
+    C,
+    TypedFlags<AnyFlags> & Record<string, unknown>
+  >['commands'];
   type: CommandType = CommandType.Project;
 
   constructor(options: CommandConstructorArgs<C, F>) {
     this.name = options.name;
-    this.commands = options.commands;
+    this.commands = options.commands as CommandConstructorArgs<
+      C,
+      TypedFlags<AnyFlags> & Record<string, unknown>
+    >['commands'];
     this.flags = options.flags;
     this.type = options.type ?? CommandType.Project;
-    this.runFunction = options.run;
+    this.runFunction = options.run as RunFunction<
+      C,
+      TypedFlags<AnyFlags> & Record<string, unknown>
+    >;
   }
 
-  public async run({ cli, config, flags }: RunArguments<C, F>): Promise<void> {
+  public async run({
+    cli,
+    config,
+    flags,
+  }: RunArguments<
+    C,
+    TypedFlags<AnyFlags> & Record<string, unknown>
+  >): Promise<void> {
     if (this.runFunction) {
       return await this.runFunction({
         cli,

@@ -1,9 +1,12 @@
-import { Box } from 'ink';
+import { Box, BoxProps } from 'ink';
 import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 
-type FullScreenProps = PropsWithChildren<{}>;
+type FullScreenProps = PropsWithChildren<BoxProps>;
 
-export const FullScreen = ({ children }: FullScreenProps): ReactElement => {
+export const FullScreen = ({
+  children,
+  ...props
+}: FullScreenProps): ReactElement => {
   const [size, setSize] = useState({
     columns: process.stdout.columns,
     rows: process.stdout.rows,
@@ -27,7 +30,7 @@ export const FullScreen = ({ children }: FullScreenProps): ReactElement => {
   }, []);
 
   return (
-    <Box width={size.columns} height={size.rows}>
+    <Box width={size.columns} height={size.rows} {...props}>
       {children}
     </Box>
   );

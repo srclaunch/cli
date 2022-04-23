@@ -17,6 +17,7 @@ export default {
         'esbuild',
         'esbuild-css-modules-plugin',
         'fs-extra',
+        'ink',
         'jest-cli', // 'jest-pnp-resolver',
         'meow',
         'typescript',

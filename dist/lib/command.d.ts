@@ -8,8 +8,8 @@ export declare type RunArguments<C, F> = {
     config: C;
     flags: F;
 };
-export declare type RunFunction<C, F> = (args: RunArguments<C, F>) => Promise<void>;
-export declare type CommandConstructorArgs<C, F> = {
+export declare type RunFunction<C, F = TypedFlags<AnyFlags> & Record<string, unknown>> = (args: RunArguments<C, F>) => Promise<void>;
+export declare type CommandConstructorArgs<C, F = TypedFlags<AnyFlags> & Record<string, unknown>> = {
     description: string;
     flags?: F;
     name: string;
@@ -21,10 +21,10 @@ export declare class Command<C, F = TypedFlags<AnyFlags> & Record<string, unknow
     flags?: F;
     name: string;
     private runFunction?;
-    commands: CommandConstructorArgs<C, F>['commands'];
+    commands: CommandConstructorArgs<C, TypedFlags<AnyFlags> & Record<string, unknown>>['commands'];
     type: CommandType;
     constructor(options: CommandConstructorArgs<C, F>);
-    run({ cli, config, flags }: RunArguments<C, F>): Promise<void>;
+    run({ cli, config, flags, }: RunArguments<C, TypedFlags<AnyFlags> & Record<string, unknown>>): Promise<void>;
 }
 export declare function handleCommand({ cli, config, command, commands, flags, }: {
     cli: Result<AnyFlags>;
