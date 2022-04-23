@@ -9,10 +9,12 @@ export async function run(config: TestOptions, match?: string) {
       : [];
     const failFast = config?.failFast ? ['--fail-fast'] : [];
     const failNoTests = config?.failNoTests ? ['--failWithoutAssertions'] : [];
+    const files = config?.files ?? ['**/*.test.ts', '**/*.test.tsx'];
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
     const verbose = config?.verbose ? ['--verbose'] : [];
 
     const process = spawn('ava', [
+      files.join(' '),
       ...concurrencyArg,
       ...failFast,
       ...failNoTests,

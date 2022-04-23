@@ -2,7 +2,7 @@ import { Project } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { Command, CommandType } from '../lib/command.js';
 import { render } from 'ink';
-import { AppContainer } from '../components/AppContainer.js';
+import { AppContainer } from '../containers/AppContainer.js';
 
 export default new Command({
   name: 'changesets',
@@ -24,7 +24,11 @@ export default new Command({
         const message = flags.message;
 
         const { waitUntilExit } = render(
-          <AppContainer cliVersion={cli.pkg.version} flags={flags} />,
+          <AppContainer
+            initialTab="Changes"
+            cliVersion={cli.pkg.version}
+            flags={flags}
+          />,
         );
         await waitUntilExit();
       },

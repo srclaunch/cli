@@ -1,4 +1,4 @@
-import { Box, Newline, Static, Text, useInput } from 'ink';
+import { Box, Newline, Spacer, Static, Text, useInput } from 'ink';
 import { TypedFlags } from 'meow';
 import { ReactElement, useEffect, useState } from 'react';
 import { Worker } from 'worker_threads';
@@ -7,17 +7,24 @@ import MultiSelect from 'ink-multi-select';
 // import { getAppLabMetadata } from '../applab';
 // import { startThread } from '../worker-thread';
 
-import { FullScreen } from './FullScreen.js';
-import { Scrollable } from './Scrollable.js';
-import { Tab, Tabs } from './Tabs.js';
+import { FullScreen } from '../components/FullScreen.js';
+import { Scrollable } from '../components/Scrollable.js';
+import { Tab, Tabs } from '../components/Tabs.js';
+import { Changes } from '../pages/Changes.js';
+import { Tests } from '../pages/Tests.js';
+import { Release } from '../pages/Release.js';
+import { Build } from '../pages/Build.js';
+import { Overview } from '../pages/Overview.js';
 // import { Tab, Tabs } from './Tabs.js';
 
 type AppContainerProps = {
+  initialTab?: string;
   cliVersion?: string;
   flags?: TypedFlags<{}> & Record<string, unknown>;
 };
 
 export const AppContainer = ({
+  initialTab,
   cliVersion,
 }: AppContainerProps): ReactElement => {
   const [mainOutput, setMainOutput] = useState<string[]>([]);
@@ -103,67 +110,29 @@ export const AppContainer = ({
       borderColor="lightgrey"
       flexDirection="column"
     >
-      <Tabs title={`🧬 SrcLaunch CLI ${cliVersion}`}>
-        <Tab label="Build">
-          <Box
-            flexGrow={1}
-            borderStyle="round"
-            borderColor="gray"
-            marginLeft={1}
-          >
-            <Scrollable items={mainOutput} />
-          </Box>
+      <Tabs>
+        <Tab initial={initialTab === 'Overview'} label="Overview">
+          <Overview />
         </Tab>
-        <Tab label="Tests"></Tab>
-        <Tab label="Changes">
-          <Box
-            borderStyle="round"
-            borderColor="blue"
-            flexDirection="column"
-            width={30}
-            padding={1}
-            paddingLeft={2}
-          >
-            {/* <Box flexGrow={1}></Box> */}
-
-            <Box>
-              <Text>
-                Change type
-                {/* items.length: {items.length} - lineCount: {lineCount} */}
-              </Text>
-            </Box>
-
-            <Box>
-              <Text>New Feature</Text>
-              <Text>Bugfix</Text>
-              <Text>Documentation</Text>
-              <Text>Formatting</Text>
-              <Text>Refactor</Text>
-              <Text>Performance</Text>
-              <Text>Testing</Text>
-              <Text>Chore</Text>
-            </Box>
-            {/* 
-            <MultiSelect
-              items={[
-                {
-                  label: 'First',
-                  value: 'first',
-                },
-                {
-                  label: 'Second',
-                  value: 'second',
-                },
-                {
-                  label: 'Third',
-                  value: 'third',
-                },
-              ]}
-              // onSubmit={() => {}}
-            /> */}
-          </Box>
+        <Tab initial={initialTab === 'Build'} label="Build">
+          <Build />
+        </Tab>
+        <Tab initial={initialTab === 'Tests'} label="Tests">
+          <Tests />
+        </Tab>
+        <Tab initial={initialTab === 'Changes'} label="Changes">
+          <Changes />
+        </Tab>
+        <Tab initial={initialTab === 'Release'} label="Release">
+          <Release />
         </Tab>
       </Tabs>
+      <Box flexDirection="row">
+        <Spacer />
+        <Box alignItems="flex-end" paddingRight={1}>
+          <Text>{cliVersion}</Text>
+        </Box>
+      </Box>
     </FullScreen>
   );
 };

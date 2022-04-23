@@ -1,11 +1,20 @@
-import { Box, Text, useFocus, useFocusManager } from 'ink';
-import React, { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
+import { Box, BoxProps, Text, useFocus, useFocusManager } from 'ink';
+import React, {
+  PropsWithChildren,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 
 import Button from './Button.js';
 
-type TabsProps = PropsWithChildren<{ title: string }>;
+type TabsProps = PropsWithChildren<BoxProps & { title?: string }>;
 
-export const Tabs = ({ children, title }: TabsProps): ReactElement => {
+export const Tabs = ({
+  children,
+  title,
+  ...props
+}: TabsProps): ReactElement => {
   const { enableFocus, focusNext } = useFocusManager();
   const [activeTab, setActiveTab] = useState(0);
   const { isFocused } = useFocus({
@@ -22,14 +31,23 @@ export const Tabs = ({ children, title }: TabsProps): ReactElement => {
     }
   }, [isFocused, focusNext]);
 
+  useEffect(() => {
+    // @ts-ignore
+    React.Children.forEach(children, (child: typeof Tab, index) => {
+      // @ts-ignore
+      if (child?.props?.initial) {
+        setActiveTab(index);
+      }
+    });
+  }, [children]);
   // useEffect(() => {
   //   console.log;
   // }, [activeTab]);
 
   return (
-    <Box flexGrow={1} flexDirection={'column'}>
+    <Box flexGrow={1} flexDirection="column" {...props}>
       {/* Tab navigation */}
-      <Box flexDirection={'row'} height={1}>
+      <Box flexDirection="row" height={1}>
         <Box paddingLeft={1} flexGrow={1}>
           {/* @ts-ignore */}
           {React.Children.map(children, (child: typeof Tab, i) => {
@@ -48,7 +66,7 @@ export const Tabs = ({ children, title }: TabsProps): ReactElement => {
         </Box>
 
         {title && (
-          <Box alignItems={'flex-end'} paddingRight={1}>
+          <Box alignItems="flex-end" paddingRight={1}>
             <Text>{title}</Text>
           </Box>
         )}
@@ -57,9 +75,9 @@ export const Tabs = ({ children, title }: TabsProps): ReactElement => {
       {/* Tab content */}
       <Box
         flexGrow={1}
-        flexDirection={'column'}
+        flexDirection="column"
         borderStyle="round"
-        borderColor="gray"
+        borderColor="black"
         width="100%"
       >
         {/* @ts-ignore */}
@@ -81,6 +99,7 @@ export const Tabs = ({ children, title }: TabsProps): ReactElement => {
 };
 
 type TabProps = PropsWithChildren<{
+  initial?: boolean;
   label: string;
   status?: string;
 }>;

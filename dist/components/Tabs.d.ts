@@ -1,9 +1,11 @@
+import { BoxProps } from 'ink';
 import { PropsWithChildren, ReactElement } from 'react';
-declare type TabsProps = PropsWithChildren<{
-    title: string;
+declare type TabsProps = PropsWithChildren<BoxProps & {
+    title?: string;
 }>;
-export declare const Tabs: ({ children, title }: TabsProps) => ReactElement;
+export declare const Tabs: ({ children, title, ...props }: TabsProps) => ReactElement;
 declare type TabProps = PropsWithChildren<{
+    initial?: boolean;
     label: string;
     status?: string;
 }>;

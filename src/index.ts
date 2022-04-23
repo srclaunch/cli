@@ -38,13 +38,13 @@ export const cli = meow(helpMessage, {
 });
 
 export async function main() {
-  updateNotifier({ pkg: cli.pkg as Package }).notify();
-
-  const command = cli.input;
-  const flags = cli.flags;
-  const config = await getSrcLaunchConfig();
-
   try {
+    const command = cli.input;
+    const flags = cli.flags;
+    const config = await getSrcLaunchConfig();
+
+    updateNotifier({ pkg: cli.pkg as Package }).notify();
+
     await handleCommand({
       cli,
       command,
