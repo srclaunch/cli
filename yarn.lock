@@ -1915,6 +1915,7 @@ __metadata:
     "@types/pluralize": ^0.0.29
     "@types/react": ^18.0.6
     "@types/rimraf": ^3.0.2
+    "@types/standard-version": ^7.0.1
     "@types/update-notifier": ^5.1.0
     "@typescript-eslint/eslint-plugin": ^5.20.0
     "@typescript-eslint/parser": ^5.20.0
@@ -2105,6 +2106,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/conventional-changelog-config-spec@npm:*":
+  version: 2.1.1
+  resolution: "@types/conventional-changelog-config-spec@npm:2.1.1"
+  dependencies:
+    "@types/json-schema": "*"
+  checksum: 7b79cf4fb12d6be4e07aeb1fb002a89ac5f4cd8f04b3c174f8322313e783f725fbf5dfd76ea10d05f94e1d9a74dd229be7e4237c54581609a178312db99d6845
+  languageName: node
+  linkType: hard
+
 "@types/fs-extra@npm:^9.0.13":
   version: 9.0.13
   resolution: "@types/fs-extra@npm:9.0.13"
@@ -2167,7 +2177,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
@@ -2310,6 +2320,16 @@ __metadata:
   version: 2.0.1
   resolution: "@types/stack-utils@npm:2.0.1"
   checksum: 205fdbe3326b7046d7eaf5e494d8084f2659086a266f3f9cf00bccc549c8e36e407f88168ad4383c8b07099957ad669f75f2532ed4bc70be2b037330f7bae019
+  languageName: node
+  linkType: hard
+
+"@types/standard-version@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@types/standard-version@npm:7.0.1"
+  dependencies:
+    "@types/conventional-changelog-config-spec": "*"
+    "@types/node": "*"
+  checksum: ad0828b410cb0e355373f7bc3f3cba9684c9b10c81c7c78caf3084bcfc06fe5cba3e65f7994cd167e4b309d8c1d9c0ed3cc796d30739106ea0bd8788ee6ef4df
   languageName: node
   linkType: hard
 

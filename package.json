@@ -83,6 +83,7 @@
     "@types/pluralize": "^0.0.29",
     "@types/react": "^18.0.6",
     "@types/rimraf": "^3.0.2",
+    "@types/standard-version": "^7.0.1",
     "@types/update-notifier": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",

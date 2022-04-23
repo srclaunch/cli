@@ -19,15 +19,6 @@ export async function run(config: TestOptions, match?: string) {
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
 
-    console.log([
-      include.join(' '),
-      exclude.map(e => `!${e}`).join(' '),
-      ...concurrencyArg,
-      ...failFast,
-      ...matchFlag,
-      ...verbose,
-    ]);
-
     const process = spawn('ava', [
       include.join(' '),
       exclude.map(e => `!${e}`).join(' '),
@@ -38,13 +29,14 @@ export async function run(config: TestOptions, match?: string) {
     ]);
 
     process.stdout.on('data', data => {
-      console.log(data);
-      if (data) chalk.white(data);
+      console.log(data.toString());
+      if (data) chalk.white(data.toString());
     });
 
     process.stderr.on('data', data => {
-      console.log(data);
-      if (data) chalk.white(data);
+      console.log('Error below');
+      console.log(data.toString());
+      if (data) chalk.white(data.toString());
     });
 
     // console.log('process', process);

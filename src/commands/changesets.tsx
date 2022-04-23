@@ -1,6 +1,6 @@
 import { Project } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
-import Git, { CleanOptions, SimpleGit } from 'simple-git';
+import Git, { SimpleGit } from 'simple-git';
 import { Command, CommandType } from '../lib/command.js';
 import { render } from 'ink';
 import { AppContainer } from '../containers/AppContainer.js';
