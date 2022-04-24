@@ -16,6 +16,7 @@ export async function run(config: TestOptions, match?: string) {
       '--loader=ts-node/esm',
       '--experimental-specifier-resolution=node',
     ];
+    const require = ['--require', 'ts-node/register'];
     const exclude =
       config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
     const include =
@@ -35,9 +36,9 @@ export async function run(config: TestOptions, match?: string) {
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
-      ...verbose,
       ...nodeArguments,
-      '--require ts-node/register',
+      ...require,
+      ...verbose,
     ];
 
     console.log('args', args);
