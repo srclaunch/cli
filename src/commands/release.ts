@@ -21,9 +21,9 @@ export default new Command<Project>({
       });
 
       const result = await git.pushTags();
-      console.log(result);
+      console.log('result', result);
     } catch (err) {
-      console.error(err);
+      console.error('err', err);
     }
   },
   type: CommandType.Project,

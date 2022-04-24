@@ -57,7 +57,7 @@ export default new Command({
             const commitResult = await git.commit(message);
             console.log('commitResult', commitResult);
           } catch (err) {
-            console.error(err);
+            console.error('commit err', err);
           }
         }
       },
