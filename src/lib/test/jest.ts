@@ -30,7 +30,35 @@ export async function run({
       watch: watch ?? false,
     };
 
-    await runJest(jestConfig as any, path.resolve());
+    const all = ['--all'];
+    const color = ['--colors'];
+    const concurrencyArg = config?.concurrency
+      ? ['--maxConcurrency', config.concurrency?.toString() ?? '5']
+      : [];
+    const exclude =
+      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
+    const include =
+      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
+    const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
+    const failFast = config?.fail?.fast ? ['--bail'] : [];
+    const matchFlag = match ? [`--t ${match.toString()}`] : [];
+    // const tapReporter = ['--tap'];
+    const verbose = config?.verbose
+      ? ['--verbose']
+      : [config.verbose ? '--verbose' : ''];
+    const watchFlag = watch ? ['--watch'] : [];
+
+    const args = [
+      files,
+      ...all,
+      ...color,
+      ...concurrencyArg,
+      ...failFast,
+      ...matchFlag,
+      ...verbose,
+      ...watchFlag,
+    ];
+    await runJest(args, path.resolve());
   } catch (err) {
     console.error(err);
   }
