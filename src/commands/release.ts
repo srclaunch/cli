@@ -9,7 +9,7 @@ export default new Command<Project>({
   run: async ({ config }: { config: Project }) => {
     try {
       const git: SimpleGit = Git();
-      const currentBranch = await git.branchLocal();
+      const currentBranch = await (await git.branchLocal()).current;
 
       const result = await standardVersion({
         noVerify: true,
@@ -19,7 +19,7 @@ export default new Command<Project>({
 
       console.log('sv result', result);
 
-      await git.pushTags(currentBranch.current);
+      await git.pushTags(currentBranch);
     } catch (err) {
       console.error(err);
     }
