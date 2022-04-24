@@ -2,6 +2,7 @@ import { Project } from '@srclaunch/types';
 import standardVersion from 'standard-version';
 import Git, { SimpleGit } from 'simple-git';
 import { Command, CommandType } from '../lib/command.js';
+import chalk from 'chalk';
 
 export default new Command<Project>({
   name: 'release',
@@ -21,8 +22,6 @@ export default new Command<Project>({
         silent: false,
       });
 
-      console.log(`Pushing release to branch: ${currentBranch}`);
-
       const result = await git.push(
         currentRepo?.name ?? 'origin',
         currentBranch,
@@ -31,7 +30,11 @@ export default new Command<Project>({
         },
       );
 
-      console.log(`Release successfully pushed to: ${result.repo}`);
+      console.log(
+        `${chalk.green('✔')} pushed release to ${chalk.bold(
+          result.repo,
+        )} on branch: ${chalk.bold(result.branch)}`,
+      );
     } catch (err) {
       console.error('err', err);
     }
