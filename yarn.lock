@@ -1987,6 +1987,8 @@ __metadata:
     typescript: ^4.6.3
     update-notifier: ^5.1.0
     vite: ^2.9.5
+  peerDependencies:
+    ansi-styles: "*"
   bin:
     srclaunch: dist/index.mjs
   languageName: unknown

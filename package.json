@@ -137,5 +137,8 @@
       "--loader=ts-node/esm"
     ],
     "verbose": true
+  },
+  "peerDependencies": {
+    "ansi-styles": "*"
   }
 }
