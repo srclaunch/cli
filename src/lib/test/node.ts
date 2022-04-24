@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import { exec } from 'child_process';
 import { TestOptions } from '@srclaunch/types';
 import { DEFAULT_TEST_OPTIONS } from './index';
 
@@ -43,14 +43,18 @@ export async function run({
 
     console.log('args', args);
 
-    const process = spawn('ava', args);
+    await exec(`ava ${args.join(' ')}`, (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+      }
 
-    process.stdout.on('data', data => {
-      console.log(data.toString());
-    });
+      if (stdout) {
+        console.log(stdout);
+      }
 
-    process.stderr.on('data', data => {
-      console.log(data.toString());
+      if (stderr) {
+        console.error(stderr);
+      }
     });
   } catch (err) {
     console.error(err);
