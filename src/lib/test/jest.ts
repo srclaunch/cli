@@ -13,48 +13,40 @@ export async function run({
   watch?: boolean;
 }) {
   try {
-    const jestConfig = {
-      bail: config?.fail?.fast ?? DEFAULT_TEST_OPTIONS.fail.fast,
-      coveragePathIgnorePatterns:
-        config.files?.include ?? DEFAULT_TEST_OPTIONS.files.include,
-      extensionsToTreatAsEsm: ['.ts', '.tsx'],
-      failWithoutAssertions:
-        config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests,
-      match,
-      maxConcurrency: config.concurrency ?? 5,
-      rootDir: path.resolve(process.cwd()),
-      testPathIgnorePatterns:
-        config.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude,
-      testMatch: config.files?.include ?? DEFAULT_TEST_OPTIONS.files.include,
-      verbose: config.verbose ?? true,
-      watch: watch ?? false,
-    };
-
     const colors = ['--colors'];
     const concurrencyArg = config?.concurrency
       ? ['--maxConcurrency', config.concurrency?.toString() ?? '5']
       : [];
     const coverageProvider = ['--coverageProvider', 'v8'];
-    const exclude =
-      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
-    const include =
-      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
-    const files = [...include].join(' ');
+    // const exclude =
+    //   config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
+    // const include =
+    //   config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
+    // const files = [...include].join(' ');
+    const extensionsToTreatAsEsm = ['--extensionsToTreatAsEsm', '.ts .tsx'];
     const failFast = config?.fail?.fast ? ['--bail'] : [];
+    const failWithoutAssertions =
+      config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
+        ? ['--failWithoutAssertions']
+        : [];
     const matchFlag = match ? [`--t ${match.toString()}`] : [];
     // const tapReporter = ['--tap'];
     const preset = ['--preset', 'ts-jest'];
+    const rootDir = ['--rootDir', path.resolve(process.cwd())];
     const verbose = config?.verbose ? ['--verbose'] : [];
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      files, // TODO: Figure out how to set the default test path pattern correctly
+      // files, // TODO: Figure out how to set the default test path pattern correctly
       ...colors,
       ...concurrencyArg,
       ...coverageProvider,
+      ...extensionsToTreatAsEsm,
+      ...failWithoutAssertions,
       ...failFast,
       ...matchFlag,
       ...preset,
+      ...rootDir,
       ...verbose,
       ...watchFlag,
     ];

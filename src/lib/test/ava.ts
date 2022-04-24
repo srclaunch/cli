@@ -31,11 +31,11 @@ export async function run({
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
-    const exclude =
-      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
-    const include =
-      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
-    const files = [...include].join(' ');
+    // const exclude =
+    //   config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
+    // const include =
+    //   config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
+    // const files = [...include].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const matchFlag = match ? [`--match='${match.toString()}'`] : [];
     // const tapReporter = ['--tap'];

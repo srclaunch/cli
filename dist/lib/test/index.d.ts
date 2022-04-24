@@ -17,10 +17,6 @@ export declare const DEFAULT_TEST_OPTIONS: {
         fast: boolean;
         noTests: boolean;
     };
-    files: {
-        exclude: never[];
-        include: string[];
-    };
     tool: TestTool;
     verbose: boolean;
 };
