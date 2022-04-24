@@ -33,7 +33,7 @@ export default new Command<Project>({
       console.log(
         `${chalk.green('✔')} pushed release to ${chalk.bold(
           result.repo,
-        )} on branch: ${chalk.bold(result.branch)}`,
+        )} on branch ${chalk.bold(result.branch)}`,
       );
     } catch (err) {
       console.error('err', err);
