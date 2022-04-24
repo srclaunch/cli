@@ -1857,6 +1857,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rauschma/stringio@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@rauschma/stringio@npm:1.4.0"
+  dependencies:
+    "@types/node": ^10.0.3
+  checksum: 0c6fae0519dc9db378966924894c37cfc854a19fc10b6867c5a2f362025c7d9e4f7cf65c120453036bb7503cdee3d7cc43ae9485f47dac3aad315bc83d93a24c
+  languageName: node
+  linkType: hard
+
 "@rollup/pluginutils@npm:^4.1.1, @rollup/pluginutils@npm:^4.2.0":
   version: 4.2.1
   resolution: "@rollup/pluginutils@npm:4.2.1"
@@ -1903,6 +1912,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@srclaunch/cli@workspace:."
   dependencies:
+    "@rauschma/stringio": ^1.4.0
     "@srclaunch/dx": ^0.1.43
     "@srclaunch/exceptions": ^0.1.48
     "@srclaunch/types": ^0.1.94
@@ -2241,6 +2251,13 @@ __metadata:
   version: 17.0.25
   resolution: "@types/node@npm:17.0.25"
   checksum: 6a820bd624e69ea772f52a6cdb326484eff5829443dc981939373929ade109f58c21698b9f0a831bd6ceea799e722a75dc49c5fa7a6bc32a81e1cbdfc6507b64
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^10.0.3":
+  version: 10.17.60
+  resolution: "@types/node@npm:10.17.60"
+  checksum: 2cdb3a77d071ba8513e5e8306fa64bf50e3c3302390feeaeff1fd325dd25c8441369715dfc8e3701011a72fed5958c7dfa94eb9239a81b3c286caa4d97db6eef
   languageName: node
   linkType: hard
 

@@ -20,6 +20,7 @@ export default {
         'ink',
         'jest-cli', // 'jest-pnp-resolver',
         'meow',
+        '@rauschma/stringio',
         'simple-git',
         'standard-version',
         'typescript',
