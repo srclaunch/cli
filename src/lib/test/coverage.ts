@@ -23,12 +23,8 @@ export async function run(config: TestOptions): Promise<Report> {
         config.coverage?.reporters ?? DEFAULT_TEST_OPTIONS.coverage.reporters,
     });
 
-    const result = await report.run();
+    await report.run();
 
-    console.log('result');
-    console.log(result);
-
-    console.log(report);
     console.info(
       `${chalk.green('✔')} generated coverage report in ${chalk.bold(
         coverageDir,
