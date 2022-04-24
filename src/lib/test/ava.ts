@@ -18,12 +18,10 @@ export async function run(config: TestOptions, match?: string) {
     const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const nodeArguments = [
-      '--nodeArguments',
-      '--loader=ts-node/esm',
-      '--experimental-specifier-resolution=node',
+      '--nodeArguments="--loader=ts-node/esm --experimental-specifier-resolution=node"',
     ];
     const require = ['--require', 'ts-node/register'];
-    const matchFlag = match ? [`--match=${match.toString()}`] : [];
+    const matchFlag = match ? [`--match='${match.toString()}'`] : [];
 
     // const tapReporter = ['--tap'];
     const verbose = config?.verbose
