@@ -43,7 +43,7 @@ export async function run({
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      files,
+      // files,
       ...all,
       ...color,
       ...concurrencyArg,
