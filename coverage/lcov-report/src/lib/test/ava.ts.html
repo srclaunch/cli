@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>0/48</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>0/48</span>
             </div>
         
             
@@ -98,7 +98,33 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -136,34 +162,47 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { spawn } from 'child_process';</span></span></span>
 <span class="cstat-no" title="statement not covered" >import { TestOptions } from '@srclaunch/types';</span>
 <span class="cstat-no" title="statement not covered" >import chalk from 'chalk';</span>
+<span class="cstat-no" title="statement not covered" >import { DEFAULT_TEST_OPTIONS } from '.';</span>
+<span class="cstat-no" title="statement not covered" >import path from 'path';</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export async function run(config: TestOptions, match?: string) {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const all = ['--all'];</span>
+<span class="cstat-no" title="statement not covered" >    const color = ['--color'];</span>
 <span class="cstat-no" title="statement not covered" >    const concurrencyArg = config?.concurrency</span>
 <span class="cstat-no" title="statement not covered" >      ? ['--concurrency', config.concurrency.toString()]</span>
 <span class="cstat-no" title="statement not covered" >      : [];</span>
-<span class="cstat-no" title="statement not covered" >    const failFast = config?.failFast ? ['--fail-fast'] : [];</span>
-<span class="cstat-no" title="statement not covered" >    const failNoTests = config?.failNoTests ? ['--failWithoutAssertions'] : [];</span>
-<span class="cstat-no" title="statement not covered" >    const matchFlag = match ? [`--match=${match.toString()}`] : [];</span>
-<span class="cstat-no" title="statement not covered" >    const verbose = config?.verbose ? ['--verbose'] : [];</span>
+<span class="cstat-no" title="statement not covered" >    const exclude =</span>
+<span class="cstat-no" title="statement not covered" >      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;</span>
+<span class="cstat-no" title="statement not covered" >    const include =</span>
+<span class="cstat-no" title="statement not covered" >      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;</span>
+<span class="cstat-no" title="statement not covered" >    const files = [...include, ...exclude.map(e =&gt; `!${e}`)].join(' ');</span>
+<span class="cstat-no" title="statement not covered" >    const failFast = config?.fail?.fast ? ['--fail-fast'] : [];</span>
+<span class="cstat-no" title="statement not covered" >    const matchFlag = match ? [`--match='${match.toString()}'`] : [];</span>
+<span class="cstat-no" title="statement not covered" >    // const tapReporter = ['--tap'];</span>
+<span class="cstat-no" title="statement not covered" >    const verbose = config?.verbose</span>
+<span class="cstat-no" title="statement not covered" >      ? ['--verbose']</span>
+<span class="cstat-no" title="statement not covered" >      : [config.verbose ? '--verbose' : ''];</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const process = spawn('ava', [</span>
+<span class="cstat-no" title="statement not covered" >    const args = [</span>
+<span class="cstat-no" title="statement not covered" >      files,</span>
+<span class="cstat-no" title="statement not covered" >      ...all,</span>
+<span class="cstat-no" title="statement not covered" >      ...color,</span>
 <span class="cstat-no" title="statement not covered" >      ...concurrencyArg,</span>
 <span class="cstat-no" title="statement not covered" >      ...failFast,</span>
-<span class="cstat-no" title="statement not covered" >      ...failNoTests,</span>
 <span class="cstat-no" title="statement not covered" >      ...matchFlag,</span>
 <span class="cstat-no" title="statement not covered" >      ...verbose,</span>
-<span class="cstat-no" title="statement not covered" >    ]);</span>
+<span class="cstat-no" title="statement not covered" >    ];</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const process = spawn('ava', args);</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    process.stdout.on('data', data =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (data) chalk(data);</span>
+<span class="cstat-no" title="statement not covered" >      console.log(data.toString());</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    process.stderr.on('data', data =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (data) chalk(data);</span>
+<span class="cstat-no" title="statement not covered" >      console.log(data.toString());</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // console.log('process', process);</span>
 <span class="cstat-no" title="statement not covered" >  } catch (err) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error(err);</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
@@ -175,7 +214,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri Apr 22 2022 12:42:00 GMT-0700 (Pacific Daylight Time)
+                at Sat Apr 23 2022 17:46:42 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>
