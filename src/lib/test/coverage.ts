@@ -1,5 +1,6 @@
 import { TestOptions } from '@srclaunch/types';
 import { Report } from 'c8';
+import chalk from 'chalk';
 import { emptyDir, ensureDir } from 'fs-extra';
 import path from 'path';
 import { DEFAULT_TEST_OPTIONS } from '.';
@@ -25,6 +26,12 @@ export async function run(config: TestOptions): Promise<Report> {
     });
 
     await report.run();
+
+    console.info(
+      `${chalk.green('✔')} generated coverage report in ${chalk.bold(
+        coverageDir,
+      )}`,
+    );
 
     return report;
   } catch (err) {

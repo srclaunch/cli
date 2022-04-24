@@ -39,9 +39,7 @@ export async function run({
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const matchFlag = match ? [`--match='${match.toString()}'`] : [];
     // const tapReporter = ['--tap'];
-    const verbose = config?.verbose
-      ? ['--verbose']
-      : [config.verbose ? '--verbose' : ''];
+    const verbose = config?.verbose ? ['--verbose'] : [];
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [

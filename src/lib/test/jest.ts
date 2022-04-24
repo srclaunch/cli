@@ -43,9 +43,7 @@ export async function run({
     const matchFlag = match ? [`--t ${match.toString()}`] : [];
     // const tapReporter = ['--tap'];
     const preset = ['--preset', 'ts-jest'];
-    const verbose = config?.verbose
-      ? ['--verbose']
-      : [config.verbose ? '--verbose' : ''];
+    const verbose = config?.verbose ? ['--verbose'] : [];
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
