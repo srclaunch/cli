@@ -32,7 +32,6 @@ export async function run(config: TestOptions, match?: string) {
       ...verbose,
     ];
 
-    console.log('args', args);
     const process = spawn('ava', args);
 
     process.stdout.on('data', data => {
