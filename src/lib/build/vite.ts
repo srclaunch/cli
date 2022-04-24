@@ -135,7 +135,7 @@ export async function build({
     console.info(
       `${chalk.green('✔')} bundled to ${
         formats && formats.length > 0
-          ? chalk.bold(`${formats.join(', ').toLocaleUpperCase()} formats`)
+          ? `${chalk.bold(formats.join(', ').toLocaleUpperCase())} formats`
           : `${chalk.bold(format.toLocaleUpperCase())} format`
       }`,
     );
