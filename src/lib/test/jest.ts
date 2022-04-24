@@ -39,7 +39,7 @@ export async function run({
       config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
     const include =
       config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
-    const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
+    const files = [...include].join(' ');
     const failFast = config?.fail?.fast ? ['--bail'] : [];
     const matchFlag = match ? [`--t ${match.toString()}`] : [];
     // const tapReporter = ['--tap'];
@@ -48,7 +48,7 @@ export async function run({
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      // files, // TODO: Figure out how to set the default test path pattern correctly
+      files, // TODO: Figure out how to set the default test path pattern correctly
       ...colors,
       ...concurrencyArg,
       ...coverageProvider,

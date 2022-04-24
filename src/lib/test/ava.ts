@@ -35,7 +35,7 @@ export async function run({
       config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
     const include =
       config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
-    const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
+    const files = [...include].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const matchFlag = match ? [`--match='${match.toString()}'`] : [];
     // const tapReporter = ['--tap'];
@@ -43,7 +43,7 @@ export async function run({
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      // files,
+      files,
       ...all,
       ...color,
       ...concurrencyArg,
