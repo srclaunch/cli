@@ -11,6 +11,7 @@ import {
 import path from 'path';
 import { getFormatFileExtension } from './formats.js';
 import { emptyDirectory } from '../file-system.js';
+import chalk from 'chalk';
 
 export async function build({
   bundle = true,
@@ -77,11 +78,13 @@ export async function build({
     }
 
     if (types) {
-      console.info('Building types...');
+      console.info('✔ compiled types');
       await buildTypes({ input, types, output });
     }
 
-    console.info(`Finished building to ${format.toLocaleUpperCase()} format.`);
+    console.info(
+      `✔ bundled to ${chalk.bold(format.toLocaleUpperCase())} format`,
+    );
   } catch (err: any) {
     console.error(err);
   }

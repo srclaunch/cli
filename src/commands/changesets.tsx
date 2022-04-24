@@ -52,10 +52,9 @@ export default new Command({
         } else {
           try {
             const git: SimpleGit = Git();
-            const addResult = await git.add('.');
-            console.log('addResult', addResult);
-            const commitResult = await git.commit(message);
-            console.log('commitResult', commitResult);
+            await git.add('.');
+            await git.commit(message);
+            console.log('✔ added new changeset');
           } catch (err) {
             console.error('commit err', err);
           }

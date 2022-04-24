@@ -9,6 +9,7 @@ import {
   ViteBuildOptions,
 } from '@srclaunch/types';
 import { getViteFormatFileExtension } from './formats.js';
+import chalk from 'chalk';
 
 export async function build({
   assets,
@@ -121,7 +122,7 @@ export async function build({
     // }
 
     if (types) {
-      console.info('Building types...');
+      console.info('✔ compiled types');
       await buildTypes({ input, types, output });
     }
 
@@ -132,10 +133,10 @@ export async function build({
     // }
 
     console.info(
-      `Finished building to ${
+      `✔ bundled to ${
         formats && formats.length > 0
-          ? `${formats.join(', ').toLocaleUpperCase()} formats.`
-          : `${format.toLocaleUpperCase()} format.`
+          ? chalk.bold(`${formats.join(', ').toLocaleUpperCase()} formats`)
+          : `${format.toLocaleUpperCase()} format`
       }`,
     );
   } catch (err: any) {
