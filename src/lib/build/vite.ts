@@ -30,14 +30,6 @@ export async function build({
   webApp,
 }: ViteBuildOptions) {
   try {
-    console.info(
-      `Compiling and bundling to ${
-        formats && formats.length > 0
-          ? `${formats.join(', ').toLocaleUpperCase()} formats...`
-          : `${format.toLocaleUpperCase()} format...`
-      }`,
-    );
-
     const viteFormats = (
       formats && formats.length > 0
         ? formats?.map(f => (f === BuildFormat.ESM ? 'es' : f))
