@@ -49,7 +49,7 @@ export async function run({
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      files,
+      // files, // TODO: Figure out how to set the default test path pattern correctly
       ...colors,
       ...concurrencyArg,
       ...failFast,
