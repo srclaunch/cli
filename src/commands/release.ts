@@ -31,7 +31,7 @@ export default new Command<Project>({
         },
       );
 
-      console.log(`Release successfully to: ${result.repo}`);
+      console.log(`Release successfully pushed to: ${result.repo}`);
     } catch (err) {
       console.error('err', err);
     }
