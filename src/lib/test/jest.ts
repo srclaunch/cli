@@ -34,6 +34,7 @@ export async function run({
     const concurrencyArg = config?.concurrency
       ? ['--maxConcurrency', config.concurrency?.toString() ?? '5']
       : [];
+    const coverageProvider = ['--coverageProvider', 'v8'];
     const exclude =
       config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
     const include =
@@ -50,6 +51,7 @@ export async function run({
       // files, // TODO: Figure out how to set the default test path pattern correctly
       ...colors,
       ...concurrencyArg,
+      ...coverageProvider,
       ...failFast,
       ...matchFlag,
       ...preset,
