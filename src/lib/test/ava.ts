@@ -4,7 +4,11 @@ import chalk from 'chalk';
 import { DEFAULT_TEST_OPTIONS } from '.';
 import path from 'path';
 
-export async function run(config: TestOptions, match?: string) {
+export async function run(
+  config: TestOptions,
+  match?: string,
+  watch?: boolean,
+) {
   try {
     const all = ['--all'];
     const color = ['--color'];
@@ -22,6 +26,7 @@ export async function run(config: TestOptions, match?: string) {
     const verbose = config?.verbose
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
+    const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
       files,
@@ -31,6 +36,7 @@ export async function run(config: TestOptions, match?: string) {
       ...failFast,
       ...matchFlag,
       ...verbose,
+      ...watchFlag,
     ];
 
     const process = spawn('ava', args);

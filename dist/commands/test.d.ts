@@ -13,6 +13,11 @@ declare const _default: Command<Project, TypedFlags<{
         description: "Run tests matching the specified pattern";
         type: "string";
     };
+    watch: {
+        alias: "w";
+        description: "Watch for changes and run tests automatically";
+        type: "boolean";
+    };
 }>>;
 export default _default;
 //# sourceMappingURL=test.d.ts.map

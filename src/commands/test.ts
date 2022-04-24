@@ -18,6 +18,11 @@ type TestFlags = TypedFlags<{
     description: 'Run tests matching the specified pattern';
     type: 'string';
   };
+  watch: {
+    alias: 'w';
+    description: 'Watch for changes and run tests automatically';
+    type: 'boolean';
+  };
 }>;
 
 export default new Command<Project, TestFlags>({

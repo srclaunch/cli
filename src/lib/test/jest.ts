@@ -3,7 +3,11 @@ import { run as runJest } from 'jest-cli';
 import path from 'path';
 import { DEFAULT_TEST_OPTIONS } from '.';
 
-export async function run(config: TestOptions, match?: string) {
+export async function run(
+  config: TestOptions,
+  match?: string,
+  watch?: boolean,
+) {
   try {
     const jestConfig = {
       bail: config?.fail?.fast ?? DEFAULT_TEST_OPTIONS.fail.fast,
@@ -19,6 +23,7 @@ export async function run(config: TestOptions, match?: string) {
         config.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude,
       testMatch: config.files?.include ?? DEFAULT_TEST_OPTIONS.files.include,
       verbose: config.verbose ?? true,
+      watch: watch ?? false,
     };
 
     await runJest(jestConfig as any, path.resolve());
