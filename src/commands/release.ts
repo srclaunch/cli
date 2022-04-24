@@ -23,7 +23,7 @@ export default new Command<Project>({
       });
 
       const result = await git.push('origin', 'main', {
-        '--follow-tags': 'true',
+        '--follow-tags': null,
       });
       console.log('result', result);
     } catch (err) {
