@@ -30,8 +30,7 @@ export async function run({
       watch: watch ?? false,
     };
 
-    const all = ['--all'];
-    const color = ['--colors'];
+    const colors = ['--colors'];
     const concurrencyArg = config?.concurrency
       ? ['--maxConcurrency', config.concurrency?.toString() ?? '5']
       : [];
@@ -51,8 +50,7 @@ export async function run({
 
     const args = [
       files,
-      ...all,
-      ...color,
+      ...colors,
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
