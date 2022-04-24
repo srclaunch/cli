@@ -13,7 +13,7 @@ export default new Command<Project>({
 
       const result = await standardVersion({
         noVerify: true,
-        infile: 'docs/CHANGELOG.md',
+        infile: 'CHANGELOG.md',
         silent: false,
       });
 
