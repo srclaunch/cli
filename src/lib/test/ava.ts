@@ -10,6 +10,12 @@ export async function run(config: TestOptions, match?: string) {
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
+
+    const exclude =
+      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
+    const include =
+      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
+    const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const nodeArguments = [
       '--nodeArguments',
@@ -17,18 +23,12 @@ export async function run(config: TestOptions, match?: string) {
       '--experimental-specifier-resolution=node',
     ];
     const require = ['--require', 'ts-node/register'];
-    const exclude =
-      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
-    const include =
-      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
     const matchFlag = match ? [`--match=${match.toString()}`] : [];
 
     // const tapReporter = ['--tap'];
     const verbose = config?.verbose
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
-
-    const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
 
     const args = [
       files,
