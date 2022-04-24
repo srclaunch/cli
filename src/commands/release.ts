@@ -10,16 +10,17 @@ export default new Command<Project>({
     try {
       const git: SimpleGit = Git();
       const currentBranch = await (await git.branchLocal()).current;
+      const currentRepo = await (
+        await git.getRemotes()
+      ).find(remote => remote.name === 'origin');
 
-      const result = await standardVersion({
+      await standardVersion({
         noVerify: true,
         infile: 'CHANGELOG.md',
         silent: false,
       });
 
-      console.log('sv result', result);
-
-      await git.pushTags(currentBranch);
+      await git.pushTags();
     } catch (err) {
       console.error(err);
     }
