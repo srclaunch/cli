@@ -11,6 +11,11 @@ export async function run(config: TestOptions, match?: string) {
       ? ['--concurrency', config.concurrency.toString()]
       : [];
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
+    const nodeArguments = [
+      '--nodeArguments',
+      '--loader=ts-node/esm',
+      '--experimental-specifier-resolution=node',
+    ];
     const exclude =
       config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
     const include =
@@ -31,9 +36,8 @@ export async function run(config: TestOptions, match?: string) {
       ...failFast,
       ...matchFlag,
       ...verbose,
-      '--nodeArguments --loader=ts-node/esm',
+      ...nodeArguments,
       '--require ts-node/register',
-      '--extensions ts=module tsx=module',
     ];
 
     console.log('args', args);

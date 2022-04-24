@@ -1903,7 +1903,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@srclaunch/cli@workspace:."
   dependencies:
-    "@srclaunch/dx": ^0.1.42
+    "@srclaunch/dx": ^0.1.43
     "@srclaunch/exceptions": ^0.1.48
     "@srclaunch/types": ^0.1.94
     "@types/fs-extra": ^9.0.13
@@ -1982,10 +1982,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@srclaunch/dx@npm:^0.1.42":
-  version: 0.1.42
-  resolution: "@srclaunch/dx@npm:0.1.42"
-  checksum: 8155243113a91be8c964366fdd2497882baa233203960fe62da0bbcdf6bf6185138e47705c36ccea4930848be7046c89fbcb33774da27f4ed9bbc000c0ef5267
+"@srclaunch/dx@npm:^0.1.43":
+  version: 0.1.43
+  resolution: "@srclaunch/dx@npm:0.1.43"
+  checksum: d8026154cb551b81d06e5d193f4e763d3d03e343522013d22b45fde7254296c2c85fa9113d1cff76ef4a227f8a4c74b35bb89b62ab54674c673ea9029d3bfad4
   languageName: node
   linkType: hard
 
