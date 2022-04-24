@@ -60,6 +60,6 @@ export async function run({
     ];
     await runJest(args, path.resolve());
   } catch (err) {
-    console.error(err);
+    // console.error(err);
   }
 }

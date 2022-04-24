@@ -43,7 +43,7 @@ export async function run({
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      files,
+      // files,
       ...all,
       ...color,
       ...concurrencyArg,
@@ -53,7 +53,7 @@ export async function run({
       ...watchFlag,
     ];
 
-    const childProcess = spawn('ava', args, {
+    const childProcess = await spawn('ava', args, {
       stdio: [process.stdin, process.stdout, process.stderr],
     });
 
@@ -89,6 +89,6 @@ export async function run({
     //   });
     // }
   } catch (err) {
-    console.error('ERR; ', err);
+    // console.error('ERR; ', err);
   }
 }
