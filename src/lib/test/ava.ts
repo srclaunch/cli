@@ -7,10 +7,10 @@ import path from 'path';
 export async function run(config: TestOptions, match?: string) {
   try {
     const all = ['--all'];
+    const color = ['--color'];
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
-
     const exclude =
       config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
     const include =
@@ -26,6 +26,7 @@ export async function run(config: TestOptions, match?: string) {
     const args = [
       files,
       ...all,
+      ...color,
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
@@ -36,16 +37,11 @@ export async function run(config: TestOptions, match?: string) {
 
     process.stdout.on('data', data => {
       console.log(data.toString());
-      if (data) chalk.white(data.toString());
     });
 
     process.stderr.on('data', data => {
-      console.log('Error below');
       console.log(data.toString());
-      if (data) chalk.white(data.toString());
     });
-
-    // console.log('process', process);
   } catch (err) {
     console.error(err);
   }
