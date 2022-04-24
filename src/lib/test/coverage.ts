@@ -7,6 +7,11 @@ import { DEFAULT_TEST_OPTIONS } from './index';
 
 export async function run(config: TestOptions): Promise<Report> {
   try {
+    const exclude =
+      config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
+    const include =
+      config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
+
     const coverageDir = path.join(
       process.cwd(),
       config.coverage?.directory ?? 'coverage',
@@ -17,7 +22,8 @@ export async function run(config: TestOptions): Promise<Report> {
 
     const report = new Report({
       all: true,
-      exclude: config.files?.include ?? DEFAULT_TEST_OPTIONS.files.include,
+      include,
+      exclude,
       reportsDirectory: coverageDir,
       src: ['src'],
       tempDirectory: coverageDir,

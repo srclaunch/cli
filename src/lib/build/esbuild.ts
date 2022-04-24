@@ -78,8 +78,8 @@ export async function build({
     }
 
     if (types) {
-      console.info(`${chalk.green('✔')} compiled types`);
       await buildTypes({ input, types, output });
+      console.info(`${chalk.green('✔')} compiled types`);
     }
 
     console.info(
