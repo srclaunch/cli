@@ -4,4 +4,4 @@ export declare function run({ config, match, watch, }: {
     match?: string;
     watch?: boolean;
 }): Promise<void>;
-//# sourceMappingURL=react.d.ts.map
+//# sourceMappingURL=ava.d.ts.map

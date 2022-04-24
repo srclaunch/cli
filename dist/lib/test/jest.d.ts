@@ -4,4 +4,4 @@ export declare function run({ config, match, watch, }: {
     match?: string;
     watch?: boolean;
 }): Promise<void>;
-//# sourceMappingURL=node.d.ts.map
+//# sourceMappingURL=jest.d.ts.map

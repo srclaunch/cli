@@ -1,7 +1,7 @@
 import { Command, CommandType } from '../lib/command.js';
-import { run as runAvaTests } from '../lib/test/node.js';
+import { run as runAvaTests } from '../lib/test/ava.js';
 import { run as runC8Coverage } from '../lib/test/coverage.js';
-import { run as runJestTests } from '../lib/test/react.js';
+import { run as runJestTests } from '../lib/test/jest.js';
 import { Project } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { TestTool } from '@srclaunch/types';
@@ -77,7 +77,7 @@ export default new Command<Project, TestFlags>({
   },
   commands: [
     new Command<Project, TestFlags>({
-      name: 'node',
+      name: 'ava',
       description: 'Run tests using Ava',
       run: async ({ config, flags }: { config: Project; flags: TestFlags }) => {
         if (typeof config.test === 'object' && !Array.isArray(config.test)) {
@@ -98,7 +98,7 @@ export default new Command<Project, TestFlags>({
       },
     }),
     new Command<Project, TestFlags>({
-      name: 'react',
+      name: 'jest',
       description: 'Runs tests using Jest',
       run: async ({ config, flags }) => {
         if (typeof config.test === 'object' && !Array.isArray(config.test)) {
