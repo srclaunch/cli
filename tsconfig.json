@@ -1,4 +1,5 @@
 {
   "extends": "@srclaunch/dx/tsconfig.ui.json",
+  "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"],
   "include": ["src"]
 }
