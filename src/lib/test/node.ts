@@ -55,17 +55,11 @@ export async function run({
       ...watchFlag,
     ];
 
-    console.log('args', args);
-
-    const source = spawn('ava', args, {
-      stdio: ['ignore', 'pipe', process.stderr],
-    });
-    const sink = spawn('ava', args, {
-      stdio: ['pipe', process.stdout, process.stderr],
+    const childProcess = spawn('ava', args, {
+      stdio: [process.stdin, process.stdout, process.stderr],
     });
 
-    transform(source.stdout, sink.stdin);
-    await onExit(sink);
+    await onExit(childProcess);
 
     // if (process) {
     //   process.stdout?.on('data', data => {
@@ -97,6 +91,6 @@ export async function run({
     //   });
     // }
   } catch (err) {
-    console.error(err);
+    console.error('ERR; ', err);
   }
 }
