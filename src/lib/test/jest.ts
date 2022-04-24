@@ -43,6 +43,7 @@ export async function run({
     const failFast = config?.fail?.fast ? ['--bail'] : [];
     const matchFlag = match ? [`--t ${match.toString()}`] : [];
     // const tapReporter = ['--tap'];
+    const preset = ['--preset', 'ts-jest'];
     const verbose = config?.verbose
       ? ['--verbose']
       : [config.verbose ? '--verbose' : ''];
@@ -55,6 +56,7 @@ export async function run({
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
+      ...preset,
       ...verbose,
       ...watchFlag,
     ];
