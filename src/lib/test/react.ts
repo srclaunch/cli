@@ -3,11 +3,15 @@ import { run as runJest } from 'jest-cli';
 import path from 'path';
 import { DEFAULT_TEST_OPTIONS } from '.';
 
-export async function run(
-  config: TestOptions,
-  match?: string,
-  watch?: boolean,
-) {
+export async function run({
+  config,
+  match,
+  watch,
+}: {
+  config: TestOptions;
+  match?: string;
+  watch?: boolean;
+}) {
   try {
     const jestConfig = {
       bail: config?.fail?.fast ?? DEFAULT_TEST_OPTIONS.fail.fast,

@@ -1,14 +1,16 @@
 import { spawn } from 'child_process';
 import { TestOptions } from '@srclaunch/types';
-import chalk from 'chalk';
-import { DEFAULT_TEST_OPTIONS } from '.';
-import path from 'path';
+import { DEFAULT_TEST_OPTIONS } from './index';
 
-export async function run(
-  config: TestOptions,
-  match?: string,
-  watch?: boolean,
-) {
+export async function run({
+  config,
+  match,
+  watch,
+}: {
+  config: TestOptions;
+  match?: string;
+  watch?: boolean;
+}): Promise<void> {
   try {
     const all = ['--all'];
     const color = ['--color'];

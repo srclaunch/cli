@@ -1,6 +1,6 @@
 import { TestOptions } from '@srclaunch/types';
 import { Report } from 'c8';
-import { ensureDir } from 'fs-extra';
+import { emptyDir, ensureDir } from 'fs-extra';
 import path from 'path';
 import { DEFAULT_TEST_OPTIONS } from '.';
 
@@ -12,6 +12,7 @@ export async function run(config: TestOptions): Promise<Report> {
     );
 
     await ensureDir(coverageDir);
+    await emptyDir(coverageDir);
 
     const report = new Report({
       all: true,

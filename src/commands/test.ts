@@ -1,7 +1,7 @@
 import { Command, CommandType } from '../lib/command.js';
-import { run as runAvaTests } from '../lib/test/ava.js';
-import { run as runC8Coverage } from '../lib/test/c8.js';
-import { run as runJestTests } from '../lib/test/jest.js';
+import { run as runAvaTests } from '../lib/test/node.js';
+import { run as runC8Coverage } from '../lib/test/coverage.js';
+import { run as runJestTests } from '../lib/test/react.js';
 import { Project } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { TestTool } from '@srclaunch/types';
@@ -32,11 +32,19 @@ export default new Command<Project, TestFlags>({
     if (typeof config.test === 'object' && !Array.isArray(config.test)) {
       switch (config.test.tool) {
         case TestTool.Jest:
-          await runJestTests(config.test, flags.match, flags.watch);
+          await runJestTests({
+            config: config.test,
+            match: flags.match,
+            watch: flags.watch,
+          });
           return;
         case TestTool.Ava:
         default:
-          await runAvaTests(config.test, flags.match, flags.watch);
+          await runAvaTests({
+            config: config.test,
+            match: flags.match,
+            watch: flags.watch,
+          });
       }
 
       if (config.test.coverage || flags.coverage) {
@@ -46,11 +54,19 @@ export default new Command<Project, TestFlags>({
       for (const test of config.test) {
         switch (test.tool) {
           case TestTool.Jest:
-            await runJestTests(test, flags.match, flags.watch);
+            await runJestTests({
+              config: test,
+              match: flags.match,
+              watch: flags.watch,
+            });
             return;
           case TestTool.Ava:
           default:
-            await runAvaTests(test, flags.match, flags.watch);
+            await runAvaTests({
+              config: test,
+              match: flags.match,
+              watch: flags.watch,
+            });
         }
 
         if (test.coverage || flags.coverage) {
@@ -61,27 +77,43 @@ export default new Command<Project, TestFlags>({
   },
   commands: [
     new Command<Project, TestFlags>({
-      name: 'ava',
+      name: 'node',
       description: 'Run tests using Ava',
       run: async ({ config, flags }: { config: Project; flags: TestFlags }) => {
         if (typeof config.test === 'object' && !Array.isArray(config.test)) {
-          await runAvaTests(config.test, flags.match, flags.watch);
+          await runAvaTests({
+            config: config.test,
+            match: flags.match,
+            watch: flags.watch,
+          });
         } else if (Array.isArray(config.test)) {
           for (const test of config.test) {
-            await runAvaTests(test, flags.match, flags.watch);
+            await runAvaTests({
+              config: test,
+              match: flags.match,
+              watch: flags.watch,
+            });
           }
         }
       },
     }),
     new Command<Project, TestFlags>({
-      name: 'jest',
+      name: 'react',
       description: 'Runs tests using Jest',
       run: async ({ config, flags }) => {
         if (typeof config.test === 'object' && !Array.isArray(config.test)) {
-          await runJestTests(config.test, flags.match);
+          await runJestTests({
+            config: config.test,
+            match: flags.match,
+            watch: flags.watch,
+          });
         } else if (Array.isArray(config.test)) {
           for (const test of config.test) {
-            await runJestTests(test, flags.match);
+            await runJestTests({
+              config: test,
+              match: flags.match,
+              watch: flags.watch,
+            });
           }
         }
       },
