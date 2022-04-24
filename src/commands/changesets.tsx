@@ -52,8 +52,10 @@ export default new Command({
         } else {
           try {
             const git: SimpleGit = Git();
-            await git.add('.');
-            await git.commit(message);
+            const addResult = await git.add('.');
+            console.log('addResult', addResult);
+            const commitResult = await git.commit(message);
+            console.log('commitResult', commitResult);
           } catch (err) {
             console.error(err);
           }

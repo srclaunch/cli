@@ -20,7 +20,8 @@ export default new Command<Project>({
         silent: false,
       });
 
-      await git.pushTags();
+      const result = await git.pushTags();
+      console.log(result);
     } catch (err) {
       console.error(err);
     }
