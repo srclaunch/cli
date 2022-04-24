@@ -32,11 +32,11 @@ export default new Command<Project, TestFlags>({
     if (typeof config.test === 'object' && !Array.isArray(config.test)) {
       switch (config.test.tool) {
         case TestTool.Jest:
-          await runJestTests(config.test, flags.match);
+          await runJestTests(config.test, flags.match, flags.watch);
           return;
         case TestTool.Ava:
         default:
-          await runAvaTests(config.test, flags.match);
+          await runAvaTests(config.test, flags.match, flags.watch);
       }
 
       if (config.test.coverage || flags.coverage) {
@@ -46,11 +46,11 @@ export default new Command<Project, TestFlags>({
       for (const test of config.test) {
         switch (test.tool) {
           case TestTool.Jest:
-            await runJestTests(test, flags.match);
+            await runJestTests(test, flags.match, flags.watch);
             return;
           case TestTool.Ava:
           default:
-            await runAvaTests(test, flags.match);
+            await runAvaTests(test, flags.match, flags.watch);
         }
 
         if (test.coverage || flags.coverage) {
@@ -65,10 +65,10 @@ export default new Command<Project, TestFlags>({
       description: 'Run tests using Ava',
       run: async ({ config, flags }: { config: Project; flags: TestFlags }) => {
         if (typeof config.test === 'object' && !Array.isArray(config.test)) {
-          await runAvaTests(config.test, flags.match);
+          await runAvaTests(config.test, flags.match, flags.watch);
         } else if (Array.isArray(config.test)) {
           for (const test of config.test) {
-            await runAvaTests(test, flags.match);
+            await runAvaTests(test, flags.match, flags.watch);
           }
         }
       },
