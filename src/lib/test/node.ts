@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { exec, fork, spawn } from 'child_process';
 import { TestOptions } from '@srclaunch/types';
 import { DEFAULT_TEST_OPTIONS } from './index';
 
@@ -43,19 +43,37 @@ export async function run({
 
     console.log('args', args);
 
-    await exec(`ava ${args.join(' ')}`, (err, stdout, stderr) => {
-      if (err) {
-        console.error(err);
-      }
+    const process = fork('ava', args);
 
-      if (stdout) {
-        console.log(stdout);
-      }
+    if (process) {
+      process.stdout?.on('data', data => {
+        console.log(data.toString());
+      });
 
-      if (stderr) {
-        console.error(stderr);
-      }
-    });
+      process.stderr?.on('data', data => {
+        console.log(data.toString());
+      });
+
+      process.on('exit', code => {
+        console.log(`child process exited with code ${code}`);
+      });
+
+      process.on('error', err => {
+        console.log(`child process error: ${err}`);
+      });
+
+      process.on('close', () => {
+        console.log('child process closed');
+      });
+
+      process.on('disconnect', () => {
+        console.log('child process disconnected');
+      });
+
+      process.on('message', message => {
+        console.log(`child process message: ${message}`);
+      });
+    }
   } catch (err) {
     console.error(err);
   }
