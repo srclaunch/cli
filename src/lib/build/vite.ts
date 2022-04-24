@@ -122,7 +122,7 @@ export async function build({
     // }
 
     if (types) {
-      console.info('✔ compiled types');
+      console.info(`${chalk.green('✔')} compiled types`);
       await buildTypes({ input, types, output });
     }
 
@@ -133,10 +133,10 @@ export async function build({
     // }
 
     console.info(
-      `✔ bundled to ${
+      `${chalk.green('✔')} bundled to ${
         formats && formats.length > 0
           ? chalk.bold(`${formats.join(', ').toLocaleUpperCase()} formats`)
-          : `${format.toLocaleUpperCase()} format`
+          : `${chalk.bold(format.toLocaleUpperCase())} format`
       }`,
     );
   } catch (err: any) {

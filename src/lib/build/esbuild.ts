@@ -78,12 +78,14 @@ export async function build({
     }
 
     if (types) {
-      console.info('✔ compiled types');
+      console.info(`${chalk.green('✔')} compiled types`);
       await buildTypes({ input, types, output });
     }
 
     console.info(
-      `✔ bundled to ${chalk.bold(format.toLocaleUpperCase())} format`,
+      `${chalk.green('✔')} bundled to ${chalk.bold(
+        format.toLocaleUpperCase(),
+      )} format`,
     );
   } catch (err: any) {
     console.error(err);

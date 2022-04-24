@@ -5,6 +5,7 @@ import { Command, CommandType } from '../lib/command.js';
 import { render } from 'ink';
 import { AppContainer } from '../containers/AppContainer.js';
 import { InteractiveModeFlag } from '../lib/flags.js';
+import chalk from 'chalk';
 
 export default new Command({
   name: 'changesets',
@@ -54,7 +55,7 @@ export default new Command({
             const git: SimpleGit = Git();
             await git.add('.');
             await git.commit(message);
-            console.log('✔ added new changeset');
+            console.log(`${chalk.green('✔')} added new changeset`);
           } catch (err) {
             console.error('commit err', err);
           }
