@@ -3,7 +3,7 @@ import { Report } from 'c8';
 import chalk from 'chalk';
 import { emptyDir, ensureDir } from 'fs-extra';
 import path from 'path';
-import { DEFAULT_TEST_OPTIONS } from '.';
+import { DEFAULT_TEST_OPTIONS } from './index';
 
 export async function run(config: TestOptions): Promise<Report> {
   try {
