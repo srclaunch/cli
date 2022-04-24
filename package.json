@@ -2,7 +2,7 @@
   "name": "@srclaunch/cli",
   "description": "Command line tools used by SrcLaunch applications and services",
   "author": "Steven Bennett <steven@srclaunch.com>",
-  "license": "ISC",
+  "license": "MIT",
   "version": "0.1.259",
   "engines": {
     "node": ">=18"

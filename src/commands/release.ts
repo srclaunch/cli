@@ -10,17 +10,18 @@ export default new Command<Project>({
     try {
       const git: SimpleGit = Git();
       const currentBranch = await (await git.branchLocal()).current;
-      console.log('currentBranch', currentBranch);
+
       const currentRepo = await (
         await git.getRemotes()
       ).find(remote => remote.name === 'origin');
 
-      console.log('currentRepo', currentRepo);
       await standardVersion({
         noVerify: true,
         infile: 'CHANGELOG.md',
         silent: false,
       });
+
+      console.log(`Pushing release to branch: ${currentBranch}`);
 
       const result = await git.push(
         currentRepo?.name ?? 'origin',
@@ -29,7 +30,8 @@ export default new Command<Project>({
           '--follow-tags': null,
         },
       );
-      console.log('result', result);
+
+      console.log(`Release successfully to: ${result.repo}`);
     } catch (err) {
       console.error('err', err);
     }
