@@ -18,7 +18,7 @@ export async function run(config: TestOptions, match?: string) {
     const files = [...include, ...exclude.map(e => `!${e}`)].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const nodeArguments = [
-      '--nodeArguments="--loader ts-node/esm --experimental-specifier-resolution=node --require ts-node/register"',
+      '--nodeArguments="--loader ts-node/esm --experimental-specifier-resolution=node --require ts-node/register --extensions ts,tsx"',
     ];
     const matchFlag = match ? [`--match='${match.toString()}'`] : [];
     // const tapReporter = ['--tap'];

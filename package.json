@@ -126,5 +126,13 @@
       "react/jsx-dev-runtime": "react/jsx-dev-runtime.js",
       "react/jsx-runtime": "react/jsx-runtime.js"
     }
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=ts-node/esm"
+    ]
   }
 }
