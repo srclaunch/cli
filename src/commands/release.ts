@@ -22,9 +22,13 @@ export default new Command<Project>({
         silent: false,
       });
 
-      const result = await git.push('origin', 'main', {
-        '--follow-tags': null,
-      });
+      const result = await git.push(
+        currentRepo?.name ?? 'origin',
+        currentBranch,
+        {
+          '--follow-tags': null,
+        },
+      );
       console.log('result', result);
     } catch (err) {
       console.error('err', err);
