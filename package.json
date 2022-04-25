@@ -38,7 +38,7 @@
     "release": "yarn version:patch && yarn git:push",
     "start": "node --experimental-modules --experimental-specifier-resolution=node dist/index.js",
     "test": "yarn ava ./src/__tests__/**",
-    "test:coverage": "yarn c8 --all --clean --include src --exclude 'src/__tests__/**' ava ./src/tests/** && yarn c8 report --all --reporter json-summary --reporter lcov --include src --exclude 'src/__tests__/**'",
+    "test:coverage": "yarn c8 --all --clean --include src --exclude 'src/__tests__/**' ava ./src/__tests__/** && yarn c8 report --all --reporter json-summary --reporter lcov --include src --exclude 'src/__tests__/**'",
     "test:watch": "yarn ava --watch",
     "version:patch": "standard-version",
     "yui": "yarn upgrade-interactive"
