@@ -23,7 +23,7 @@ export async function run({
     // const include =
     //   config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
     // const files = [...include].join(' ');
-    const extensionsToTreatAsEsm = ['--extensionsToTreatAsEsm', '.ts .tsx'];
+    // const extensionsToTreatAsEsm = ['--extensionsToTreatAsEsm', '.ts .tsx'];
     const failFast = config?.fail?.fast ? ['--bail'] : [];
     const failWithoutAssertions =
       config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests

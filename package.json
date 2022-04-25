@@ -37,7 +37,7 @@
     "qr": "yarn build && git add . && git commit -m \"Quick release - patch\" && yarn release",
     "release": "yarn version:patch && yarn git:push",
     "start": "node --experimental-modules --experimental-specifier-resolution=node dist/index.js",
-    "test": "yarn ava ./src/tests/**",
+    "test": "yarn ava ./src/__tests__/**",
     "test:coverage": "yarn c8 --all --clean --include src --exclude 'src/tests/**' ava ./src/tests/** && yarn c8 report --all --reporter json-summary --reporter lcov --include src --exclude 'src/tests/**'",
     "test:watch": "yarn ava --watch",
     "version:patch": "standard-version",
