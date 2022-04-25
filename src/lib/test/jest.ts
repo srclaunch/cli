@@ -41,7 +41,6 @@ export async function run({
       ...colors,
       ...concurrencyArg,
       ...coverageProvider,
-      ...extensionsToTreatAsEsm,
       ...failWithoutAssertions,
       ...failFast,
       ...matchFlag,
