@@ -13,6 +13,7 @@ export async function run(config: TestOptions): Promise<Report> {
     );
 
     await ensureDir(coverageDir);
+    await emptyDir(coverageDir);
 
     const report = new Report({
       all: true,
