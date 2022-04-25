@@ -38,6 +38,7 @@ export async function run({
     // const files = [...include].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const matchFlag = match ? [`--match='${match.toString()}'`] : [];
+    const nodeArguments = ['--nodeArguments="--loader=ts-node/esm"'];
     // const tapReporter = ['--tap'];
     const verbose = config?.verbose ? ['--verbose'] : [];
     const watchFlag = watch ? ['--watch'] : [];
@@ -49,6 +50,7 @@ export async function run({
       ...concurrencyArg,
       ...failFast,
       ...matchFlag,
+      ...nodeArguments,
       ...verbose,
       ...watchFlag,
     ];
