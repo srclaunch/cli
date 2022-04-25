@@ -25,10 +25,10 @@ export async function run({
     // const files = [...include].join(' ');
     // const extensionsToTreatAsEsm = ['--extensionsToTreatAsEsm', '.ts .tsx'];
     const failFast = config?.fail?.fast ? ['--bail'] : [];
-    const failWithoutAssertions =
+    const failWithNoTests =
       config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
-        ? ['--failWithoutAssertions']
-        : [];
+        ? []
+        : ['--passWithNoTests'];
     const matchFlag = match ? [`--t ${match.toString()}`] : [];
     // const tapReporter = ['--tap'];
     const preset = ['--preset', 'ts-jest'];
@@ -41,7 +41,7 @@ export async function run({
       ...colors,
       ...concurrencyArg,
       ...coverageProvider,
-      ...failWithoutAssertions,
+      ...failWithNoTests,
       ...failFast,
       ...matchFlag,
       ...preset,

@@ -37,6 +37,10 @@ export async function run({
     //   config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
     // const files = [...include].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
+    const failWithNoTests =
+      config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
+        ? []
+        : ['--failWithoutAssertions'];
     const matchFlag = match ? [`--match='${match.toString()}'`] : [];
     const nodeArguments = ['--nodeArguments="--loader=ts-node/esm"'];
     // const tapReporter = ['--tap'];
@@ -49,6 +53,7 @@ export async function run({
       ...color,
       ...concurrencyArg,
       ...failFast,
+      ...failWithNoTests,
       ...matchFlag,
       ...nodeArguments,
       ...verbose,
