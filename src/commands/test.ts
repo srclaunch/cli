@@ -37,7 +37,7 @@ export default new Command<Project, TestFlags>({
             match: flags.match,
             watch: flags.watch,
           });
-          return;
+          break;
         case TestTool.Ava:
         default:
           await runAvaTests({
@@ -59,7 +59,7 @@ export default new Command<Project, TestFlags>({
               match: flags.match,
               watch: flags.watch,
             });
-            return;
+            break;
           case TestTool.Ava:
           default:
             await runAvaTests({
