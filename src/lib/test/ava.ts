@@ -31,11 +31,6 @@ export async function run({
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
-    // const exclude =
-    //   config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
-    // const include =
-    //   config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
-    // const files = [...include].join(' ');
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const failWithNoTests =
       config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
@@ -48,7 +43,6 @@ export async function run({
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      // files,
       ...all,
       ...color,
       ...concurrencyArg,

@@ -9,11 +9,20 @@ export async function run(config: TestOptions): Promise<Report> {
   try {
     const coverageDir = path.join(
       process.cwd(),
-      config.coverage?.directory ?? 'coverage',
+      config.coverage?.directory ?? DEFAULT_TEST_OPTIONS.coverage.directory,
     );
 
     await ensureDir(coverageDir);
     await emptyDir(coverageDir);
+
+    console.log({
+      all: true,
+      reportsDirectory: coverageDir,
+      src: [path.join(process.cwd(), 'src')],
+      tempDirectory: coverageDir,
+      reporter:
+        config.coverage?.reporters ?? DEFAULT_TEST_OPTIONS.coverage.reporters,
+    });
 
     const report = new Report({
       all: true,
@@ -34,6 +43,7 @@ export async function run(config: TestOptions): Promise<Report> {
 
     return report;
   } catch (err) {
-    throw err;
+    console.warn('Error encountered while generating coverage reports');
+    console.error(err);
   }
 }

@@ -18,12 +18,6 @@ export async function run({
       ? ['--maxConcurrency', config.concurrency?.toString() ?? '5']
       : [];
     const coverageProvider = ['--coverageProvider', 'v8'];
-    // const exclude =
-    //   config?.files?.exclude ?? DEFAULT_TEST_OPTIONS.files.exclude;
-    // const include =
-    //   config?.files?.include ?? DEFAULT_TEST_OPTIONS.files.include;
-    // const files = [...include].join(' ');
-    // const extensionsToTreatAsEsm = ['--extensionsToTreatAsEsm', '.ts .tsx'];
     const failFast = config?.fail?.fast ? ['--bail'] : [];
     const failWithNoTests =
       config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
@@ -37,7 +31,6 @@ export async function run({
     const watchFlag = watch ? ['--watch'] : [];
 
     const args = [
-      // files, // TODO: Figure out how to set the default test path pattern correctly
       ...colors,
       ...concurrencyArg,
       ...coverageProvider,
