@@ -15,15 +15,6 @@ export async function run(config: TestOptions): Promise<Report> {
     await ensureDir(coverageDir);
     await emptyDir(coverageDir);
 
-    console.log({
-      all: true,
-      reportsDirectory: coverageDir,
-      src: [path.join(process.cwd(), 'src')],
-      tempDirectory: coverageDir,
-      reporter:
-        config.coverage?.reporters ?? DEFAULT_TEST_OPTIONS.coverage.reporters,
-    });
-
     const report = new Report({
       all: true,
       reportsDirectory: coverageDir,
