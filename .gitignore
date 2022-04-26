@@ -1,9 +1,6 @@
 # dotenv file
 .env
 
-# Test coverage
-coverage
-
 # Mac OS artifacts
 .DS_Store
 
