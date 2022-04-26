@@ -45,5 +45,6 @@ export async function run(config: TestOptions): Promise<Report> {
   } catch (err) {
     console.warn('Error encountered while generating coverage reports');
     console.error(err);
+    throw err;
   }
 }
