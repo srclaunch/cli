@@ -13,7 +13,11 @@ export async function run({
   options,
   environment,
 }: {
-  options?: WebApplicationRunOptions;
+  options?: WebApplicationRunOptions[
+    | 'development'
+    | 'preview'
+    | 'qa'
+    | 'production'];
   environment: Environments;
 }) {
   try {
