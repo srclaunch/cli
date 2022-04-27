@@ -13,7 +13,7 @@ export async function run({
   config,
   environment,
 }: {
-  config: WebApplicationRunOptions;
+  config?: WebApplicationRunOptions;
   environment: Environments;
 }) {
   try {
