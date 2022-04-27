@@ -1,4 +1,9 @@
-import { Project, ProjectType, RunOptions } from '@srclaunch/types';
+import {
+  Environments,
+  Project,
+  ProjectType,
+  RunOptions,
+} from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { getEnvironment } from '@srclaunch/node-environment';
 import { Command, CommandType } from '../lib/command.js';
@@ -31,8 +36,12 @@ export default new Command<Project, RunFlags>({
         console.log('environment', environment);
         switch (config.type) {
           case ProjectType.WebApplication:
-            await runVite({ environment, ssr: options.ssr ?? flags.ssr });
+            await runVite({
+              environment: Environments.Development,
+              // ssr: options.ssr ?? flags.ssr,
+            });
             break;
+
           default:
             break;
         }

@@ -1916,7 +1916,7 @@ __metadata:
     "@srclaunch/dx": ^0.1.44
     "@srclaunch/exceptions": ^0.1.58
     "@srclaunch/node-environment": ^0.1.12
-    "@srclaunch/types": ^0.1.101
+    "@srclaunch/types": ^0.1.103
     "@types/fs-extra": ^9.0.13
     "@types/jest-cli": ^24.3.0
     "@types/luxon": ^2.3.1
@@ -2033,10 +2033,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.101":
-  version: 0.1.101
-  resolution: "@srclaunch/types@npm:0.1.101"
-  checksum: debeaede665d145463c400a48fde360e6fbaef35b4abfc8fe379c11f314a6a7c9bf4f83f094e0cbb18784475e6866366bc72e4865e2f00d16a4ddffd0bfadbba
+"@srclaunch/types@npm:^0.1.103":
+  version: 0.1.103
+  resolution: "@srclaunch/types@npm:0.1.103"
+  checksum: 9797abbe67c158a8cf9a2886da25cabac7865e286d95400a47196f141fc43b20edcc7e6a73f3a0e4cb6067fbb460b5a49469db7773cde4d84b3e372e2c19ed0c
   languageName: node
   linkType: hard
 
