@@ -15,7 +15,7 @@ export async function build({
   assets,
   bundle,
   format = BuildFormat.ESM,
-  formats,
+  formats = [BuildFormat.ESM, BuildFormat.UMD],
   input,
   library = false,
   optimize,

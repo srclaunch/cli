@@ -48,13 +48,11 @@ export default new Command<Project, BuildFlags>({
           return;
         case BuildTool.ESBuild:
         default:
-          const formats = options.formats ?? [
-            options.format ?? BuildFormat.ESM,
-          ];
+          const formats = options.formats ?? [BuildFormat.ESM];
 
           for (const format of formats) {
-            const clean = options.output?.clean ?? run === 0;
-            const types = options.types ?? run === 0;
+            const clean = (options.output?.clean ?? true) && run === 0;
+            const types = (options.types ?? true) && run === 0;
 
             await esbuild({
               ...options,
@@ -89,8 +87,8 @@ export default new Command<Project, BuildFlags>({
             const formats = build?.formats ?? [build.format ?? BuildFormat.ESM];
 
             for (const format of formats) {
-              const clean = build.output?.clean ?? run === 0;
-              const types = build.types ?? run === 0;
+              const clean = (build.output?.clean ?? true) && run === 0;
+              const types = (build.types ?? true) && run === 0;
 
               await esbuild({
                 ...build,
