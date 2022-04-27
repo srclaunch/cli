@@ -27,6 +27,11 @@ export async function run({
     switch (environment) {
       case Environments.Development:
         const server = await createServer({
+          build: {
+            rollupOptions: {
+              external: ['react', 'react-dom'],
+            },
+          },
           root: path.join(path.resolve()),
           plugins: [react()],
         });
