@@ -29,6 +29,7 @@ export default new Command<Project, RunFlags>({
       run: async ({ config, flags }) => {
         process.env.NODE_ENV = 'development';
 
+        console.log('config', config);
         const options = config.run as RunOptions;
 
         console.log('options', options);
