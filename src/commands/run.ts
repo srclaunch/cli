@@ -3,11 +3,13 @@ import {
   Project,
   ProjectType,
   RunOptions,
+  RunTool,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { getEnvironment } from '@srclaunch/node-environment';
 import { Command, CommandType } from '../lib/command.js';
 import { run as runVite } from '../lib/run/vite';
+import chalk from 'chalk';
 
 type RunFlags = TypedFlags<{
   ssr: {
@@ -30,20 +32,22 @@ export default new Command<Project, RunFlags>({
         process.env.NODE_ENV = 'development';
 
         console.log('config', config);
-        const options = config.run as RunOptions;
+        const options = config.run;
 
-        console.log('options', options);
-        const environment = getEnvironment();
-        console.log('environment', environment);
-        switch (config.type) {
-          case ProjectType.WebApplication:
+        switch (options.tool) {
+          case RunTool.Vite:
             await runVite({
               environment: Environments.Development,
+              options,
               // ssr: options.ssr ?? flags.ssr,
             });
             break;
-
           default:
+            console.error(
+              `${chalk.red('✘')} ${chalk.bold(
+                'Unsupported run tool',
+              )} ${chalk.bold(options.tool)}`,
+            );
             break;
         }
       },

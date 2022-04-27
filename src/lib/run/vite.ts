@@ -10,14 +10,14 @@ import path from 'path';
 import { createServer, ViteDevServer } from 'vite';
 
 export async function run({
-  config,
+  options,
   environment,
 }: {
-  config?: WebApplicationRunOptions;
+  options?: WebApplicationRunOptions;
   environment: Environments;
 }) {
   try {
-    console.log('config', config);
+    console.log('options', options);
     console.log('environment', environment);
     switch (environment) {
       case Environments.Development:
