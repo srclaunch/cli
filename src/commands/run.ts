@@ -1,5 +1,6 @@
-import { Project, ProjectType } from '@srclaunch/types';
+import { Project, ProjectType, RunOptions } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
+import { getEnvironment } from '@srclaunch/node-environment';
 import { Command, CommandType } from '../lib/command.js';
 import { run as runVite } from '../lib/run/vite';
 
@@ -15,11 +16,12 @@ export default new Command<Project, RunFlags>({
   name: 'run',
   description: 'Commands for running an application or service',
   run: async ({ config, flags }) => {
-    const env = process.env.NODE_ENV || 'test';
+    const options = config.run as RunOptions;
 
+    const environment = getEnvironment();
     switch (config.type) {
       case ProjectType.WebApplication:
-        await runVite({ environment: env });
+        await runVite({ environment, ssr: options.ssr ?? flags.ssr });
         break;
       default:
         break;

@@ -1914,8 +1914,9 @@ __metadata:
   dependencies:
     "@rauschma/stringio": ^1.4.0
     "@srclaunch/dx": ^0.1.44
-    "@srclaunch/exceptions": ^0.1.54
-    "@srclaunch/types": ^0.1.99
+    "@srclaunch/exceptions": ^0.1.58
+    "@srclaunch/node-environment": ^0.1.12
+    "@srclaunch/types": ^0.1.101
     "@types/fs-extra": ^9.0.13
     "@types/jest-cli": ^24.3.0
     "@types/luxon": ^2.3.1
@@ -2002,33 +2003,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/exceptions@npm:^0.1.54":
-  version: 0.1.54
-  resolution: "@srclaunch/exceptions@npm:0.1.54"
+"@srclaunch/exceptions@npm:^0.1.58":
+  version: 0.1.58
+  resolution: "@srclaunch/exceptions@npm:0.1.58"
   dependencies:
-    "@srclaunch/logger": ^0.1.66
+    "@srclaunch/logger": ^0.1.73
     luxon: ^2.3.2
     nanoid: ^3.3.3
     serialize-error: ^10.0.0
-  checksum: bcbe0b982ad3790b4ead7ac2a40880527172d2faa3c0d60c3807751c7c893ca1a5c0a5297f2f885999423e161ebd6c9ef3da96dc362a2da4c645a6a74a76116d
+  checksum: f35be2a9b11abfbb1d88349d2b2590de21ae73031d9606bfc6a52b998ccb2905542192af7413d60a9a0bf6dcb9cf8c91e2d07750ef6ecc50df4d0b0630ad04ec
   languageName: node
   linkType: hard
 
-"@srclaunch/logger@npm:^0.1.66":
-  version: 0.1.66
-  resolution: "@srclaunch/logger@npm:0.1.66"
+"@srclaunch/logger@npm:^0.1.73":
+  version: 0.1.73
+  resolution: "@srclaunch/logger@npm:0.1.73"
   dependencies:
-    chalk: ^5.0.1
     luxon: ^2.3.2
     nanoid: ^3.3.3
-  checksum: b29ee2605a87dceb3931373c59f836de9437632aafe363e68be46fb04be8ec8b30867d047472f1cbe16677d62cf8cfe69d3527b7bfa3b390a81bc1685611bf8c
+    picocolors: ^1.0.0
+  checksum: 0a5b807cd2ffcaac342d76d2077155854a9291e0c824b2adf9f5cd048178da4ab8f03abe08ac0b1a9b43c69e553e520ee11794d9bbfb56bd0732338030d82317
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.99":
-  version: 0.1.99
-  resolution: "@srclaunch/types@npm:0.1.99"
-  checksum: 7fd3ce586ce40a65819d0e35aee148b542fa9f2c39c76074fd94b19421f511f9fc9f93ba05e3c58452b57de2f864b9c4c12391e30404f5c085fe944aab1eae5c
+"@srclaunch/node-environment@npm:^0.1.12":
+  version: 0.1.12
+  resolution: "@srclaunch/node-environment@npm:0.1.12"
+  checksum: 342484acbbbe6a8508a362f3a03a2d926b6fa9883c5c21f5047b4a9943be368083381a1e9aa25911e885014ca7713ae0e09e893bfd376305a91a813f51bcd95c
+  languageName: node
+  linkType: hard
+
+"@srclaunch/types@npm:^0.1.101":
+  version: 0.1.101
+  resolution: "@srclaunch/types@npm:0.1.101"
+  checksum: debeaede665d145463c400a48fde360e6fbaef35b4abfc8fe379c11f314a6a7c9bf4f83f094e0cbb18784475e6866366bc72e4865e2f00d16a4ddffd0bfadbba
   languageName: node
   linkType: hard
 
