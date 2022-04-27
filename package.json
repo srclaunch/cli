@@ -124,12 +124,6 @@
     "stylelint-order": "^5.0.0",
     "tslib": "^2.4.0"
   },
-  "resolve": {
-    "alias": {
-      "react/jsx-dev-runtime": "react/jsx-dev-runtime.js",
-      "react/jsx-runtime": "react/jsx-runtime.js"
-    }
-  },
   "ava": {
     "extensions": {
       "ts": "module"
@@ -139,8 +133,5 @@
       "--loader=ts-node/esm"
     ],
     "verbose": true
-  },
-  "peerDependencies": {
-    "ansi-styles": "*"
   }
 }
