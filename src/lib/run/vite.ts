@@ -26,13 +26,13 @@ export async function run({
     console.log('environment', environment);
     switch (environment) {
       case Environments.Development:
-        const server = await createServer({
+        const config = {
           build: {
             rollupOptions: {
               external: options?.external ?? [],
             },
           },
-          configFile: false,
+          configFile: undefined,
           envPrefix: 'SRCLAUNCH_',
           optimizeDeps: {
             exclude: options?.optimize?.exclude ?? [],
@@ -40,7 +40,11 @@ export async function run({
           },
           root: path.join(path.resolve()),
           plugins: [react()],
-        });
+        };
+
+        console.log('config', config);
+
+        const server = await createServer(config);
 
         console.log('server', server);
 
