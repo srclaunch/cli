@@ -43,6 +43,7 @@ export async function build({
     ];
 
     if (output?.clean) {
+      console.info('Cleaning output directory...');
       await emptyDirectory(output?.directory ?? 'dist');
     }
 
