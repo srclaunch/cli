@@ -11,16 +11,27 @@ export async function getSrcLaunchConfig() {
 
       return config.default;
     } catch (jsImportError: any) {
-      const configPath = path.join(path.resolve(), '.srclaunch', 'config.json');
-
       try {
-        const config = await readFile(configPath);
+        const configPath = path.join(path.resolve(), './.srclaunch/config');
+        const config = await import(configPath);
 
-        return await JSON.parse(config.toString());
-      } catch (jsonReadError: any) {
-        throw new Error(
-          `Could not read config file: ${configPath}. ${jsonReadError.message}`,
+        return config.default;
+      } catch (jsImportError: any) {
+        const configPath = path.join(
+          path.resolve(),
+          '.srclaunch',
+          'config.json',
         );
+
+        try {
+          const config = await readFile(configPath);
+
+          return await JSON.parse(config.toString());
+        } catch (jsonReadError: any) {
+          throw new Error(
+            `Could not read config file: ${configPath}. ${jsonReadError.message}`,
+          );
+        }
       }
     }
   } catch (err) {
