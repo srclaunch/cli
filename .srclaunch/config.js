@@ -13,6 +13,7 @@ export default {
   build: {
     bundle: {
       exclude: [
+        '@rauschma/stringio',
         'c8',
         'esbuild',
         'esbuild-css-modules-plugin',
@@ -20,7 +21,8 @@ export default {
         'ink',
         'jest-cli', // 'jest-pnp-resolver',
         'meow',
-        '@rauschma/stringio',
+        'react',
+        'react-dom',
         'simple-git',
         'standard-version',
         'typescript',
