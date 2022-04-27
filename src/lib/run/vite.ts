@@ -8,6 +8,7 @@ import {
 import chalk from 'chalk';
 import path from 'path';
 import { createServer, ViteDevServer } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export async function run({
   options,
@@ -27,6 +28,7 @@ export async function run({
       case Environments.Development:
         const server = await createServer({
           root: path.join(path.resolve()),
+          plugins: [react()],
         });
 
         console.log('server', server);
