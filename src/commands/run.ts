@@ -18,7 +18,9 @@ export default new Command<Project, RunFlags>({
   run: async ({ config, flags }) => {
     const options = config.run as RunOptions;
 
+    console.log('options', options);
     const environment = getEnvironment();
+    console.log('environment', environment);
     switch (config.type) {
       case ProjectType.WebApplication:
         await runVite({ environment, ssr: options.ssr ?? flags.ssr });
