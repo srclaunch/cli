@@ -10,20 +10,25 @@ import path from 'path';
 import { createServer, ViteDevServer } from 'vite';
 
 export async function run({ environment, ssr }: WebApplicationRunOptions) {
-  switch (environment?.type) {
-    case EnvironmentType.Development:
-      const server = await createServer({
-        root: path.join(path.resolve()),
-      });
+  try {
+    switch (environment?.type) {
+      case EnvironmentType.Development:
+        const server = await createServer({
+          root: path.join(path.resolve()),
+        });
 
-      await server.listen();
+        await server.listen();
 
-      server.printUrls();
+        server.printUrls();
 
-      `${chalk.green('✔')} started ${'asd'} in  ${chalk.bold(
-        environment.id,
-      )} mode`;
-      break;
-    default:
+        `${chalk.green('✔')} started ${'asd'} in  ${chalk.bold(
+          environment.id,
+        )} mode`;
+        break;
+      default:
+    }
+  } catch (err: any) {
+    console.error(chalk.red(err.message));
+    process.exit(1);
   }
 }
