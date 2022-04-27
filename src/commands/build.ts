@@ -35,8 +35,16 @@ export default new Command<Project, BuildFlags>({
     if (typeof options === 'object' && !Array.isArray(options)) {
       switch (options.tool) {
         case BuildTool.Vite:
+          const clean = (options.output?.clean ?? true) && run === 0;
+          const types = (options.types ?? true) && run === 0;
+
           await vite({
             ...options,
+            output: {
+              ...options.output,
+              clean,
+            },
+            types,
             library:
               config.type === ProjectType.Library ||
               config.type === ProjectType.CLIApplication
@@ -60,7 +68,7 @@ export default new Command<Project, BuildFlags>({
                 ...options.output,
                 clean,
               },
-              format: format,
+              format,
               types,
             } as ESBuildOptions);
 
@@ -71,8 +79,16 @@ export default new Command<Project, BuildFlags>({
       for (const build of options) {
         switch (build.tool) {
           case BuildTool.Vite:
+            const clean = (build.output?.clean ?? true) && run === 0;
+            const types = (build.types ?? true) && run === 0;
+
             await vite({
               ...build,
+              output: {
+                ...build.output,
+                clean,
+              },
+              types,
               library:
                 config.type === ProjectType.Library ||
                 config.type === ProjectType.CLIApplication
