@@ -23,5 +23,9 @@ export async function getSrcLaunchConfig() {
         );
       }
     }
-  } catch (err) {}
+  } catch (err) {
+    throw new Error(
+      'Please run this command from a SrcLaunch project or workspace directory.',
+    );
+  }
 }
