@@ -15,26 +15,28 @@ type RunFlags = TypedFlags<{
 export default new Command<Project, RunFlags>({
   name: 'run',
   description: 'Commands for running an application or service',
-  run: async ({ config, flags }) => {
-    const options = config.run as RunOptions;
-
-    console.log('options', options);
-    const environment = getEnvironment();
-    console.log('environment', environment);
-    switch (config.type) {
-      case ProjectType.WebApplication:
-        await runVite({ environment, ssr: options.ssr ?? flags.ssr });
-        break;
-      default:
-        break;
-    }
-  },
+  run: async ({ config, flags }) => {},
   type: CommandType.Project,
   commands: [
     new Command<Project, RunFlags>({
       name: 'dev',
       description: 'Start project in development mode',
-      run: async ({ config, flags }) => {},
+      run: async ({ config, flags }) => {
+        process.env.NODE_ENV = 'development';
+
+        const options = config.run as RunOptions;
+
+        console.log('options', options);
+        const environment = getEnvironment();
+        console.log('environment', environment);
+        switch (config.type) {
+          case ProjectType.WebApplication:
+            await runVite({ environment, ssr: options.ssr ?? flags.ssr });
+            break;
+          default:
+            break;
+        }
+      },
       type: CommandType.Project,
     }),
     new Command<Project, RunFlags>({

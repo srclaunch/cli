@@ -17,6 +17,8 @@ export async function run({ environment, ssr }: WebApplicationRunOptions) {
           root: path.join(path.resolve()),
         });
 
+        console.log('server', server);
+
         await server.listen();
 
         server.printUrls();
