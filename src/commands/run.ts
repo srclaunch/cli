@@ -30,7 +30,7 @@ export default new Command<Project, RunFlags>({
       name: 'dev',
       description: 'Start project in development mode',
       run: async ({ config, flags }) => {
-        const options = (config.run as WebApplicationRunOptions).development;
+        const options = (config.run as RunOptions).development;
 
         if (!options) {
           throw new Error('Missing development configuration');
