@@ -9,7 +9,7 @@ import * as modelCommands from './commands/models.js';
 import * as previewCommands from './commands/preview.js';
 import * as projectCommands from './commands/projects.js';
 import * as releaseCommands from './commands/release.js';
-import * as serveCommands from './commands/serve.js';
+import * as runCommands from './commands/run.js';
 import * as testCommands from './commands/test.js';
 
 import { getSrcLaunchConfig } from './lib/config.js';
@@ -59,7 +59,7 @@ export async function main() {
         previewCommands.default,
         projectCommands.default,
         releaseCommands.default,
-        serveCommands.default,
+        runCommands.default,
         testCommands.default,
       ] as Command<any, TypedFlags<AnyFlags> & Record<string, unknown>>[],
       config,
