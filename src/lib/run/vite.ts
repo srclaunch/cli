@@ -29,7 +29,7 @@ export async function run({
         const server = await createServer({
           build: {
             rollupOptions: {
-              external: ['react', 'react-dom'],
+              external: ['@srclaunch/cli', 'react', 'react-dom'],
             },
           },
           root: path.join(path.resolve()),
