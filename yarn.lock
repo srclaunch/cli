@@ -2210,7 +2210,7 @@ __metadata:
     ink-multi-select: ^2.0.0
     ink-spinner: ^4.0.3
     jest: ^28.0.1
-    jest-cli: ^28.0.1
+    jest-cli: ^27.5.1
     luxon: ^2.3.2
     meow: ^10.1.2
     nanoid: ^3.3.3
@@ -7796,7 +7796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-cli@npm:*":
+"jest-cli@npm:*, jest-cli@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-cli@npm:27.5.1"
   dependencies:
