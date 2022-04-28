@@ -1932,9 +1932,9 @@ __metadata:
   dependencies:
     "@rauschma/stringio": ^1.4.0
     "@srclaunch/dx": ^0.1.44
-    "@srclaunch/exceptions": ^0.1.58
+    "@srclaunch/exceptions": ^0.1.68
     "@srclaunch/node-environment": ^0.1.12
-    "@srclaunch/types": ^0.1.114
+    "@srclaunch/types": ^0.1.115
     "@types/fs-extra": ^9.0.13
     "@types/luxon": ^2.3.1
     "@types/node": ^17.0.29
@@ -2015,26 +2015,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/exceptions@npm:^0.1.58":
-  version: 0.1.58
-  resolution: "@srclaunch/exceptions@npm:0.1.58"
+"@srclaunch/exceptions@npm:^0.1.68":
+  version: 0.1.68
+  resolution: "@srclaunch/exceptions@npm:0.1.68"
   dependencies:
-    "@srclaunch/logger": ^0.1.73
+    "@srclaunch/logger": ^0.1.79
     luxon: ^2.3.2
     nanoid: ^3.3.3
     serialize-error: ^10.0.0
-  checksum: f35be2a9b11abfbb1d88349d2b2590de21ae73031d9606bfc6a52b998ccb2905542192af7413d60a9a0bf6dcb9cf8c91e2d07750ef6ecc50df4d0b0630ad04ec
+  checksum: d0bbedb8e1d6e6a1d522f52666542a720bc2818b64772a281a62ca0167d4edcb3940636962317d4ebf45c1c7663a10c1509c612c8b5b0256dac93a50bbc4a2d7
   languageName: node
   linkType: hard
 
-"@srclaunch/logger@npm:^0.1.73":
-  version: 0.1.73
-  resolution: "@srclaunch/logger@npm:0.1.73"
+"@srclaunch/logger@npm:^0.1.79":
+  version: 0.1.79
+  resolution: "@srclaunch/logger@npm:0.1.79"
   dependencies:
     luxon: ^2.3.2
     nanoid: ^3.3.3
     picocolors: ^1.0.0
-  checksum: 0a5b807cd2ffcaac342d76d2077155854a9291e0c824b2adf9f5cd048178da4ab8f03abe08ac0b1a9b43c69e553e520ee11794d9bbfb56bd0732338030d82317
+  checksum: 0ffb37d2a32f9bc1b3c3971e56b421e82a482862f58165955fdaa0c986518422f96efd8b4232af3f52cf764ed30b4f93a0765786c849e4302a4d7e18eea574ba
   languageName: node
   linkType: hard
 
@@ -2045,10 +2045,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.114":
-  version: 0.1.114
-  resolution: "@srclaunch/types@npm:0.1.114"
-  checksum: 481111d27b676621ba8ae1faac625357eab2453113a5628071bd0b43a9811f491567e0645d4fdb53265754f8fb322cf952a2efc65f8a3819c2e13c408c7b098e
+"@srclaunch/types@npm:^0.1.115":
+  version: 0.1.115
+  resolution: "@srclaunch/types@npm:0.1.115"
+  checksum: e4cfdc517bee15251b9e1f516cc9a3151cad5dbb44f781fa8b3e5f886619cc3332826c5d593f3f3a09aae15080fd7986fbe0dec2fa1748c82252df4a2231e5e7
   languageName: node
   linkType: hard
 
