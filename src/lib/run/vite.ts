@@ -2,6 +2,7 @@ import {
   Environment,
   Environments,
   EnvironmentType,
+  Project,
   RunOptions,
   WebApplicationRunOptions,
 } from '@srclaunch/types';
@@ -12,6 +13,7 @@ import react from '@vitejs/plugin-react';
 
 export async function run({
   options,
+  project,
   environment,
 }: {
   options?: WebApplicationRunOptions[
@@ -19,6 +21,7 @@ export async function run({
     | 'preview'
     | 'qa'
     | 'production'];
+  project: Project;
   environment: Environments;
 }) {
   try {
@@ -42,19 +45,15 @@ export async function run({
           plugins: [react()],
         };
 
-        console.log('config', config);
-
         const server = await createServer(config);
-
-        console.log('server', server);
 
         await server.listen();
 
         server.printUrls();
 
-        `${chalk.green('✔')} started ${'asd'} in  ${chalk.bold(
-          environment,
-        )} mode`;
+        `${chalk.green('✔')} started ${chalk.bold(
+          project.name,
+        )} in the ${chalk.bold(environment)} environment.`;
         break;
       default:
     }
