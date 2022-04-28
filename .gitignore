@@ -1,11 +1,14 @@
+# NPM dependencies
+node_modules
+
 # dotenv file
 .env
 
 # Test coverage files
 coverage
 
-# NPM dependencies
-node_modules
+# Build artifacts
+dist
 
 # Yarn 2 files
 .yarn/*
