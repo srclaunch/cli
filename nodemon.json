@@ -1,7 +1,0 @@
-{
-  "verbose": true,
-  "execMap": {
-    "docker-restart": "docker compose restart"
-  },
-  "watch": ["app/web-app/Dockerfile.dev"]
-}

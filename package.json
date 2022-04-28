@@ -5,7 +5,7 @@
   "license": "MIT",
   "version": "0.1.327",
   "engines": {
-    "node": ">=18"
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public",
@@ -29,9 +29,10 @@
     }
   },
   "scripts": {
-    "build:es": "esbuild --external:c8 --external:esbuild --external:'fs-extra' --external:ink --external:react  --external:'jest-cli' --external:meow --external:'@rauschma/stringio' --external:'simple-git' --external:'standard-version'  --external:typescript --external:vite --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify --inject:./react-shim.js --outfile=dist/index.js --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
+    "build:cjs": "esbuild --external:c8 --external:esbuild --external:'fs-extra' --external:ink --external:react  --external:'jest-cli' --external:meow --external:'@rauschma/stringio' --external:'simple-git' --external:'standard-version'  --external:typescript --external:vite --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify --outfile=dist/index.cjs --format=cjs --target=esnext --define:'navigator={}' --platform=node src/index.ts",
+    "build:es": "esbuild --external:c8 --external:esbuild --external:'fs-extra' --external:ink --external:react  --external:'jest-cli' --external:meow --external:'@rauschma/stringio' --external:'simple-git' --external:'standard-version'  --external:typescript --external:vite --external:'@vitejs/plugin-react' --external:'update-notifier' --sourcemap --bundle --minify  --outfile=dist/index.mjs --format=esm --target=esnext --define:'navigator={}' --platform=node src/index.ts",
     "build:self": "node ./dist/index.js build",
-    "build": "yarn clean && yarn build:es",
+    "build": "yarn clean && yarn build:cjs && yarn build:es",
     "clean": "rm -fr dist",
     "dev": "NODE_ENV=dev && node --loader ts-node/esm --experimental-specifier-resolution=node ./src/index.ts",
     "git:push": "git push --follow-tags origin main",
@@ -44,16 +45,12 @@
     "version:patch": "standard-version",
     "yui": "yarn upgrade-interactive"
   },
-  "peerDependencies": {
-    "react": "^18.1.0"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@srclaunch/dx": "^0.1.44",
     "@srclaunch/types": "^0.1.114",
     "@types/fs-extra": "^9.0.13",
-    "@types/jest-cli": "^24.3.0",
     "@types/luxon": "^2.3.1",
-    "@types/meow": "^6.0.0",
     "@types/node": "^17.0.29",
     "@types/node-emoji": "^1.8.1",
     "@types/pluralize": "^0.0.29",
@@ -116,6 +113,7 @@
     "meow": "^10.1.2",
     "nanoid": "^3.3.3",
     "pluralize": "^8.0.0",
+    "react": "^17.0.2",
     "shelljs": "^0.8.5",
     "simple-git": "^3.7.1",
     "terminal-link": "^3.0.0",
