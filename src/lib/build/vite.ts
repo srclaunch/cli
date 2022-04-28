@@ -37,6 +37,7 @@ export async function build({
     ) as ('cjs' | 'es' | 'iife' | 'umd')[];
 
     await buildCommand({
+      define: typeof bundle === 'object' ? bundle?.define : undefined,
       build: {
         assetsDir: assets?.directory
           ? path.join(path.resolve(), assets?.directory)
@@ -62,11 +63,16 @@ export async function build({
             }
           : false,
         manifest,
+
         minify,
         rollupOptions: {
           external: (typeof bundle === 'object'
             ? bundle.exclude ?? []
             : []) as string[],
+          output: {
+            globals:
+              typeof bundle === 'object' ? bundle.globals ?? {} : undefined,
+          },
         },
         sourcemap,
         ssrManifest: manifest && webApp?.ssr,

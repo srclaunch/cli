@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@srclaunch/dx": "^0.1.44",
-    "@srclaunch/types": "^0.1.112",
+    "@srclaunch/types": "^0.1.114",
     "@types/fs-extra": "^9.0.13",
     "@types/jest-cli": "^24.3.0",
     "@types/luxon": "^2.3.1",
