@@ -1971,7 +1971,6 @@ __metadata:
     nanoid: ^3.3.3
     pluralize: ^8.0.0
     prettier: ^2.6.2
-    react: ^18.1.0
     shelljs: ^0.8.5
     simple-git: ^3.7.1
     standard-version: ^9.3.2
@@ -1984,10 +1983,11 @@ __metadata:
     terminal-link: ^3.0.0
     ts-jest: ^27.1.4
     ts-node: ^10.7.0
-    tslib: ^2.4.0
     typescript: ^4.6.3
     update-notifier: ^5.1.0
     vite: ^2.9.6
+  peerDependencies:
+    react: ^18.1.0
   bin:
     srclaunch: dist/index.mjs
   languageName: unknown
@@ -9732,15 +9732,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.1.0":
-  version: 18.1.0
-  resolution: "react@npm:18.1.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: 5bb296b561b43ef2220395da4faac86c14a087c8c80e1a7598a5740f01ee605c11eaf249985c1e2000971c4cd32ccb46d40f00479bbd9fb6b1c7cf857393b7d4
-  languageName: node
-  linkType: hard
-
 "read-pkg-up@npm:^3.0.0":
   version: 3.0.0
   resolution: "read-pkg-up@npm:3.0.0"
@@ -11293,13 +11284,6 @@ __metadata:
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "tslib@npm:2.4.0"
-  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
   languageName: node
   linkType: hard
 

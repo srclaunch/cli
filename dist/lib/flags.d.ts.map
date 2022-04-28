@@ -1,1 +1,0 @@
-{"version":3,"file":"flags.d.ts","sourceRoot":"","sources":["../../src/lib/flags.ts"],"names":[],"mappings":"AAEA,oBAAY,mBAAmB,GAAG;IAChC,WAAW,EAAE;QACX,KAAK,EAAE,GAAG,CAAC;QACX,OAAO,EAAE,KAAK,CAAC;QACf,WAAW,EAAE,kBAAkB,CAAC;QAChC,IAAI,EAAE,SAAS,CAAC;KACjB,CAAC;CACH,CAAC"}

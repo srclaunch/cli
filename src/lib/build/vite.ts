@@ -63,7 +63,6 @@ export async function build({
             }
           : false,
         manifest,
-
         minify,
         rollupOptions: {
           external: (typeof bundle === 'object'
