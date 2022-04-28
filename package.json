@@ -45,7 +45,6 @@
     "version:patch": "standard-version",
     "yui": "yarn upgrade-interactive"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@srclaunch/dx": "^0.1.44",
     "@srclaunch/types": "^0.1.114",
@@ -132,5 +131,6 @@
       "--loader=ts-node/esm"
     ],
     "verbose": true
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
