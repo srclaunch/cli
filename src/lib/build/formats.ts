@@ -7,11 +7,11 @@ export function getFormatFileExtension(format: BuildFormat) {
     case BuildFormat.ESM:
       return '.mjs';
     case BuildFormat.IIFE:
-      return '.iife.js';
+      return '.iife.cjs';
     case BuildFormat.UMD:
-      return '.umd.js';
+      return '.umd.cjs';
     default:
-      return '.js';
+      return `${format}.js`;
   }
 }
 
@@ -37,10 +37,10 @@ export function getViteFormatFileExtension(
     case 'module':
       return '.mjs';
     case 'iife':
-      return '.iife.js';
+      return '.iife.cjs';
     case 'umd':
-      return '.umd.js';
+      return '.umd.cjs';
     default:
-      return `unknown-${format}.js`;
+      return `${format}.js`;
   }
 }
