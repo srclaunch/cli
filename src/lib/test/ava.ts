@@ -31,13 +31,13 @@ export async function run({
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
+    const configArg = ['--config', './ava.config.js'];
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const failWithNoTests =
       config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
         ? []
         : ['--failWithoutAssertions'];
     const matchFlag = match ? [`--match='${match.toString()}'`] : [];
-    const nodeArguments = ['--nodeArguments="--loader=ts-node/esm"'];
     // const tapReporter = ['--tap'];
     const verbose = config?.verbose ? ['--verbose'] : [];
     const watchFlag = watch ? ['--watch'] : [];
@@ -46,10 +46,10 @@ export async function run({
       ...all,
       ...color,
       ...concurrencyArg,
+      ...configArg,
       ...failFast,
       ...failWithNoTests,
       ...matchFlag,
-      ...nodeArguments,
       ...verbose,
       ...watchFlag,
     ];

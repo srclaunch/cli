@@ -1931,10 +1931,10 @@ __metadata:
   resolution: "@srclaunch/cli@workspace:."
   dependencies:
     "@rauschma/stringio": ^1.4.0
-    "@srclaunch/dx": ^0.1.47
+    "@srclaunch/dx": ^0.1.49
     "@srclaunch/exceptions": ^0.1.70
     "@srclaunch/node-environment": ^0.1.15
-    "@srclaunch/types": ^0.1.115
+    "@srclaunch/types": ^0.1.117
     "@types/fs-extra": ^9.0.13
     "@types/luxon": ^2.3.1
     "@types/node": ^17.0.30
@@ -2008,10 +2008,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@srclaunch/dx@npm:^0.1.47":
-  version: 0.1.47
-  resolution: "@srclaunch/dx@npm:0.1.47"
-  checksum: 6d930583dc6d98a3e96588f0cf9cd3e6761babd725ab23b08339d2ba24d20b59145ca50517b7bb71498c172198066e8477298b2554e1f85bab3cc9a9228712dd
+"@srclaunch/dx@npm:^0.1.49":
+  version: 0.1.49
+  resolution: "@srclaunch/dx@npm:0.1.49"
+  checksum: e2e27f95f0c14003c32452c28193391e8dfdcb0ad6bcbe2d78c92dc4ad6e059d1ed0da3c77d66d7270fff2fb432844a1b9f1479c3fe656bcded91b4b6d5f2e15
   languageName: node
   linkType: hard
 
@@ -2045,10 +2045,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.115":
-  version: 0.1.115
-  resolution: "@srclaunch/types@npm:0.1.115"
-  checksum: e4cfdc517bee15251b9e1f516cc9a3151cad5dbb44f781fa8b3e5f886619cc3332826c5d593f3f3a09aae15080fd7986fbe0dec2fa1748c82252df4a2231e5e7
+"@srclaunch/types@npm:^0.1.117":
+  version: 0.1.117
+  resolution: "@srclaunch/types@npm:0.1.117"
+  checksum: 1fea002b6eae4fc9df34ae525394622e27378b569da1c08da7362d33fec51294e9d24376e6ed7d355db1018e0b80f7dc5e587796e827159996daa5b6c58277d7
   languageName: node
   linkType: hard
 
