@@ -41,6 +41,7 @@ export default new Command<Project, RunFlags>({
             await runVite({
               environment: Environments.Development,
               options,
+              project: config,
               // ssr: options.ssr ?? flags.ssr,
             });
             break;
