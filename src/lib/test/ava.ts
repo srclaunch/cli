@@ -55,8 +55,6 @@ export async function run({
       ...watchFlag,
     ];
 
-    console.log(args);
-
     const childProcess = await spawn('ava', args, {
       stdio: [process.stdin, process.stdout, process.stderr],
     });
