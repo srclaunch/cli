@@ -32,7 +32,7 @@ export async function run({
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
-    const configArg = ['--config', 'node_modules/@srclaunch/dx/ava.config'];
+    const configArg = ['--config', 'node_modules/@srclaunch/dx/ava.config.mjs'];
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const failWithNoTests =
       config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
