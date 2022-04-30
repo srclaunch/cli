@@ -1931,7 +1931,7 @@ __metadata:
   resolution: "@srclaunch/cli@workspace:."
   dependencies:
     "@rauschma/stringio": ^1.4.0
-    "@srclaunch/dx": ^0.1.51
+    "@srclaunch/dx": ^0.1.52
     "@srclaunch/exceptions": ^0.1.70
     "@srclaunch/node-environment": ^0.1.15
     "@srclaunch/types": ^0.1.117
@@ -2008,10 +2008,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@srclaunch/dx@npm:^0.1.51":
-  version: 0.1.51
-  resolution: "@srclaunch/dx@npm:0.1.51"
-  checksum: 901cb937c033e0bc7677bab6a81f063898ff7e98cffc7101dbc35ec9631061e4a167ad5a17dccca776e3ef259aa8a76f3c0ca410b503bb05f6f58a8322b12039
+"@srclaunch/dx@npm:^0.1.52":
+  version: 0.1.52
+  resolution: "@srclaunch/dx@npm:0.1.52"
+  checksum: 9b255af47ff55e58bad08152ab24fb3548e3b3545bb19a64cad555d308c000e5e3d240b9a2f2ebba07c25882720e7510da5a645939a9b5c9f69561061a7af4b3
   languageName: node
   linkType: hard
 
