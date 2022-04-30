@@ -30,3 +30,16 @@ export async function readFile(filePath: string) {
     throw new Error(`Could not read file: ${filePath}`);
   }
 }
+
+export async function writeFile (filePath: string, data: string) {
+  if (!filePath) {
+    throw new Error('File path must be provided');
+  }
+
+  try {
+    return await fs.writeFile(filePath, data);
+  }
+  catch (err) {
+    throw new Error(`Could not write file: ${filePath}`);
+  }
+}

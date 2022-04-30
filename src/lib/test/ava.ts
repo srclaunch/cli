@@ -9,6 +9,7 @@ import {
 } from '@rauschma/stringio';
 import { Readable, Writable } from 'stream';
 import path from 'path';
+import { writeFile } from '../file-system';
 
 async function transform(readable: Readable, writable: Writable) {
   for await (const line of chunksToLinesAsync(readable)) {
