@@ -46,7 +46,6 @@
     "yui": "yarn upgrade-interactive"
   },
   "devDependencies": {
-    "@srclaunch/dx": "^0.1.51",
     "@srclaunch/types": "^0.1.117",
     "@types/fs-extra": "^9.0.13",
     "@types/luxon": "^2.3.1",
@@ -92,6 +91,7 @@
   },
   "dependencies": {
     "@rauschma/stringio": "^1.4.0",
+    "@srclaunch/dx": "^0.1.51",
     "@srclaunch/exceptions": "^0.1.70",
     "@srclaunch/node-environment": "^0.1.15",
     "@vitejs/plugin-react": "^1.3.1",
