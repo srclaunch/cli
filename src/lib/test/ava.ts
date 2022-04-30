@@ -8,6 +8,7 @@ import {
   onExit,
 } from '@rauschma/stringio';
 import { Readable, Writable } from 'stream';
+import path from 'path';
 
 async function transform(readable: Readable, writable: Writable) {
   for await (const line of chunksToLinesAsync(readable)) {
@@ -31,7 +32,7 @@ export async function run({
     const concurrencyArg = config?.concurrency
       ? ['--concurrency', config.concurrency.toString()]
       : [];
-    const configArg = ['--config', './ava.config.js'];
+    const configArg = ['--config', path.resolve('./ava.config.js')];
     const failFast = config?.fail?.fast ? ['--fail-fast'] : [];
     const failWithNoTests =
       config?.fail?.noTests ?? DEFAULT_TEST_OPTIONS.fail.noTests
