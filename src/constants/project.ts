@@ -1,3 +1,7 @@
+export const COMMON_DEV_DEPENDENCIES = {
+  '@types/node': '^17.0.30',
+};
+
 export const SRCLAUNCH_DEV_DEPENDENCIES = {
   // The SrcLaunch CLI
   '@srclaunch/cli': '^0.1.346',
@@ -7,11 +11,7 @@ export const SRCLAUNCH_DEV_DEPENDENCIES = {
   '@srclaunch/types': '^0.1.117',
 };
 
-export const COMMON_DEV_DEPENDENCIES = {
-  '@types/node': '^17.0.30',
-};
-
-export const COMMON_ESLINT_DEV_DEPENDENCIES = {
+export const ESLINT_DEV_DEPENDENCIES = {
   '@microsoft/eslint-plugin-sdl': '^0.2.0',
   eslint: '^8.14.0',
   'eslint-config-prettier': '^8.5.0',
@@ -30,34 +30,12 @@ export const COMMON_ESLINT_DEV_DEPENDENCIES = {
   'eslint-plugin-unicorn': '^42.0.0',
 };
 
-export const REACT_ESLINT_DEV_DEPENDENCIES = {
-  'eslint-config-react-app': '^7.0.1',
-  'eslint-plugin-jsx-a11y': '^6.5.1',
-  'eslint-plugin-react': '^7.29.4',
-  'eslint-plugin-react-hooks': '^4.5.0',
+export const PRETTIER_DEV_DEPENDENCIES = {
+  prettier: '^2.6.2',
+  // 'prettier-eslint': '^14.0.2',
 };
 
-export const STYLED_COMPONENTS_ESLINT_DEV_DEPENDENCIES = {
-  'eslint-plugin-better-styled-components': '^1.1.2',
-};
-
-export const GITHUB_ESLINT_DEV_DEPENDENCIES = {
-  'eslint-plugin-github': '^4.3.6',
-};
-
-export const JEST_ESLINT_DEV_DEPENDENCIES = {
-  'eslint-plugin-jest': '^26.1.5',
-};
-export const TESTING_LIBRARY_ESLINT_DEV_DEPENDENCIES = {
-  'eslint-plugin-testing-library': '^5.3.1',
-};
-
-export const TYPESCRIPT_ESLINT_DEV_DEPENDENCIES = {
-  '@typescript-eslint/eslint-plugin': '^5.21.0',
-  '@typescript-eslint/parser': '^5.21.0',
-};
-
-export const STYLELINT_DEV_DEPENDENCIES = {
+export const STYLELINT_DEV_DEPEENDENCIES = {
   stylelint: '^14.8.1',
   'stylelint-config-idiomatic-order': '^8.1.0',
   'stylelint-config-prettier': '^9.0.3',
@@ -66,28 +44,18 @@ export const STYLELINT_DEV_DEPENDENCIES = {
   'stylelint-order': '^5.0.0',
 };
 
-export const PRETTIER_DEV_DEPENDENCIES = {
-  prettier: '^2.6.2',
-  'prettier-eslint': '^14.0.2',
+export const GITHUB_DEV_DEPENDENCIES = {
+  'eslint-plugin-github': '^4.3.6',
 };
 
 export const TYPESCRIPT_DEV_DEPENDENCIES = {
+  '@typescript-eslint/eslint-plugin': '^5.21.0',
+  '@typescript-eslint/parser': '^5.21.0',
   typescript: '^4.6.4',
 };
 
 export const AVA_TESTING_DEV_DEPENDENCIES = {
   ava: '^4.2.0',
-};
-
-export const JEST_TESTING_DEV_DEPDNENCIES = {
-  '@types/jest': '^27.4.1',
-  'ts-jest': '^27.1.4',
-};
-
-export const JEST_REACT_TESTING_DEV_DEPENDENCIES = {
-  '@testing-library/jest-dom': '^5.16.4',
-  '@testing-library/react': '^13.1.1',
-  '@testing-library/user-event': '^14.1.1',
 };
 
 export const TEST_COVERAGE_DEV_DEPENDENCIES = {
@@ -102,6 +70,24 @@ export const REACT_DEV_DEPENDENCIES = {
   '@types/react': '^18.0.8',
   '@types/react-dom': '^18.0.3',
   '@types/react-is': '^17.0.3',
+  'eslint-config-react-app': '^7.0.1',
+  'eslint-plugin-jsx-a11y': '^6.5.1',
+  'eslint-plugin-react': '^7.29.4',
+  'eslint-plugin-react-hooks': '^4.5.0',
+};
+
+export const JEST_TESTING_DEV_DEPENDENCIES = {
+  '@types/jest': '^27.4.1',
+  'eslint-plugin-jest': '^26.1.5',
+  'ts-jest': '^27.1.4',
+};
+
+export const JEST_REACT_TESTING_DEV_DEPENDENCIES = {
+  ...JEST_TESTING_DEV_DEPENDENCIES,
+  '@testing-library/jest-dom': '^5.16.4',
+  '@testing-library/react': '^13.1.1',
+  '@testing-library/user-event': '^14.1.1',
+  'eslint-plugin-testing-library': '^5.3.1',
 };
 
 export const REACT_ROUTER_DEV_DEPENDENCIES = {
@@ -111,42 +97,7 @@ export const REACT_ROUTER_DEV_DEPENDENCIES = {
 
 export const STYLED_COMPONENTS_DEV_DEPENDENCIES = {
   '@types/styled-components': '^5.1.25',
-};
-
-export const COMMON_LIBRARY_DEV_DEPENDENCIES = {
-  ...SRCLAUNCH_DEV_DEPENDENCIES,
-  ...COMMON_DEV_DEPENDENCIES,
-  ...COMMON_ESLINT_DEV_DEPENDENCIES,
-  ...TYPESCRIPT_ESLINT_DEV_DEPENDENCIES,
-  ...STYLELINT_DEV_DEPENDENCIES,
-  ...PRETTIER_DEV_DEPENDENCIES,
-  ...TYPESCRIPT_DEV_DEPENDENCIES,
-  ...TEST_COVERAGE_DEV_DEPENDENCIES,
-  ...RELEASE_DEV_DEPENDENCIES,
-};
-
-export const REACT_LIBRARY_DEV_DEPENDENCIES = {
-  ...COMMON_LIBRARY_DEV_DEPENDENCIES,
-  ...JEST_ESLINT_DEV_DEPENDENCIES,
-  ...JEST_TESTING_DEV_DEPDNENCIES,
-  ...JEST_REACT_TESTING_DEV_DEPENDENCIES,
-  ...REACT_DEV_DEPENDENCIES,
-  ...REACT_ESLINT_DEV_DEPENDENCIES,
-  ...REACT_ROUTER_DEV_DEPENDENCIES,
-  ...STYLED_COMPONENTS_DEV_DEPENDENCIES,
-  ...STYLED_COMPONENTS_ESLINT_DEV_DEPENDENCIES,
-  ...TESTING_LIBRARY_ESLINT_DEV_DEPENDENCIES,
-};
-
-export const NODE_LIBRARY_DEV_DEPENDENCIES = {
-  ...COMMON_LIBRARY_DEV_DEPENDENCIES,
-  ...AVA_TESTING_DEV_DEPENDENCIES,
-};
-
-export const GITHUB_LIBRARY_DEV_DEPENDENCIES = {
-  ...COMMON_LIBRARY_DEV_DEPENDENCIES,
-  ...GITHUB_ESLINT_DEV_DEPENDENCIES,
-  ...AVA_TESTING_DEV_DEPENDENCIES,
+  'eslint-plugin-better-styled-components': '^1.1.2',
 };
 
 export const PROJECT_PACKAGE_JSON_AUTHOR =
@@ -175,8 +126,17 @@ export const PROJECT_PACKAGE_JSON_RELEASE_SCRIPTS = {
   qr: 'yarn build && yarn srclaunch changesets add --message "Quick release" && yarn srclaunch release',
   release: 'yarn test:coverage && yarn srclaunch release',
 };
-export const PROJECT_PACKAGE_JSON_RUN_SCRIPTS = {
+export const PROJECT_PACKAGE_JSON_RUN_DEV_SCRIPTS = {
   dev: 'yarn srclaunch run dev',
+};
+export const PROJECT_PACKAGE_JSON_RUN_PREVIEW_SCRIPTS = {
+  dev: 'yarn srclaunch run preview',
+};
+export const PROJECT_PACKAGE_JSON_RUN_QA_SCRIPTS = {
+  dev: 'yarn srclaunch run qa',
+};
+export const PROJECT_PACKAGE_JSON_RUN_PRODUCTION_SCRIPTS = {
+  dev: 'yarn srclaunch run production',
 };
 export const PROJECT_PACKAGE_JSON_TEST_SCRIPTS = {
   test: 'yarn srclaunch test',

@@ -1932,10 +1932,10 @@ __metadata:
   dependencies:
     "@rauschma/stringio": ^1.4.0
     "@srclaunch/dx": ^0.1.52
-    "@srclaunch/exceptions": ^0.1.70
-    "@srclaunch/node-environment": ^0.1.15
-    "@srclaunch/types": ^0.1.117
-    "@types/diff": ^5
+    "@srclaunch/exceptions": ^0.1.71
+    "@srclaunch/node-environment": ^0.1.17
+    "@srclaunch/types": ^0.1.123
+    "@types/diff": ^5.0.2
     "@types/fs-extra": ^9.0.13
     "@types/luxon": ^2.3.1
     "@types/node": ^17.0.30
@@ -2017,40 +2017,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/exceptions@npm:^0.1.70":
-  version: 0.1.70
-  resolution: "@srclaunch/exceptions@npm:0.1.70"
+"@srclaunch/exceptions@npm:^0.1.71":
+  version: 0.1.71
+  resolution: "@srclaunch/exceptions@npm:0.1.71"
   dependencies:
-    "@srclaunch/logger": ^0.1.81
+    "@srclaunch/logger": ^0.1.83
     luxon: ^2.3.2
     nanoid: ^3.3.3
     serialize-error: ^10.0.0
-  checksum: dd3c2756773dc53e987b20b3f84596f6b8b263f785a826c92d4fe36cbf7e8cdb43a738439ea4dda12f6aaf76453eaa507653042f4a155731079d3aacfbb0da6e
+  checksum: 12e0ee14c7096253b52c6be6c1ab361f38505fd585a60fea8e5f61ee267dded0ba0ecbbcee96e1e1f725d10394e9f08b9141875a70901f2e30360ce779298885
   languageName: node
   linkType: hard
 
-"@srclaunch/logger@npm:^0.1.81":
-  version: 0.1.81
-  resolution: "@srclaunch/logger@npm:0.1.81"
+"@srclaunch/logger@npm:^0.1.83":
+  version: 0.1.83
+  resolution: "@srclaunch/logger@npm:0.1.83"
   dependencies:
     luxon: ^2.3.2
     nanoid: ^3.3.3
     picocolors: ^1.0.0
-  checksum: 4f37526bba4af6bcf569a46990bd718c4e080813a59868dd73bcc158b4bbe372dd6cd24d05b31aa415a4d6fdefd621bdaed02440626ea2141f069dcde1aca30d
+  checksum: a778d646985e76ed4e92ec9e4a5cd89ff3d14aa2aee246748fa1eb2cc7473a6352dfed0f6d147229dddba5168e43b9f11f527357e6606454fe3dcbce4b883b7c
   languageName: node
   linkType: hard
 
-"@srclaunch/node-environment@npm:^0.1.15":
-  version: 0.1.15
-  resolution: "@srclaunch/node-environment@npm:0.1.15"
-  checksum: 73d46533617f5e44bfbb3a6a88448fe25f2ad089350c383d16a65a3e653151624ffe86245c808bea3a6f255d82b18c6778bfa031c40904703121d7f96ecc85bc
+"@srclaunch/node-environment@npm:^0.1.17":
+  version: 0.1.17
+  resolution: "@srclaunch/node-environment@npm:0.1.17"
+  checksum: d30f3db19ab60bbb02bf69b4f99f7e25dfbd71720b788861df292b204298bbae73d5337f61aefe2e4b5eff4e243d93909a0e94e843604f76ade0819577a78d72
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.117":
-  version: 0.1.117
-  resolution: "@srclaunch/types@npm:0.1.117"
-  checksum: 1fea002b6eae4fc9df34ae525394622e27378b569da1c08da7362d33fec51294e9d24376e6ed7d355db1018e0b80f7dc5e587796e827159996daa5b6c58277d7
+"@srclaunch/types@npm:^0.1.123":
+  version: 0.1.123
+  resolution: "@srclaunch/types@npm:0.1.123"
+  checksum: 58a83c9a1f0a656f63eb28f5f26d8a923d618eb68d23acda9e20342bbcebe7f52bbe22e8784df04b1e98471479010fd6b1f2400605179a9e5698f3cf2c8724cb
   languageName: node
   linkType: hard
 
@@ -2162,7 +2162,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/diff@npm:^5":
+"@types/diff@npm:^5.0.2":
   version: 5.0.2
   resolution: "@types/diff@npm:5.0.2"
   checksum: 8fbc419b5aca33f494026bf5f70e026f76367689677ef114f9c078ac738d7dbe96e6dda3fd8290e4a7c35281e2b60b034e3d7e3c968b850cf06a21279e7ddcbe

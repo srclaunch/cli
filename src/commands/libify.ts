@@ -1,10 +1,12 @@
 import { exec, fork, spawn } from 'child_process';
 import {
   Environments,
+  License,
   Project,
   ProjectType,
   RunOptions,
   RunTool,
+  TestTool,
   WebApplicationRunOptions,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
@@ -25,12 +27,31 @@ import { GITIGNORE_CONTENT } from '../constants/git.js';
 import { YARNRC_CONTENT } from '../constants/yarn.js';
 import { shellExec } from '../lib/cli.js';
 import { getPublishYml } from '../lib/libify/publish.js';
-import { getPackageJson } from '../lib/libify/package.js';
+import {
+  constructPackageJson,
+  getPackageScripts,
+} from '../lib/libify/package.js';
+import { getProjectDevDependencies } from '../lib/libify/dependencies.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
     default: false;
     description: 'The library will only be built, and not tested.';
+    type: 'boolean';
+  };
+  react: {
+    default: false;
+    description: 'The library includes React components.';
+    type: 'boolean';
+  };
+  reactRouter: {
+    default: false;
+    description: 'The library uses React Router.';
+    type: 'boolean';
+  };
+  styledComponents: {
+    default: false;
+    description: 'The library includes Styled Components.';
     type: 'boolean';
   };
   test: {
@@ -50,25 +71,60 @@ export default new Command<Project, LibifyFlags>({
         await readFile('./package.json').toString(),
       );
 
-      const newPackageMetadata = getPackageJson({
-        author: 'Steven Bennett <steven@srclaunch.com>',
-        dependencies: {},
-        description: '',
-        devDependencies: {},
-        engines: {},
-        files: [],
-        license: '',
-        main: '',
-        module: '',
-        name: '',
-        peerDependencies: {},
-        publishConfig: {},
-        scripts: {},
-        type: 'module',
-        types: '',
-        version: '',
+      let exports = {};
+      for (const export_ of config.package?.exports ?? []) {
+        exports = {
+          ...exports,
+          [export_.path]: {
+            import: export_.import,
+            require: export_.require,
+          },
+        };
+      }
+
+      const newPackageMetadata = constructPackageJson({
+        author: 'SrcLaunch Inc. <steven@srclaunch.com>',
+        dependencies: {
+          ...existingPackageMetadata.dependencies,
+        },
+        description: config.description,
+        devDependencies: {
+          ...existingPackageMetadata.devDependencies,
+          ...getProjectDevDependencies({
+            ava: config.test?.tool === TestTool.Ava,
+            github: config.type === ProjectType.GitHubAction,
+            jest: config.test?.tool === TestTool.Jest,
+            jestReact: config.test?.tool === TestTool.Jest && flags.react,
+            react: flags.react,
+            reactRouter: flags.reactRouter,
+            styledComponents: flags.styledComponents,
+            testCoverage: Boolean(config.test?.coverage),
+          }),
+        },
+        engines: {
+          node: '>=16',
+        },
+        exports,
+        files: config.package?.files ?? ['dist', 'package.json'],
+        license: config.license ?? License.MIT,
+        name: config.name,
+        peerDependencies: {
+          ...existingPackageMetadata.peerDependencies,
+        },
+        publishConfig: {
+          access: 'public',
+          registry: 'https://registry.npmjs.org/',
+        },
+        scripts: getPackageScripts({
+          build: !flags.build,
+          run: config.run,
+          test: flags.test,
+        }),
+        version: existingPackageMetadata.version ?? '0.0.0',
       });
 
+      console.log('newPackageMetadata');
+      console.log(newPackageMetadata);
       const diff = diffLines(
         existingPackageMetadata.toString(),
         newPackageMetadata.toString(),
