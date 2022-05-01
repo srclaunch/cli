@@ -138,6 +138,7 @@ export default new Command<Project, LibifyFlags>({
 
       console.log('newPackageMetadata');
       console.log(newPackageMetadata);
+      console.log(JSON.stringify(newPackageMetadata, null, 2));
       const diff = diffLines(
         existingPackageMetadata.toString(),
         newPackageMetadata.toString(),
