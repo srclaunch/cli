@@ -1,18 +1,6 @@
-export const ACCESSABILITY_DEPENDENCIES = {
-  '@srclaunch/a11y': '^0.1.12',
-};
-
-export const ACTIONS_DEPEENDENCIES = {
-  '@srclaunch/actions': '^0.1.11',
-};
-
 export const ASYNC_EXIT_HOOK_DEPENDENCIES = {
   'async-exit-hook': '^2.0.1',
   '@types/async-exit-hook': '^2.0.0',
-};
-
-export const AUTHENTICATION_DEPENDENCIES = {
-  'amazon-cognito-identity-js': '^5.2.8',
 };
 
 export const AWS_SDK_DEPENDENCIES = {
@@ -52,41 +40,16 @@ export const CRYPTO_JS_DEPENDENCIES = {
   'crypto-js': '^4.1.1',
 };
 
-export const DATA_CLIENT_DEPENDENCIES = {
-  '@srclaunch/data-client': '^0.1.38',
-};
-
 export const EMAIL_VALIDATOR_DEPENDENCIES = {
   'email-validator': '^2.0.4',
 };
 
-export const EXCEPTIONS_DEPENDENCIES = {
-  '@srclaunch/exceptions': '^0.1.71',
-};
-
 export const EXPRESS_DEPENDENCIES = {
   express: '^4.17.3',
-  '@types/express': '^4.17.13',
 };
 
 export const HEX_RGB_DEPENDENCIES = {
   'hex-rgb': '^5.0.0',
-};
-
-export const HTTP_CLIENT_DEPENDENCIES = {
-  '@srclaunch/http-client': '^0.1.22',
-};
-
-export const HTTP_SERVER_DEPENDENCIES = {
-  '@srclaunch/http-server': '^0.1.75',
-};
-
-export const I18N_DEPENDENCIES = {
-  '@srclaunch/i18n': '^0.1.6',
-};
-
-export const ICONS_DEPENDENCIES = {
-  '@srclaunch/icons': '^0.1.47',
 };
 
 export const JS_FILE_DOWNLOAD_DEPENDENCIES = {
@@ -98,10 +61,6 @@ export const JS_FILE_DOWNLOAD_DEPENDENCIES = {
 export const KEYGRIP_DEPENDENCIES = {
   '@types/keygrip': '^1.0.2',
   keygrip: '^1.0.1',
-};
-
-export const LOGGER_DEPENDENCIES = {
-  '@srclaunch/logger': '^0.1.83',
 };
 
 export const LUXON_DEPENDENCIES = {
@@ -116,10 +75,6 @@ export const MULTER_DEPENDENCIES = {
 
 export const NANOID_DEPENDENCIES = {
   nanoid: '^3.3.3',
-};
-
-export const NODE_ENVIRONMENT_DEPENDENCIES = {
-  '@srclaunch/node-environment': '^0.1.17',
 };
 
 export const PASSWORD_VALIDATOR_DEPENDENCIES = {
@@ -172,20 +127,26 @@ export const REACT_HOOKS_DEPENDENCIES = {
 };
 
 export const REACT_REDUX_DEPENDENCIES = {
-  history: '5.3.0',
   '@reduxjs/toolkit': '^1.8.1',
-  redux: '^4.2.0',
   'react-redux': '^8.0.1',
 };
 
 export const REACT_ROUTER_DEPENDENCIES = {
   history: '5.3.0',
-  'react-router': '^5.1.18',
+  'react-router': '^6.3.0',
   'react-router-dom': '^6.3.0',
 };
 
 export const REACT_SYNTAX_HIGHLIGHTER_DEPENDENCIES = {
   'react-syntax-highlighter': '^15.5.0',
+};
+
+export const REDUX_DEPENDENCIES = {
+  redux: '^4.2.0',
+};
+
+export const REDUX_TOOLKIT_DEPENDENCIES = {
+  '@reduxjs/toolkit': '^1.8.1',
 };
 
 export const SEQUELIZE_DEPENDENCIES = {
@@ -204,32 +165,76 @@ export const STYLED_COMPONENTS_DEPENDENCIES = {
   'styled-components': '^5.3.5',
 };
 
-export const THEMES_DEPENDENCIES = {
+export const SRCLAUNCH_A11Y_DEPENDENCIES = {
+  '@srclaunch/a11y': '^0.1.12',
+};
+
+export const SRCLAUNCH_ACTIONS_DEPEENDENCIES = {
+  '@srclaunch/actions': '^0.1.11',
+};
+
+export const SRCLAUNCH_AUTHENTICATION_DEPENDENCIES = {
+  'amazon-cognito-identity-js': '^5.2.8',
+};
+
+export const SRCLAUNCH_DATA_CLIENT_DEPENDENCIES = {
+  '@srclaunch/data-client': '^0.1.38',
+};
+
+export const SRCLAUNCH_EXCEPTIONS_DEPENDENCIES = {
+  '@srclaunch/exceptions': '^0.1.71',
+};
+
+export const SRCLAUNCH_HTTP_CLIENT_DEPENDENCIES = {
+  '@srclaunch/http-client': '^0.1.22',
+};
+
+export const SRCLAUNCH_HTTP_SERVER_DEPENDENCIES = {
+  '@srclaunch/http-server': '^0.1.75',
+};
+
+export const SRCLAUNCH_I18N_DEPENDENCIES = {
+  '@srclaunch/i18n': '^0.1.6',
+};
+
+export const SRCLAUNCH_ICONS_DEPENDENCIES = {
+  '@srclaunch/icons': '^0.1.47',
+};
+
+export const SRCLAUNCH_LOGGER_DEPENDENCIES = {
+  '@srclaunch/logger': '^0.1.83',
+};
+
+export const SRCLAUNCH_NODE_ENVIRONMENT_DEPENDENCIES = {
+  '@srclaunch/node-environment': '^0.1.17',
+};
+
+export const SRCLAUNCH_THEMES_DEPENDENCIES = {
   '@srclaunch/themes': '^0.1.35',
 };
 
-export const TRANSFORM_DEPENDENCIES = {
+export const SRCLAUNCH_TRANSFORM_DEPENDENCIES = {
   '@srclaunch/transform': '^0.1.7',
 };
 
-export const TYPES_DEPENDENCIES = {
+export const SRCLAUNCH_TYPES_DEPENDENCIES = {
   '@srclaunch/types': '^0.1.28',
+};
+
+export const SRCLAUNCH_VALIDATION_DEPENDENCIES = {
+  '@srclaunch/validation': '^0.1.28',
+};
+
+export const SRCLAUNCH_WEB_APPLICATION_STATE_DEPENDENCIES = {
+  '@srclaunch/web-application-state': '^0.1.74',
+};
+
+export const SRCLAUNCH_WEB_ENVIRONMENT_DEPENDENCIES = {
+  '@srclaunch/web-environment': '^0.1.21',
 };
 
 export const UUID_DEPENDENCIES = {
   uuid: '^8.3.2',
-};
-
-export const VALIDATION_DEPENDENCIES = {
-  '@srclaunch/validation': '^0.1.28',
-};
-
-export const WEB_APPLICATION_STATE_DEPENDENCIES = {
-  '@srclaunch/web-application-state': '^0.1.74',
-};
-
-export const WEB_ENVIRONMENT_DEPENDENCIES = {
-  '@srclaunch/web-environment': '^0.1.21',
 };
 
 export const ZXCVBN_DEPENDENCIES = {
