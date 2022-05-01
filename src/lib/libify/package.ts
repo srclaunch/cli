@@ -42,7 +42,11 @@ export function constructPackageJson({
   description?: string;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
-  engines?: Record<string, string>;
+  engines?: {
+    node?: string;
+    npm?: string;
+    yarn?: string;
+  };
   exports?:
     | {
         [x: string]: {

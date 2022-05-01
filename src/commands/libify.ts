@@ -36,7 +36,9 @@ import {
   getDevDependencies,
 } from '../lib/libify/dependencies.js';
 import {
+  PROJECT_PACKAGE_JSON_ENGINES,
   PROJECT_PACKAGE_JSON_EXPORTS,
+  PROJECT_PACKAGE_JSON_FILES,
   PROJECT_PACKAGE_JSON_MAIN,
   PROJECT_PACKAGE_JSON_MODULE,
   PROJECT_PACKAGE_JSON_TYPE,
@@ -114,10 +116,12 @@ export default new Command<Project, LibifyFlags>({
             {}),
         },
         engines: {
-          node: config.requirements?.node ?? '>=16',
+          node: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
+          npm: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.npm,
+          yarn: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.yarn,
         },
         exports,
-        files: config.release?.package?.files ?? ['dist', 'package.json'],
+        files: config.release?.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
         license: config.release?.package?.publish?.license ?? License.MIT,
         main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
         module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,

@@ -5,6 +5,8 @@ export const PROJECT_PACKAGE_JSON_AUTHOR =
 export const PROJECT_PACKAGE_JSON_LICENSE = 'MIT';
 export const PROJECT_PACKAGE_JSON_ENGINES = {
   node: '>=16',
+  npm: undefined,
+  yarn: '>=3.2.0',
 };
 export const PROJECT_PACKAGE_JSON_PUBLISH_CONFIG = {
   access: 'public',
