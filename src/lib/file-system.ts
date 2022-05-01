@@ -54,7 +54,8 @@ export async function readFile(filePath: string) {
   }
 
   try {
-    return await fs.readFile(filePath);
+    const fileContents = await fs.readFile(filePath);
+    return fileContents;
   } catch (err) {
     throw new Error(`Could not read file: ${filePath}`);
   }

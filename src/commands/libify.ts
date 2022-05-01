@@ -70,9 +70,11 @@ export default new Command<Project, LibifyFlags>({
     "The libify command cleans a project's cache and configures it with package.json scripts and Github Action workflows.",
   run: async ({ config, flags }) => {
     try {
-      const packageJsonContents = await readFile('./package.json').toString();
-      console.log('packageJSONContents', packageJsonContents);
-      const existingPackageMetadata = await JSON.parse(packageJsonContents);
+      const packageJsonContents = await readFile('./package.json');
+      console.log('packageJSONContents', packageJsonContents.toString());
+      const existingPackageMetadata = await JSON.parse(
+        packageJsonContents.toString(),
+      );
 
       let exports = {};
       for (const export_ of config.release?.package?.exports ?? []) {
