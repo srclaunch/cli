@@ -156,13 +156,6 @@ export default new Command<Project, LibifyFlags>({
         version: existingPackageJsonContents.version ?? '0.0.0',
       });
 
-      // const newPackageJsonContents = (
-      //   await JSON.parse(await JSON.stringify(newPackageMetadata, null, 2))
-      // ).toString();
-
-      // console.log('newPackageJsonContents');
-      // console.log(newPackageJsonContents);
-
       const diff = diffJson(existingPackageJsonContents, newPackageMetadata);
 
       for (const change of diff) {

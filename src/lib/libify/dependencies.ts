@@ -1,4 +1,5 @@
 import latestVersion from 'latest-version';
+import maxSatisfying from 'semver/ranges/max-satisfying';
 import {
   BrowserPackage,
   NodePackage,
@@ -78,6 +79,7 @@ import {
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
+import { shellExec } from '../cli';
 
 export async function getDependenciesLatestVersions(packages: {
   [key: string]: string;
@@ -87,9 +89,21 @@ export async function getDependenciesLatestVersions(packages: {
   for (const package_ of Object.entries(packages).map(([key, value]) => ({
     [key]: value,
   }))) {
-    if (package_[0]) {
-      const version = await latestVersion(package_[0]);
-      versions[package_[0]] = version;
+    if (package_[0] && package_[1]) {
+      const availableVersions = await JSON.parse(
+        await shellExec(`npm view ${package_[0]} versions --json`),
+      );
+      const maxVersion = maxSatisfying(availableVersions, package_[1]);
+
+      if (maxVersion) {
+        const version = await latestVersion(package_[0], {
+          version:
+            typeof maxVersion === 'object' ? maxVersion.version : maxVersion,
+        });
+        versions[package_[0]] = version;
+      } else {
+        versions[package_[0]] = package_[1];
+      }
     }
   }
   return versions;
