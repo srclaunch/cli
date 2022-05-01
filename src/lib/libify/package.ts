@@ -20,9 +20,9 @@ import {
 
 export function constructPackageJson({
   author,
-  dependencies = {},
+  dependencies,
   description,
-  devDependencies = {},
+  devDependencies,
   engines = PROJECT_PACKAGE_JSON_ENGINES,
   exports,
   files = PROJECT_PACKAGE_JSON_FILES,
@@ -30,7 +30,7 @@ export function constructPackageJson({
   main = PROJECT_PACKAGE_JSON_MAIN,
   module = PROJECT_PACKAGE_JSON_MODULE,
   name,
-  peerDependencies = {},
+  peerDependencies,
   publishConfig = PROJECT_PACKAGE_JSON_PUBLISH_CONFIG,
   scripts,
   type = PROJECT_PACKAGE_JSON_TYPE,
