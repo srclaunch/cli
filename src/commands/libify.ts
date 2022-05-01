@@ -31,7 +31,10 @@ import {
   constructPackageJson,
   getPackageScripts,
 } from '../lib/libify/package.js';
-import { getProjectDevDependencies } from '../lib/libify/dependencies.js';
+import {
+  getDependencies,
+  getDevDependencies,
+} from '../lib/libify/dependencies.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -85,12 +88,12 @@ export default new Command<Project, LibifyFlags>({
       const newPackageMetadata = constructPackageJson({
         author: 'SrcLaunch Inc. <steven@srclaunch.com>',
         dependencies: {
-          ...existingPackageMetadata.dependencies,
+          ...(getDependencies(config.requirements?.packages?.production) ?? {}),
         },
         description: config.description,
         devDependencies: {
           // ...existingPackageMetadata.devDependencies,
-          ...getProjectDevDependencies({
+          ...getDevDependencies({
             ava: config.test?.tool === TestTool.Ava,
             github: config.type === ProjectType.GitHubAction,
             jest: config.test?.tool === TestTool.Jest,
@@ -109,7 +112,7 @@ export default new Command<Project, LibifyFlags>({
         license: config.license ?? License.MIT,
         name: config.name,
         peerDependencies: {
-          ...existingPackageMetadata.peerDependencies,
+          ...(getDependencies(config.requirements?.packages?.peers) ?? {}),
         },
         publishConfig: {
           access: config?.release?.package?.publish?.access ?? 'private',

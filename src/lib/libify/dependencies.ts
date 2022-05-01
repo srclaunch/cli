@@ -1,4 +1,20 @@
-import { Project } from '@srclaunch/types';
+import { BrowserPackage, Package, Project } from '@srclaunch/types';
+import {
+  JS_FILE_DOWNLOAD_DEPENDENCIES,
+  REACT_COLORFUL_DEPENDENCIES,
+  REACT_COUNTRY_FLAG_DEPENDENCIES,
+  REACT_DATE_PICKER_DEPENDENCIES,
+  REACT_DEPENDENCIES,
+  REACT_DOM_DEPENDENCIES,
+  REACT_DROPZONE_DEPENDENCIES,
+  REACT_HOOKS_DEPENDENCIES,
+  REACT_REDUX_DEPENDENCIES,
+  REACT_ROUTER_DEPENDENCIES,
+  REACT_SYNTAX_HIGHLIGHTER_DEPENDENCIES,
+  STYLED_COMPONENTS_DEPENDENCIES,
+  WEB_APPLICATION_STATE_DEPENDENCIES,
+  WEB_ENVIRONMENT_DEPENDENCIES,
+} from '../../constants/dependencies';
 import {
   AVA_TESTING_DEV_DEPENDENCIES,
   COMMON_DEV_DEPENDENCIES,
@@ -15,23 +31,65 @@ import {
   STYLELINT_DEV_DEPEENDENCIES,
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
-} from '../../constants/project';
+} from '../../constants/dev-dependencies';
 
-export function getProjectDependencies({
-  github,
-  react,
-  reactRouter,
-  styledComponents,
-}: {
-  github?: boolean;
-  react?: boolean;
-  reactRouter?: boolean;
-  styledComponents?: boolean;
-}) {}
+export function getPackageDependencies(package_: Package) {
+  switch (package_) {
+    case BrowserPackage.Environment:
+      return WEB_ENVIRONMENT_DEPENDENCIES;
+    case BrowserPackage.JSFileDownload:
+      return JS_FILE_DOWNLOAD_DEPENDENCIES;
+    case BrowserPackage.React:
+      return REACT_DEPENDENCIES;
+    case BrowserPackage.ReactColorful:
+      return REACT_COLORFUL_DEPENDENCIES;
+    case BrowserPackage.ReactCountryFlag:
+      return REACT_COUNTRY_FLAG_DEPENDENCIES;
+    case BrowserPackage.ReactDOM:
+      return REACT_DOM_DEPENDENCIES;
+    case BrowserPackage.ReactDatePicker:
+      return REACT_DATE_PICKER_DEPENDENCIES;
+    case BrowserPackage.ReactDropzone:
+      return REACT_DROPZONE_DEPENDENCIES;
+    case BrowserPackage.ReactHooks:
+      return REACT_HOOKS_DEPENDENCIES;
+    case BrowserPackage.ReactSyntaxHighlighter:
+      return REACT_SYNTAX_HIGHLIGHTER_DEPENDENCIES;
+    case BrowserPackage.ReactRedux:
+      return REACT_REDUX_DEPENDENCIES;
+    case BrowserPackage.ReactRouter:
+      return REACT_ROUTER_DEPENDENCIES;
+    case BrowserPackage.StyledComponents:
+      return STYLED_COMPONENTS_DEPENDENCIES;
+    case BrowserPackage.Themes:
+      return STYLED_COMPONENTS_DEPENDENCIES;
+    case BrowserPackage.WebApplicationState:
+      return WEB_APPLICATION_STATE_DEPENDENCIES;
+    default:
+      return;
+  }
+}
 
-export function getProjectPeerDependencies(config: Project) {}
+export function getDependencies(packages?: Package[]) {
+  if (!packages) {
+    return;
+  }
 
-export function getProjectDevDependencies({
+  let dependencies: { [key: string]: string } = {};
+
+  for (const package_ of packages) {
+    dependencies = {
+      ...dependencies,
+      ...getPackageDependencies(package_),
+    };
+  }
+
+  return dependencies;
+}
+
+export function getPeerDependencies(packages: Package[]) {}
+
+export function getDevDependencies({
   ava,
   eslint = true,
   github,
