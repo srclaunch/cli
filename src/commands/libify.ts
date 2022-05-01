@@ -160,11 +160,11 @@ export default new Command<Project, LibifyFlags>({
 
       for (const change of diff) {
         if (change.added) {
-          console.log('+ ' + chalk.green(change.value.toString()));
+          console.log('+ ' + chalk.green(change.value.toString().trim()));
         }
 
         if (change.removed) {
-          console.log('- ' + chalk.red(change.value.toString()));
+          console.log('- ' + chalk.red(change.value.toString().trim()));
         }
       }
 
