@@ -46,7 +46,7 @@
     "yui": "yarn upgrade-interactive"
   },
   "devDependencies": {
-    "@srclaunch/types": "^0.1.123",
+    "@srclaunch/types": "^0.1.127",
     "@types/diff": "^5.0.2",
     "@types/fs-extra": "^9.0.13",
     "@types/luxon": "^2.3.1",

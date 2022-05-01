@@ -72,7 +72,7 @@ export default new Command<Project, LibifyFlags>({
       );
 
       let exports = {};
-      for (const export_ of config.package?.exports ?? []) {
+      for (const export_ of config.release?.package?.exports ?? []) {
         exports = {
           ...exports,
           [export_.path]: {
@@ -89,7 +89,7 @@ export default new Command<Project, LibifyFlags>({
         },
         description: config.description,
         devDependencies: {
-          ...existingPackageMetadata.devDependencies,
+          // ...existingPackageMetadata.devDependencies,
           ...getProjectDevDependencies({
             ava: config.test?.tool === TestTool.Ava,
             github: config.type === ProjectType.GitHubAction,
@@ -102,24 +102,29 @@ export default new Command<Project, LibifyFlags>({
           }),
         },
         engines: {
-          node: '>=16',
+          node: config.requirements?.node ?? '>=16',
         },
         exports,
-        files: config.package?.files ?? ['dist', 'package.json'],
+        files: config.release?.package?.files ?? ['dist', 'package.json'],
         license: config.license ?? License.MIT,
         name: config.name,
         peerDependencies: {
           ...existingPackageMetadata.peerDependencies,
         },
         publishConfig: {
-          access: 'public',
-          registry: 'https://registry.npmjs.org/',
+          access: config?.release?.package?.publish?.access ?? 'private',
+          registry:
+            config.release?.package?.publish?.registry ??
+            'https://registry.npmjs.org/',
         },
-        scripts: getPackageScripts({
-          build: !flags.build,
-          run: config.run,
-          test: flags.test,
-        }),
+        scripts: {
+          ...getPackageScripts({
+            build: !flags.build,
+            run: config.run,
+            test: flags.test,
+          }),
+          ...config.release?.package?.scripts,
+        },
         version: existingPackageMetadata.version ?? '0.0.0',
       });
 

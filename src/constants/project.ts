@@ -123,20 +123,19 @@ export const PROJECT_PACKAGE_JSON_BUILD_SCRIPTS = {
   build: 'yarn srclaunch build',
 };
 export const PROJECT_PACKAGE_JSON_RELEASE_SCRIPTS = {
-  qr: 'yarn build && yarn srclaunch changesets add --message "Quick release" && yarn srclaunch release',
-  release: 'yarn test:coverage && yarn srclaunch release',
+  release: 'yarn srclaunch release',
 };
-export const PROJECT_PACKAGE_JSON_RUN_DEV_SCRIPTS = {
+export const PROJECT_PACKAGE_JSON_DEV_SCRIPTS = {
   dev: 'yarn srclaunch run dev',
 };
-export const PROJECT_PACKAGE_JSON_RUN_PREVIEW_SCRIPTS = {
-  dev: 'yarn srclaunch run preview',
+export const PROJECT_PACKAGE_JSON_PREVIEW_SCRIPTS = {
+  preview: 'yarn srclaunch run preview',
 };
-export const PROJECT_PACKAGE_JSON_RUN_QA_SCRIPTS = {
-  dev: 'yarn srclaunch run qa',
+export const PROJECT_PACKAGE_JSON_QA_SCRIPTS = {
+  qa: 'yarn srclaunch run qa',
 };
-export const PROJECT_PACKAGE_JSON_RUN_PRODUCTION_SCRIPTS = {
-  dev: 'yarn srclaunch run production',
+export const PROJECT_PACKAGE_JSON_PRODUCTION_SCRIPTS = {
+  start: 'yarn srclaunch run production',
 };
 export const PROJECT_PACKAGE_JSON_TEST_SCRIPTS = {
   test: 'yarn srclaunch test',
