@@ -119,9 +119,10 @@ export default new Command<Project, LibifyFlags>({
         },
         scripts: {
           ...getPackageScripts({
-            build: !flags.build,
+            build: Boolean(config.build),
+            release: Boolean(config.release),
             run: config.run,
-            test: flags.test,
+            test: Boolean(config.test),
           }),
           ...config.release?.package?.scripts,
         },

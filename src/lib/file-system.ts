@@ -1,5 +1,4 @@
 import fs, { emptyDir } from 'fs-extra';
-import path from 'node:path';
 
 export async function emptyDirectory(directory: string): Promise<void> {
   if (!directory) {
@@ -55,8 +54,6 @@ export async function readFile(filePath: string) {
   }
 
   try {
-    path.join(path.resolve(), '.srclaunch', 'config.json');
-
     return await fs.readFile(filePath);
   } catch (err) {
     throw new Error(`Could not read file: ${filePath}`);

@@ -9,9 +9,11 @@ import {
   PROJECT_PACKAGE_JSON_LICENSE,
   PROJECT_PACKAGE_JSON_MAIN,
   PROJECT_PACKAGE_JSON_MODULE,
+  PROJECT_PACKAGE_JSON_PREVIEW_SCRIPTS,
   PROJECT_PACKAGE_JSON_PRODUCTION_SCRIPTS,
   PROJECT_PACKAGE_JSON_PUBLISH_CONFIG,
   PROJECT_PACKAGE_JSON_QA_SCRIPTS,
+  PROJECT_PACKAGE_JSON_RELEASE_SCRIPTS,
   PROJECT_PACKAGE_JSON_TEST_SCRIPTS,
   PROJECT_PACKAGE_JSON_TYPE,
   PROJECT_PACKAGE_JSON_TYPES,
@@ -86,12 +88,12 @@ export function constructPackageJson({
 
 export function getPackageScripts({
   build = true,
-  release,
+  release = true,
   run,
   test = true,
 }: {
   build?: boolean;
-  release?: Project['release'];
+  release?: boolean;
   run?: Project['run'];
   test?: boolean;
 }): Record<string, string> {
@@ -107,6 +109,13 @@ export function getPackageScripts({
     scripts = {
       ...scripts,
       ...PROJECT_PACKAGE_JSON_TEST_SCRIPTS,
+    };
+  }
+
+  if (release) {
+    scripts = {
+      ...scripts,
+      ...PROJECT_PACKAGE_JSON_RELEASE_SCRIPTS,
     };
   }
 
@@ -127,7 +136,7 @@ export function getPackageScripts({
   if (run && run.preview) {
     scripts = {
       ...scripts,
-      ...PROJECT_PACKAGE_JSON_QA_SCRIPTS,
+      ...PROJECT_PACKAGE_JSON_PREVIEW_SCRIPTS,
     };
   }
 

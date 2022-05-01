@@ -16,7 +16,18 @@ import {
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/project';
-export function getProjectDependencies(config: Project) {}
+
+export function getProjectDependencies({
+  github,
+  react,
+  reactRouter,
+  styledComponents,
+}: {
+  github?: boolean;
+  react?: boolean;
+  reactRouter?: boolean;
+  styledComponents?: boolean;
+}) {}
 
 export function getProjectPeerDependencies(config: Project) {}
 
