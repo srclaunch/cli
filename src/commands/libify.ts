@@ -96,7 +96,6 @@ export default new Command<Project, LibifyFlags>({
         },
         description: config.description,
         devDependencies: {
-          // ...existingPackageMetadata.devDependencies,
           ...getDevDependencies({
             ava: config.test?.tool === TestTool.Ava,
             github: config.type === ProjectType.GitHubAction,
@@ -107,6 +106,8 @@ export default new Command<Project, LibifyFlags>({
             styledComponents: flags.styledComponents,
             testCoverage: Boolean(config.test?.coverage),
           }),
+          ...(getDependencies(config.requirements?.packages?.development) ??
+            {}),
         },
         engines: {
           node: config.requirements?.node ?? '>=16',
