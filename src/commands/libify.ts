@@ -1,22 +1,14 @@
-import { exec, fork, spawn } from 'child_process';
 import {
-  Environments,
   License,
   Project,
   ProjectType,
-  RunOptions,
-  RunTool,
   TestTool,
-  WebApplicationRunOptions,
   CodeFormatterTool,
   CodeLinterTool,
-  StaticTypingTool,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
-import { getEnvironment } from '@srclaunch/node-environment';
 import { Command, CommandType } from '../lib/command.js';
-import { run as runVite } from '../lib/run/vite';
 import chalk from 'chalk';
 import {
   deleteDirectory,
@@ -101,32 +93,34 @@ export default new Command<Project, LibifyFlags>({
         };
       }
 
+      const devDependencies = await getDevDependencies({
+        ava: config.test?.tool === TestTool.Ava,
+        eslint: config.environments?.development?.linters?.includes(
+          CodeLinterTool.ESLint,
+        ),
+        github: config.type === ProjectType.GitHubAction,
+        jest: config.test?.tool === TestTool.Jest,
+        jestReact: config.test?.tool === TestTool.Jest && flags.react,
+        prettier: config.environments?.development?.formatters?.includes(
+          CodeFormatterTool.Prettier,
+        ),
+        react: flags.react,
+        reactRouter: flags.reactRouter,
+        styledComponents: flags.styledComponents,
+        stylelint: config.environments?.development?.linters?.includes(
+          CodeLinterTool.Stylelint,
+        ),
+        testCoverage: Boolean(config.test?.coverage),
+        typescript: config?.environments?.development?.typescript ?? true,
+      });
+
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
-        dependencies: getDependencies(config.requirements?.packages),
+        dependencies: await getDependencies(config.requirements?.packages),
         description: config.description,
         devDependencies: {
-          ...getDevDependencies({
-            ava: config.test?.tool === TestTool.Ava,
-            eslint: config.environments?.development?.linters?.includes(
-              CodeLinterTool.ESLint,
-            ),
-            github: config.type === ProjectType.GitHubAction,
-            jest: config.test?.tool === TestTool.Jest,
-            jestReact: config.test?.tool === TestTool.Jest && flags.react,
-            prettier: config.environments?.development?.formatters?.includes(
-              CodeFormatterTool.Prettier,
-            ),
-            react: flags.react,
-            reactRouter: flags.reactRouter,
-            styledComponents: flags.styledComponents,
-            stylelint: config.environments?.development?.linters?.includes(
-              CodeLinterTool.Stylelint,
-            ),
-            testCoverage: Boolean(config.test?.coverage),
-            typescript: config?.environments?.development?.typescript ?? true,
-          }),
-          ...(getDependencies(config.requirements?.devPackages) ?? {}),
+          ...devDependencies,
+          ...((await getDependencies(config.requirements?.devPackages)) ?? {}),
         },
         engines: {
           node: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
@@ -139,7 +133,9 @@ export default new Command<Project, LibifyFlags>({
         main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
         module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
         name: config.name,
-        peerDependencies: getDependencies(config.requirements?.peerPackages),
+        peerDependencies: await getDependencies(
+          config.requirements?.peerPackages,
+        ),
         publishConfig: {
           access: config?.release?.package?.publish?.access ?? 'private',
           registry:
@@ -207,16 +203,39 @@ export default new Command<Project, LibifyFlags>({
       );
       console.info(`${chalk.green('✔')} updated publish workflow`);
 
+      await writeFile(
+        path.resolve('./package-test.json'),
+        JSON.stringify(newPackageMetadata, null, 2),
+      );
+      console.info(`${chalk.green('✔')} resolved dependencies`);
+
+      // const yarn = new YarnProject(
+      //   // @ts-expect-error - Not sure how to use this API to be frank
+      //   './',
+      //   { configuration: {} },
+      // );
+      // const plugin = Yarn .commands?.['SetVersionCommand']
+
+      // const workspace = new Workspace('./', { project: {
+
+      // }});
+
+      // const report = Report;
+
+      // await yarn.install({
+      //   cache: new Cache('.', {
+      //     configuration: {},
+      //   }),
+      //   report: {
+
+      //   }
+      // });
+      await shellExec('yarn init');
       await shellExec('yarn set version stable');
       await shellExec('yarn plugin import interactive-tools');
-      await shellExec('yarn plugin import workspace-tools');
       await shellExec('yarn install');
 
       console.info(`${chalk.green('✔')} installed dependencies`);
-
-      await shellExec('yarn up -C');
-
-      console.info(`${chalk.green('✔')} updated dependencies`);
 
       if (build) {
         await shellExec('yarn build');
@@ -229,14 +248,6 @@ export default new Command<Project, LibifyFlags>({
       await add('./');
       await commit('Libified project');
       await push({ followTags: false });
-
-      // # yarn install
-      // # yarn yui
-
-      // # yarn build
-      // # yarn test
-
-      // # yarn qr
     } catch (err: any) {
       console.error(chalk.red(err.message));
       process.exit(1);

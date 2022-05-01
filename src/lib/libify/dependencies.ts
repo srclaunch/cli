@@ -1,3 +1,4 @@
+import latestVersion from 'latest-version';
 import {
   BrowserPackage,
   NodePackage,
@@ -78,6 +79,22 @@ import {
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
 
+export async function getDependenciesLatestVersions(packages: {
+  [key: string]: string;
+}) {
+  const versions: { [key: string]: string } = {};
+
+  for (const package_ of Object.entries(packages).map(([key, value]) => ({
+    [key]: value,
+  }))) {
+    if (package_[0]) {
+      const version = await latestVersion(package_[0]);
+      versions[package_[0]] = version;
+    }
+  }
+  return versions;
+}
+
 export function getPackageDependencies(package_: Package) {
   switch (package_) {
     case BrowserPackage.JSFileDownload:
@@ -121,7 +138,6 @@ export function getPackageDependencies(package_: Package) {
       return CORS_DEPENDENCIES;
     case NodePackage.Config:
       return CONFIG_DEPENDENCIES;
-
     case NodePackage.Express:
       return EXPRESS_DEPENDENCIES;
     case NodePackage.SrcLaunchHttpServer:
@@ -227,7 +243,7 @@ export function getPackageDevDependencies(package_: Package) {
   }
 }
 
-export function getDependencies(packages?: Package[]) {
+export async function getDependencies(packages?: Package[]) {
   if (!packages) {
     return undefined;
   }
@@ -241,10 +257,10 @@ export function getDependencies(packages?: Package[]) {
     };
   }
 
-  return dependencies;
+  return await getDependenciesLatestVersions(dependencies);
 }
 
-export function getDevDependencies({
+export async function getDevDependencies({
   ava,
   eslint = true,
   github,
@@ -274,7 +290,7 @@ export function getDevDependencies({
   stylelint?: boolean;
   testCoverage?: boolean;
   typescript?: boolean;
-}): Record<string, string> {
+}): Promise<Record<string, string>> {
   let dependencies = {
     ...COMMON_DEV_DEPENDENCIES,
   };
@@ -377,5 +393,5 @@ export function getDevDependencies({
     };
   }
 
-  return dependencies;
+  return await getDependenciesLatestVersions(dependencies);
 }
