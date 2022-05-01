@@ -82,6 +82,9 @@ export default new Command<Project, LibifyFlags>({
     "The libify command cleans a project's cache and configures it with package.json scripts and Github Action workflows.",
   run: async ({ config, flags }) => {
     try {
+      const build = Boolean(config.build) || flags['build'];
+      const test = Boolean(config.test) || flags['test'];
+
       const existingPackageJsonContents = await JSON.parse(
         (await readFile('./package.json')).toString(),
       );
@@ -178,51 +181,54 @@ export default new Command<Project, LibifyFlags>({
 
       // const projectType = config.type;
 
-      // const build = flags['build'];
-      // const test = flags['test'];
-
       // // Clear Yarn cache
-      // await deleteDirectory(path.resolve('./node_modules'));
-      // await deleteDirectory(path.resolve('./coverage'));
-      // await deleteDirectory(path.resolve('./dist'));
-      // await deleteDirectory(path.resolve('./.yarn'));
-      // await deleteFile(path.resolve('./yarn.lock'));
-      // await writeFile(path.resolve('./yarn.lock'), '');
-      // await writeFile(path.resolve('./.yarnrc.yml'), YARNRC_CONTENT);
+      await deleteDirectory(path.resolve('./node_modules'));
+      await deleteDirectory(path.resolve('./coverage'));
+      await deleteDirectory(path.resolve('./dist'));
+      await deleteDirectory(path.resolve('./.yarn'));
+      await deleteFile(path.resolve('./yarn.lock'));
+      await writeFile(path.resolve('./yarn.lock'), '');
+      await writeFile(path.resolve('./.yarnrc.yml'), YARNRC_CONTENT);
 
-      // await add('./');
-      // await commit('Clean project');
-      // await push({ followTags: false });
+      await add('.');
+      await commit('Clean project');
+      await push({ followTags: false });
 
-      // await writeFile('./.gitignore', GITIGNORE_CONTENT);
+      await writeFile('./.gitignore', GITIGNORE_CONTENT);
 
-      // await add('./');
-      // await commit('Update .gitignore');
+      await add('./.gitignore');
+      await commit('Update .gitignore');
 
-      // console.info(`${chalk.green('✔')} project cleaned`);
+      console.info(`${chalk.green('✔')} project cleaned`);
 
-      // await writeFile(
-      //   './.github/workflows/publish.yml',
-      //   getPublishYml({ build, test }),
-      // );
-      // console.info(`${chalk.green('✔')} updated publish workflow`);
+      await writeFile(
+        './.github/workflows/publish.yml',
+        getPublishYml({ build, test }),
+      );
+      console.info(`${chalk.green('✔')} updated publish workflow`);
 
-      // await shellExec('yarn set version stable');
-      // await shellExec('yarn plugin import interactive-tools');
-      // await shellExec('yarn plugin import workspace-tools');
-      // await shellExec('yarn install');
+      await shellExec('yarn set version stable');
+      await shellExec('yarn plugin import interactive-tools');
+      await shellExec('yarn plugin import workspace-tools');
+      await shellExec('yarn install');
 
-      // console.info(`${chalk.green('✔')} installed dependencies`);
+      console.info(`${chalk.green('✔')} installed dependencies`);
 
-      // // await shellExec('yarn yui');
+      await shellExec('yarn up -C');
 
-      // if (build) {
-      //   await shellExec('yarn build');
-      // }
+      console.info(`${chalk.green('✔')} updated dependencies`);
 
-      // if (test) {
-      //   await shellExec('yarn test');
-      // }
+      if (build) {
+        await shellExec('yarn build');
+      }
+
+      if (test) {
+        await shellExec('yarn test');
+      }
+
+      await add('./');
+      await commit('Libified project');
+      await push({ followTags: false });
 
       // # yarn install
       // # yarn yui
