@@ -35,6 +35,7 @@ import {
   getDependencies,
   getDevDependencies,
 } from '../lib/libify/dependencies.js';
+import { PROJECT_PACKAGE_JSON_EXPORTS } from '../constants/project.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -77,7 +78,8 @@ export default new Command<Project, LibifyFlags>({
       );
 
       let exports = {};
-      for (const export_ of config.release?.package?.exports ?? []) {
+      for (const export_ of config.release?.package?.exports ??
+        PROJECT_PACKAGE_JSON_EXPORTS) {
         exports = {
           ...exports,
           [export_.path]: {
@@ -141,6 +143,7 @@ export default new Command<Project, LibifyFlags>({
         newPackageMetadata.toString(),
       );
 
+      console.log('diff', diff);
       for (const change of diff) {
         if (change.added) {
           console.log('+ ' + chalk.green(change.value));

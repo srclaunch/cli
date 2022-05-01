@@ -14,9 +14,13 @@ export const PROJECT_PACKAGE_JSON_MAIN = './dist/index.mjs';
 export const PROJECT_PACKAGE_JSON_TYPES = './dist/index.d.ts';
 export const PROJECT_PACKAGE_JSON_FILES = ['package.json', 'dist'];
 export const PROJECT_PACKAGE_JSON_MODULE = './dist/index.mjs';
-export const PROJECT_PACKAGE_JSON_EXPORTS = {
-  '.': { import: './dist/index.mjs', require: './dist/index.umd.cjs' },
-};
+export const PROJECT_PACKAGE_JSON_EXPORTS = [
+  {
+    path: '.',
+    import: './dist/index.mjs',
+    require: './dist/index.umd.cjs',
+  },
+];
 export const PROJECT_PACKAGE_JSON_BUILD_SCRIPTS = {
   build: 'yarn srclaunch build',
 };
