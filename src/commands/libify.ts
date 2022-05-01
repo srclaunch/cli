@@ -158,9 +158,7 @@ export default new Command<Project, LibifyFlags>({
 
       const diff = diffJson(existingPackageJsonContents, newPackageMetadata);
 
-      console.log('diff', diff);
       for (const change of diff) {
-        console.log('change', change);
         if (change.added) {
           console.log('+ ' + chalk.green(change.value.toString()));
         }
