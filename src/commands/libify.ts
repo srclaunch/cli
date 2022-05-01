@@ -10,7 +10,7 @@ import {
   WebApplicationRunOptions,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
-import { diffLines } from 'diff';
+import { diffJson } from 'diff';
 import { getEnvironment } from '@srclaunch/node-environment';
 import { Command, CommandType } from '../lib/command.js';
 import { run as runVite } from '../lib/run/vite';
@@ -145,17 +145,14 @@ export default new Command<Project, LibifyFlags>({
         version: existingPackageJsonContents.version ?? '0.0.0',
       });
 
-      const newPackageJsonContents = (
-        await JSON.parse(await JSON.stringify(newPackageMetadata, null, 2))
-      ).toString();
+      // const newPackageJsonContents = (
+      //   await JSON.parse(await JSON.stringify(newPackageMetadata, null, 2))
+      // ).toString();
 
-      console.log('newPackageJsonContents');
-      console.log(newPackageJsonContents);
+      // console.log('newPackageJsonContents');
+      // console.log(newPackageJsonContents);
 
-      const diff = diffLines(
-        existingPackageJsonContents.toString(),
-        newPackageJsonContents,
-      );
+      const diff = diffJson(existingPackageJsonContents, newPackageMetadata);
 
       console.log('diff', diff);
       for (const change of diff) {
