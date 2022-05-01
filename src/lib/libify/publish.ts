@@ -62,7 +62,7 @@ export function getPublishYml({
               \${{ runner.os }}-yarn-
 
         - name: Install dependencies
-          run: yarn install
+          run: yarn install --production
 
         - name: Build package
           run: yarn build
@@ -199,7 +199,7 @@ export function getPublishYml({
               \${{ runner.os }}-yarn-
 
         - name: Install dependencies
-          run: yarn install
+          run: yarn install --production
 
         - name: Allow private package registry access
           id: allow-private-package-registry-access

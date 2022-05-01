@@ -8,6 +8,9 @@ import {
   RunTool,
   TestTool,
   WebApplicationRunOptions,
+  CodeFormatterTool,
+  CodeLinterTool,
+  StaticTypingTool,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
@@ -97,23 +100,30 @@ export default new Command<Project, LibifyFlags>({
 
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
-        dependencies: getDependencies(
-          config.requirements?.packages?.production,
-        ),
+        dependencies: getDependencies(config.requirements?.packages),
         description: config.description,
         devDependencies: {
           ...getDevDependencies({
             ava: config.test?.tool === TestTool.Ava,
+            eslint: config.environments?.development?.linters?.includes(
+              CodeLinterTool.ESLint,
+            ),
             github: config.type === ProjectType.GitHubAction,
             jest: config.test?.tool === TestTool.Jest,
             jestReact: config.test?.tool === TestTool.Jest && flags.react,
+            prettier: config.environments?.development?.formatters?.includes(
+              CodeFormatterTool.Prettier,
+            ),
             react: flags.react,
             reactRouter: flags.reactRouter,
             styledComponents: flags.styledComponents,
+            stylelint: config.environments?.development?.linters?.includes(
+              CodeLinterTool.Stylelint,
+            ),
             testCoverage: Boolean(config.test?.coverage),
+            typescript: config?.environments?.development?.typescript ?? true,
           }),
-          ...(getDependencies(config.requirements?.packages?.development) ??
-            {}),
+          ...(getDependencies(config.requirements?.devPackages) ?? {}),
         },
         engines: {
           node: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
@@ -126,7 +136,7 @@ export default new Command<Project, LibifyFlags>({
         main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
         module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
         name: config.name,
-        peerDependencies: getDependencies(config.requirements?.packages?.peers),
+        peerDependencies: getDependencies(config.requirements?.peerPackages),
         publishConfig: {
           access: config?.release?.package?.publish?.access ?? 'private',
           registry:
