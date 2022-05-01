@@ -72,7 +72,7 @@ export function getPackageDependencies(package_: Package) {
 
 export function getDependencies(packages?: Package[]) {
   if (!packages) {
-    return;
+    return undefined;
   }
 
   let dependencies: { [key: string]: string } = {};
@@ -86,8 +86,6 @@ export function getDependencies(packages?: Package[]) {
 
   return dependencies;
 }
-
-export function getPeerDependencies(packages: Package[]) {}
 
 export function getDevDependencies({
   ava,
