@@ -89,52 +89,57 @@ export default new Command<Project, LibifyFlags>({
         };
       }
 
-      const newPackageMetadata = constructPackageJson({
-        author: 'SrcLaunch Inc. <steven@srclaunch.com>',
-        dependencies: {
-          ...(getDependencies(config.requirements?.packages?.production) ?? {}),
-        },
-        description: config.description,
-        devDependencies: {
-          // ...existingPackageMetadata.devDependencies,
-          ...getDevDependencies({
-            ava: config.test?.tool === TestTool.Ava,
-            github: config.type === ProjectType.GitHubAction,
-            jest: config.test?.tool === TestTool.Jest,
-            jestReact: config.test?.tool === TestTool.Jest && flags.react,
-            react: flags.react,
-            reactRouter: flags.reactRouter,
-            styledComponents: flags.styledComponents,
-            testCoverage: Boolean(config.test?.coverage),
-          }),
-        },
-        engines: {
-          node: config.requirements?.node ?? '>=16',
-        },
-        exports,
-        files: config.release?.package?.files ?? ['dist', 'package.json'],
-        license: config.license ?? License.MIT,
-        name: config.name,
-        peerDependencies: {
-          ...(getDependencies(config.requirements?.packages?.peers) ?? {}),
-        },
-        publishConfig: {
-          access: config?.release?.package?.publish?.access ?? 'private',
-          registry:
-            config.release?.package?.publish?.registry ??
-            'https://registry.npmjs.org/',
-        },
-        scripts: {
-          ...getPackageScripts({
-            build: Boolean(config.build),
-            release: Boolean(config.release),
-            run: config.run,
-            test: Boolean(config.test),
-          }),
-          ...config.release?.package?.scripts,
-        },
-        version: existingPackageMetadata.version ?? '0.0.0',
-      });
+      const newPackageMetadata = JSON.stringify(
+        constructPackageJson({
+          author: 'Steven Bennett <steven@srclaunch.com>',
+          dependencies: {
+            ...(getDependencies(config.requirements?.packages?.production) ??
+              {}),
+          },
+          description: config.description,
+          devDependencies: {
+            // ...existingPackageMetadata.devDependencies,
+            ...getDevDependencies({
+              ava: config.test?.tool === TestTool.Ava,
+              github: config.type === ProjectType.GitHubAction,
+              jest: config.test?.tool === TestTool.Jest,
+              jestReact: config.test?.tool === TestTool.Jest && flags.react,
+              react: flags.react,
+              reactRouter: flags.reactRouter,
+              styledComponents: flags.styledComponents,
+              testCoverage: Boolean(config.test?.coverage),
+            }),
+          },
+          engines: {
+            node: config.requirements?.node ?? '>=16',
+          },
+          exports,
+          files: config.release?.package?.files ?? ['dist', 'package.json'],
+          license: config.license ?? License.MIT,
+          name: config.name,
+          peerDependencies: {
+            ...(getDependencies(config.requirements?.packages?.peers) ?? {}),
+          },
+          publishConfig: {
+            access: config?.release?.package?.publish?.access ?? 'private',
+            registry:
+              config.release?.package?.publish?.registry ??
+              'https://registry.npmjs.org/',
+          },
+          scripts: {
+            ...getPackageScripts({
+              build: Boolean(config.build),
+              release: Boolean(config.release),
+              run: config.run,
+              test: Boolean(config.test),
+            }),
+            ...config.release?.package?.scripts,
+          },
+          version: existingPackageMetadata.version ?? '0.0.0',
+        }),
+        null,
+        2,
+      );
 
       console.log('newPackageMetadata');
       console.log(newPackageMetadata);
@@ -146,6 +151,7 @@ export default new Command<Project, LibifyFlags>({
 
       console.log('diff', diff);
       for (const change of diff) {
+        console.log('change', change);
         if (change.added) {
           console.log('+ ' + chalk.green(change.value));
         }
