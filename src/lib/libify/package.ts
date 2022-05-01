@@ -38,7 +38,6 @@ export function constructPackageJson({
   version,
 }: {
   author?: string;
-  build?: boolean;
   description?: string;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
@@ -63,7 +62,6 @@ export function constructPackageJson({
   peerDependencies?: Record<string, string>;
   publishConfig?: Record<string, string>;
   scripts?: Record<string, string>;
-  test?: boolean;
   type?: PackageType;
   types?: string;
   version?: string;

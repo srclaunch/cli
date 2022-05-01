@@ -14,15 +14,12 @@ export const SRCLAUNCH_DEV_DEPENDENCIES = {
 export const ESLINT_DEV_DEPENDENCIES = {
   '@microsoft/eslint-plugin-sdl': '^0.2.0',
   eslint: '^8.14.0',
-  'eslint-config-prettier': '^8.5.0',
-  'eslint-config-stylelint': '^15.0.0',
   'eslint-import-resolver-typescript': '^2.7.1',
   'eslint-plugin-eslint-comments': '^3.2.0',
   'eslint-plugin-functional': '^4.2.1',
   'eslint-plugin-import': '^2.26.0',
   'eslint-plugin-node': '^11.1.0',
   'eslint-plugin-only-warn': '^1.0.3',
-  'eslint-plugin-prettier': '^4.0.0',
   'eslint-plugin-regexp': '^1.7.0',
   'eslint-plugin-simple-import-sort': '^7.0.0',
   'eslint-plugin-sort-keys-fix': '^1.1.2',
@@ -31,16 +28,18 @@ export const ESLINT_DEV_DEPENDENCIES = {
 };
 
 export const PRETTIER_DEV_DEPENDENCIES = {
+  'eslint-config-prettier': '^8.5.0',
+  'eslint-plugin-prettier': '^4.0.0',
   prettier: '^2.6.2',
   // 'prettier-eslint': '^14.0.2',
 };
 
 export const STYLELINT_DEV_DEPEENDENCIES = {
+  'eslint-config-stylelint': '^15.0.0',
   stylelint: '^14.8.1',
   'stylelint-config-idiomatic-order': '^8.1.0',
   'stylelint-config-prettier': '^9.0.3',
   'stylelint-config-recommended': '^7.0.0',
-  'stylelint-config-styled-components': '^0.1.1',
   'stylelint-order': '^5.0.0',
 };
 
@@ -98,4 +97,5 @@ export const REACT_ROUTER_DEV_DEPENDENCIES = {
 export const STYLED_COMPONENTS_DEV_DEPENDENCIES = {
   '@types/styled-components': '^5.1.25',
   'eslint-plugin-better-styled-components': '^1.1.2',
+  'stylelint-config-styled-components': '^0.1.1',
 };

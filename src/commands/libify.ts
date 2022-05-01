@@ -97,9 +97,9 @@ export default new Command<Project, LibifyFlags>({
 
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
-        dependencies: {
-          ...(getDependencies(config.requirements?.packages?.production) ?? {}),
-        },
+        dependencies: getDependencies(
+          config.requirements?.packages?.production,
+        ),
         description: config.description,
         devDependencies: {
           ...getDevDependencies({
@@ -126,9 +126,7 @@ export default new Command<Project, LibifyFlags>({
         main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
         module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
         name: config.name,
-        peerDependencies: {
-          ...(getDependencies(config.requirements?.packages?.peers) ?? {}),
-        },
+        peerDependencies: getDependencies(config.requirements?.packages?.peers),
         publishConfig: {
           access: config?.release?.package?.publish?.access ?? 'private',
           registry:
