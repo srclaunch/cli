@@ -35,7 +35,13 @@ import {
   getDependencies,
   getDevDependencies,
 } from '../lib/libify/dependencies.js';
-import { PROJECT_PACKAGE_JSON_EXPORTS } from '../constants/project.js';
+import {
+  PROJECT_PACKAGE_JSON_EXPORTS,
+  PROJECT_PACKAGE_JSON_MAIN,
+  PROJECT_PACKAGE_JSON_MODULE,
+  PROJECT_PACKAGE_JSON_TYPE,
+  PROJECT_PACKAGE_JSON_TYPES,
+} from '../constants/project.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -113,6 +119,8 @@ export default new Command<Project, LibifyFlags>({
         exports,
         files: config.release?.package?.files ?? ['dist', 'package.json'],
         license: config.release?.package?.publish?.license ?? License.MIT,
+        main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
+        module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
         name: config.name,
         peerDependencies: {
           ...(getDependencies(config.requirements?.packages?.peers) ?? {}),
@@ -132,6 +140,8 @@ export default new Command<Project, LibifyFlags>({
           }),
           ...config.release?.package?.scripts,
         },
+        types: config.release?.package?.types ?? PROJECT_PACKAGE_JSON_TYPES,
+        type: config.release?.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
         version: existingPackageJsonContents.version ?? '0.0.0',
       });
 

@@ -1,7 +1,7 @@
-import { Project } from '@srclaunch/types';
+import { PackageType, Project } from '@srclaunch/types';
 import {
   PROJECT_PACKAGE_JSON_BUILD_SCRIPTS,
-  PROJECT_PACKAGE_JSON_DEPENDENCY_SCRIPTS,
+  PROJECT_PACKAGE_JSON_COMMON_SCRIPTS,
   PROJECT_PACKAGE_JSON_DEV_SCRIPTS,
   PROJECT_PACKAGE_JSON_ENGINES,
   PROJECT_PACKAGE_JSON_FILES,
@@ -60,7 +60,7 @@ export function constructPackageJson({
   publishConfig?: Record<string, string>;
   scripts?: Record<string, string>;
   test?: boolean;
-  type?: 'module' | 'commonjs' | 'amd' | 'umd';
+  type?: PackageType;
   types?: string;
   version?: string;
 }) {
@@ -97,7 +97,7 @@ export function getPackageScripts({
   test?: boolean;
 }): Record<string, string> {
   let scripts = {
-    ...PROJECT_PACKAGE_JSON_DEPENDENCY_SCRIPTS,
+    ...PROJECT_PACKAGE_JSON_COMMON_SCRIPTS,
   };
 
   if (build) {
