@@ -71,6 +71,7 @@ export function getPackageDependencies(package_: Package) {
 }
 
 export function getDependencies(packages?: Package[]) {
+  console.log('packages', packages);
   if (!packages) {
     return undefined;
   }
