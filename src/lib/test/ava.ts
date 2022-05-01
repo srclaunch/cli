@@ -1,20 +1,12 @@
-import { exec, fork, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import { TestOptions } from '@srclaunch/types';
 import { DEFAULT_TEST_OPTIONS } from './index';
-import {
-  chunksToLinesAsync,
-  streamWrite,
-  streamEnd,
-  onExit,
-} from '@rauschma/stringio';
-import { Readable, Writable } from 'stream';
-
-async function transform(readable: Readable, writable: Writable) {
-  for await (const line of chunksToLinesAsync(readable)) {
-    await streamWrite(writable, '@ ' + line);
-  }
-  await streamEnd(writable);
-}
+// import {
+//   chunksToLinesAsync,
+//   streamWrite,
+//   streamEnd,
+//   onExit,
+// } from '@rauschma/stringio';
 
 export async function run({
   config,
@@ -58,7 +50,7 @@ export async function run({
       stdio: [process.stdin, process.stdout, process.stderr],
     });
 
-    await onExit(childProcess);
+    // await onExit(childProcess);
 
     // if (process) {
     //   process.stdout?.on('data', data => {
