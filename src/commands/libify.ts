@@ -71,10 +71,8 @@ export default new Command<Project, LibifyFlags>({
     "The libify command cleans a project's cache and configures it with package.json scripts and Github Action workflows.",
   run: async ({ config, flags }) => {
     try {
-      const packageJsonContents = await readFile('./package.json');
-      console.log('packageJSONContents', packageJsonContents.toString());
-      const existingPackageMetadata = await JSON.parse(
-        packageJsonContents.toString(),
+      const existingPackageJsonContents = await JSON.parse(
+        (await readFile('./package.json')).toString(),
       );
 
       let exports = {};
@@ -134,14 +132,21 @@ export default new Command<Project, LibifyFlags>({
           }),
           ...config.release?.package?.scripts,
         },
-        version: existingPackageMetadata.version ?? '0.0.0',
+        version: existingPackageJsonContents.version ?? '0.0.0',
       });
-      console.log('newPackageMetadata');
-      console.log(newPackageMetadata);
+
+      const newPackageJsonContents = JSON.stringify(
+        newPackageMetadata,
+        null,
+        2,
+      );
+
+      console.log('newPackageJsonContents');
+      console.log(newPackageJsonContents);
 
       const diff = diffLines(
-        existingPackageMetadata.toString(),
-        newPackageMetadata.toString(),
+        existingPackageJsonContents.toString(),
+        newPackageJsonContents,
       );
 
       console.log('diff', diff);
