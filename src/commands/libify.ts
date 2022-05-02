@@ -312,8 +312,7 @@ export default new Command<Project, LibifyFlags>({
         await shellExec('yarn init');
         await shellExec('yarn set version stable');
         await shellExec('yarn plugin import interactive-tools');
-
-        if (config) await shellExec('yarn install');
+        await shellExec('yarn install');
 
         console.info(`${chalk.green('✔')} installed dependencies`);
 
