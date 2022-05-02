@@ -42,23 +42,9 @@ import {
   PROJECT_PACKAGE_JSON_TYPE,
   PROJECT_PACKAGE_JSON_TYPES,
 } from '../constants/project.js';
-import {
-  TYPESCRIPT_CONFIG_CONTENT,
-  TYPESCRIPT_UI_CONFIG_CONTENT,
-} from '../constants/static-typing.js';
-import { PRETTIER_CONFIG_CONTENT } from '../constants/formatters.js';
-import {
-  ESLINT_CONFIG_CONTENT,
-  ESLINT_UI_CONFIG_CONTENT,
-  STYLELINT_CONFIG_CONTENT,
-  STYLELINT_UI_CONFIG_CONTENT,
-} from '../constants/linters.js';
 import { writeToolingConfiguration } from '../lib/libify/tooling.js';
-import {
-  ProgressDefinition,
-  SectionOptions,
-  TimerOptions,
-} from '@yarnpkg/core/lib/Report';
+import release from './release.js';
+import { createRelease } from '../lib/release.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -233,11 +219,15 @@ export default new Command<Project, LibifyFlags>({
 
       console.info(`${chalk.green('✔')} project cleaned`);
 
+      /* 
+        Create a GitHub Action workflow file based on the project
+        configuration.
+      */
       await writeFile(
         './.github/workflows/publish.yml',
         getPublishYml({ build, test }),
       );
-      console.info(`${chalk.green('✔')} updated publish workflow`);
+      console.info(`${chalk.green('✔')} added GitHub Actions publish workflow`);
 
       /* 
         Write package.yml which will be used by the `yarn-plugin-yaml-manifest`
@@ -247,7 +237,7 @@ export default new Command<Project, LibifyFlags>({
         path.resolve('./package.yml'),
         YAML.stringify(newPackageMetadata),
       );
-      console.info(`${chalk.green('✔')} resolved dependencies`);
+      console.info(`${chalk.green('✔')} created package.yml`);
 
       await writeToolingConfiguration({
         formatters: config.environments?.development?.formatters,
@@ -259,14 +249,14 @@ export default new Command<Project, LibifyFlags>({
 
       console.info(`${chalk.green('✔')} created DX tooling configurations`);
 
+      await shellExec('yarn init --install=stable');
+      console.info(`${chalk.green('✔')} initialized Yarn`);
+
       const yarn = new YarnProject(
         // @ts-expect-error - Not sure how to use this API to be frank
         './',
         { configuration: {} },
       );
-
-      await shellExec('yarn init --install=stable');
-      console.info(`${chalk.green('✔')} initialized Yarn`);
 
       await yarn.install({
         cache: new Cache(
@@ -351,9 +341,9 @@ export default new Command<Project, LibifyFlags>({
         await shellExec('yarn test');
       }
 
-      await add('./');
+      await add('.');
       await commit('Libified project');
-      await push({ followTags: false });
+      await createRelease();
     } catch (err: any) {
       console.error(chalk.red(err.message));
       process.exit(1);
