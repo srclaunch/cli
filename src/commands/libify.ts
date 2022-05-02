@@ -204,13 +204,13 @@ export default new Command<Project, LibifyFlags>({
 
       for (const change of diff) {
         if (change.added) {
-          console.log('+ ' + chalk.green.bold('Added: ') + change.count);
-          console.log('+ ' + chalk.green(change.value.toString().trim()));
+          console.log(chalk.green.bold(`+ Added: ${change.count}`));
+          console.log(chalk.green(`+ ${change.value.toString().trim()}`));
         }
 
         if (change.removed) {
-          console.log('+ ' + chalk.red.bold('Added: ') + change.count);
-          console.log('- ' + chalk.red(change.value.toString().trim()));
+          console.log(chalk.red.bold(`- Removed: ${change.count}`));
+          console.log(chalk.red(`- ${change.value.toString().trim()}`));
         }
       }
 
