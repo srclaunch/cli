@@ -295,22 +295,16 @@ export default new Command<Project, LibifyFlags>({
 
       console.info(`${chalk.green('✔')} added yarn plugins`);
 
+      // @ts-ignore
+      const yarnConfig = await Configuration.find(path.resolve(), null, {});
       const yarn = new YarnProject(
         // @ts-expect-error - Not sure how to use this API to be frank
         './',
-        // @ts-expect-error - Not sure how to use this API
-        { configuration: await Configuration.find('./') },
+        { configuration: yarnConfig },
       );
 
       await yarn.install({
-        cache: new Cache(
-          // @ts-expect-error - Not sure how to use this API
-          { __pathType: 1 },
-          {
-            // @ts-expect-error - Not sure how to use this API
-            configuration: await Configuration.find('./'),
-          },
-        ),
+        cache: await Cache.find(yarnConfig),
         report: {
           reportCacheHit: locator => {
             console.info(`Cache hit for ${locator.toString()}`);
