@@ -45,6 +45,12 @@ import {
   TYPESCRIPT_UI_CONFIG_CONTENT,
 } from '../constants/static-typing.js';
 import { PRETTIER_CONFIG_CONTENT } from '../constants/formatters.js';
+import {
+  ESLINT_CONFIG_CONTENT,
+  ESLINT_UI_CONFIG_CONTENT,
+  STYLELINT_CONFIG_CONTENT,
+  STYLELINT_UI_CONFIG_CONTENT,
+} from '../constants/linters.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -264,19 +270,34 @@ export default new Command<Project, LibifyFlags>({
           }
 
           if (config.environments?.development?.linters) {
+            const ui =
+              config.type === ProjectType.WebApplication ||
+              config?.type === ProjectType.ComponentLibrary ||
+              flags['react'];
+
             for (const linter of config.environments?.development?.linters) {
               switch (linter) {
                 case CodeLinterTool.ESLint:
                   await writeFile(
                     path.resolve('./.eslintrc.cjs'),
-                    JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
+                    JSON.stringify(
+                      ui ? ESLINT_UI_CONFIG_CONTENT : ESLINT_CONFIG_CONTENT,
+                      null,
+                      2,
+                    ),
                   );
                   console.info(`${chalk.green('✔')} added ESLint config`);
                   break;
                 case CodeLinterTool.Stylelint:
                   await writeFile(
                     path.resolve('./.stylelintrc.js'),
-                    JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
+                    JSON.stringify(
+                      ui
+                        ? STYLELINT_UI_CONFIG_CONTENT
+                        : STYLELINT_CONFIG_CONTENT,
+                      null,
+                      2,
+                    ),
                   );
                   console.info(`${chalk.green('✔')} added Stylelint config`);
                   break;

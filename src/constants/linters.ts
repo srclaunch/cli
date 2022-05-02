@@ -1,21 +1,15 @@
-// const base = require('@srclaunch/dx/.eslintrc');
-
-// module.exports = {
-//   ...base,
-// };
-
 // .eslintrc.cjs
-export const ESLINT_CONFIG_CONTENT = `module.exports = {
-  "extends": [
-    "@srclaunch/dx/.eslintrc",
-  ],
+export const ESLINT_CONFIG_CONTENT = `const base = require('@srclaunch/dx/.eslintrc');
+
+module.exports = {
+  ...base
 };`;
 
 // .eslintrc.cjs
-export const ESLINT_UI_CONFIG_CONTENT = `module.exports = {
-  "extends": [
-    "@srclaunch/dx/.eslintrc.ui",
-  ],
+export const ESLINT_UI_CONFIG_CONTENT = `const base = require('@srclaunch/dx/.eslintrc');
+
+module.exports = {
+  ...base
 };`;
 
 // .stylelintrc.js
