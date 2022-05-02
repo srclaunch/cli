@@ -1,5 +1,4 @@
-import { Project } from '@srclaunch/types';
-import { AnyFlag, AnyFlags, Flag, Result, TypedFlags } from 'meow';
+import { AnyFlags, Result, TypedFlags } from 'meow';
 
 export enum CommandType {
   Project = 'project',

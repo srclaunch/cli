@@ -5,6 +5,7 @@ import {
   TestTool,
   CodeFormatterTool,
   CodeLinterTool,
+  StaticTypingTool,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
@@ -39,6 +40,11 @@ import {
   PROJECT_PACKAGE_JSON_TYPE,
   PROJECT_PACKAGE_JSON_TYPES,
 } from '../constants/project.js';
+import {
+  TYPESCRIPT_CONFIG_CONTENT,
+  TYPESCRIPT_UI_CONFIG_CONTENT,
+} from '../constants/static-typing.js';
+import { PRETTIER_CONFIG_CONTENT } from '../constants/formatters.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -54,6 +60,11 @@ type LibifyFlags = TypedFlags<{
   reactRouter: {
     default: false;
     description: 'The library uses React Router.';
+    type: 'boolean';
+  };
+  release: {
+    default: false;
+    description: 'Add scripts and dependencies for creating project releases.';
     type: 'boolean';
   };
   styledComponents: {
@@ -104,7 +115,10 @@ export default new Command<Project, LibifyFlags>({
         prettier: config.environments?.development?.formatters?.includes(
           CodeFormatterTool.Prettier,
         ),
-        react: flags.react,
+        react:
+          config?.type === ProjectType.WebApplication ||
+          config?.type === ProjectType.ComponentLibrary ||
+          flags.react,
         reactRouter: flags.reactRouter,
         styledComponents: flags.styledComponents,
         stylelint: config.environments?.development?.linters?.includes(
@@ -146,8 +160,8 @@ export default new Command<Project, LibifyFlags>({
         },
         scripts: {
           ...getPackageScripts({
-            build: Boolean(config.build),
-            release: Boolean(config.release),
+            build: Boolean(config.build) || flags['build'],
+            release: Boolean(config.release) || flags['release'],
             run: config.run,
             test: Boolean(config.test),
           }),
@@ -204,45 +218,117 @@ export default new Command<Project, LibifyFlags>({
       );
       console.info(`${chalk.green('✔')} resolved dependencies`);
 
-      // const yarn = new YarnProject(
-      //   // @ts-expect-error - Not sure how to use this API to be frank
-      //   './',
-      //   { configuration: {} },
-      // );
-      // const plugin = Yarn .commands?.['SetVersionCommand']
+      if (config.environments?.development) {
+        // @ts-expect-error
+        if (config.environments?.development?.staticTyping) {
+          // @ts-expect-error
+          for (const tool of config.environments?.development.staticTyping) {
+            switch (tool) {
+              case StaticTypingTool.TypeScript:
+                const uiConfig =
+                  config.type === ProjectType.WebApplication ||
+                  config?.type === ProjectType.ComponentLibrary ||
+                  flags['react'];
+                await writeFile(
+                  path.resolve('./tsconfig.json'),
+                  JSON.stringify(
+                    uiConfig
+                      ? TYPESCRIPT_UI_CONFIG_CONTENT
+                      : TYPESCRIPT_CONFIG_CONTENT,
+                    null,
+                    2,
+                  ),
+                );
+                console.info(`${chalk.green('✔')} added TypeScript config`);
+                break;
+              default:
+                break;
+            }
+          }
 
-      // const workspace = new Workspace('./', { project: {
+          if (config.environments?.development?.formatters) {
+            for (const formatter of config.environments?.development
+              ?.formatters) {
+              switch (formatter) {
+                case CodeFormatterTool.Prettier:
+                  await writeFile(
+                    path.resolve('./.prettierrc.cjs'),
+                    JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
+                  );
+                  console.info(`${chalk.green('✔')} added Prettier config`);
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
 
-      // }});
+          if (config.environments?.development?.linters) {
+            for (const linter of config.environments?.development?.linters) {
+              switch (linter) {
+                case CodeLinterTool.ESLint:
+                  await writeFile(
+                    path.resolve('./.eslintrc.cjs'),
+                    JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
+                  );
+                  console.info(`${chalk.green('✔')} added ESLint config`);
+                  break;
+                case CodeLinterTool.Stylelint:
+                  await writeFile(
+                    path.resolve('./.stylelintrc.js'),
+                    JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
+                  );
+                  console.info(`${chalk.green('✔')} added Stylelint config`);
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
+        }
+        // }
 
-      // const report = Report;
+        // const yarn = new YarnProject(
+        //   // @ts-expect-error - Not sure how to use this API to be frank
+        //   './',
+        //   { configuration: {} },
+        // );
+        // const plugin = Yarn .commands?.['SetVersionCommand']
 
-      // await yarn.install({
-      //   cache: new Cache('.', {
-      //     configuration: {},
-      //   }),
-      //   report: {
+        // const workspace = new Workspace('./', { project: {
 
-      //   }
-      // });
-      await shellExec('yarn init');
-      await shellExec('yarn set version stable');
-      await shellExec('yarn plugin import interactive-tools');
-      await shellExec('yarn install');
+        // }});
 
-      console.info(`${chalk.green('✔')} installed dependencies`);
+        // const report = Report;
 
-      if (build) {
-        await shellExec('yarn build');
+        // await yarn.install({
+        //   cache: new Cache('.', {
+        //     configuration: {},
+        //   }),
+        //   report: {
+
+        //   }
+        // });
+        await shellExec('yarn init');
+        await shellExec('yarn set version stable');
+        await shellExec('yarn plugin import interactive-tools');
+
+        if (config) await shellExec('yarn install');
+
+        console.info(`${chalk.green('✔')} installed dependencies`);
+
+        if (build) {
+          await shellExec('yarn build');
+        }
+
+        if (test) {
+          await shellExec('yarn test');
+        }
+
+        await add('./');
+        await commit('Libified project');
+        await push({ followTags: false });
       }
-
-      if (test) {
-        await shellExec('yarn test');
-      }
-
-      await add('./');
-      await commit('Libified project');
-      await push({ followTags: false });
     } catch (err: any) {
       console.error(chalk.red(err.message));
       process.exit(1);
