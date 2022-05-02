@@ -98,11 +98,7 @@ export async function getDependenciesLatestVersions(packages: {
 }) {
   let versions: { [key: string]: string } = {};
 
-  for (const package_ of [
-    ...Object.entries(packages).map(([key, value]) => ({
-      [key]: value,
-    })),
-  ]) {
+  for (const package_ of [...Object.entries(packages)]) {
     console.log('package_', package_);
     if (package_[0] && package_[1]) {
       const availableVersions = await JSON.parse(
