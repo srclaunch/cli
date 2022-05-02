@@ -15,7 +15,7 @@ import {
 } from '@yarnpkg/core';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
-import { Document } from 'yaml';
+import Yaml from 'js-yaml';
 import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
 import {
@@ -253,9 +253,7 @@ export default new Command<Project, LibifyFlags>({
         Write package.yml which will be used by the `yarn-plugin-yaml-manifest`
         plugin to generate a package.json manifest.
       */
-      const packageYml = new Document();
-      packageYml.contents = newPackageMetadata;
-
+      const packageYml = Yaml.dump(newPackageMetadata);
       await writeFile(path.resolve('./package.yml'), packageYml.toString());
       console.info(`${chalk.green('✔')} created package.yml`);
 
