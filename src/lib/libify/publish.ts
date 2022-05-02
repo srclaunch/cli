@@ -57,7 +57,6 @@ export function getPublishYml({
         - name: Enable Yarn Berry
           run: yarn set version stable
   
-
         - name: Install dependencies
           if: \${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
           run: yarn install
@@ -94,7 +93,7 @@ export function getPublishYml({
             cache: 'yarn'
 
         - uses: actions/cache@v3
-          id: yarn-cache # use this to check for 'cache-hit' (steps.yarn-cache.outputs.cache-hit != 'true')
+          id: yarn-cache
           with:
             path: |
               .yarn/cache
@@ -146,7 +145,7 @@ export function getPublishYml({
             node-version: '16.x'
         
         - uses: actions/cache@v3
-          id: yarn-cache # use this to check for 'cache-hit' (steps.yarn-cache.outputs.cache-hit != 'true')
+          id: yarn-cache
           with:
             path: |
               .yarn/cache
