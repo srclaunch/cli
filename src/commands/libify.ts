@@ -90,7 +90,11 @@ export default new Command<Project, LibifyFlags>({
     "The libify command cleans a project's cache and configures it with package.json scripts and Github Action workflows.",
   run: async ({ config, flags }) => {
     try {
-      console.info(`Setting up ${chalk.bold(config.name)} with SrcLaunch...`);
+      console.info(
+        chalk.bgMagenta(
+          `Setting up ${chalk.bold(config.name)} with SrcLaunch...`,
+        ),
+      );
 
       const build = Boolean(config.build) || flags['build'];
       const test = Boolean(config.test) || flags['test'];
@@ -295,7 +299,7 @@ export default new Command<Project, LibifyFlags>({
         // @ts-expect-error - Not sure how to use this API to be frank
         './',
         // @ts-expect-error - Not sure how to use this API
-        { configuration: new Configuration.findRcFiles('./') },
+        { configuration: Configuration.findRcFiles('./') },
       );
 
       await yarn.install({
@@ -304,7 +308,7 @@ export default new Command<Project, LibifyFlags>({
           { __pathType: 1 },
           {
             // @ts-expect-error - Not sure how to use this API
-            configuration: new Configuration.findRcFiles('./'),
+            configuration: Configuration.findRcFiles('./'),
           },
         ),
         report: {
@@ -371,7 +375,7 @@ export default new Command<Project, LibifyFlags>({
       await commit('Libified project');
       await createRelease();
     } catch (err: any) {
-      console.error(chalk.red(err.message));
+      console.error(chalk.red(err));
       process.exit(1);
     }
   },
