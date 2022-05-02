@@ -7,6 +7,7 @@ import {
   CodeLinterTool,
   StaticTypingTool,
 } from '@srclaunch/types';
+import { Cache, Project as YarnProject, Report } from '@yarnpkg/core';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
 import YAML from 'json-to-pretty-yaml';
@@ -53,6 +54,11 @@ import {
   STYLELINT_UI_CONFIG_CONTENT,
 } from '../constants/linters.js';
 import { writeToolingConfiguration } from '../lib/libify/tooling.js';
+import {
+  ProgressDefinition,
+  SectionOptions,
+  TimerOptions,
+} from '@yarnpkg/core/lib/Report';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -139,6 +145,8 @@ export default new Command<Project, LibifyFlags>({
           // ) ??
           true,
       });
+      console.log('coreDevDependencies', coreDevDependencies);
+
       const customDevDependencies = await getDependencies(
         config.requirements?.devPackages,
       );
@@ -147,11 +155,12 @@ export default new Command<Project, LibifyFlags>({
         ...coreDevDependencies,
         ...customDevDependencies,
       };
+      console.log('devDependencies', devDependencies);
+
       const dependencies = await getDependencies(config.requirements?.packages);
       const peerDependencies = await getDependencies(
         config.requirements?.peerPackages,
       );
-      console.log('devDependencies', devDependencies);
 
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
@@ -250,36 +259,80 @@ export default new Command<Project, LibifyFlags>({
 
       console.info(`${chalk.green('✔')} created DX tooling configurations`);
 
-      // }
+      const yarn = new YarnProject(
+        // @ts-expect-error - Not sure how to use this API to be frank
+        './',
+        { configuration: {} },
+      );
 
-      // const yarn = new YarnProject(
-      //   // @ts-expect-error - Not sure how to use this API to be frank
-      //   './',
-      //   { configuration: {} },
-      // );
-      // const plugin = Yarn .commands?.['SetVersionCommand']
+      await shellExec('yarn init --install=stable');
+      console.info(`${chalk.green('✔')} initialized Yarn`);
 
-      // const workspace = new Workspace('./', { project: {
+      await yarn.install({
+        cache: new Cache(
+          // @ts-expect-error - Not sure how to use this API
+          { __pathType: 1 },
+          {
+            configuration: {},
+          },
+        ),
+        report: {
+          reportCacheHit: locator => {
+            console.info(`Cache hit for ${locator.toString()}`);
+          },
+          reportCacheMiss: (locator, message) => {
+            console.info(`Cache miss for ${locator.toString()}`);
+            console.log(message);
+          },
+          startSectionPromise: (opts, cb) => {
+            console.info(`Starting section ${opts.reportHeader}`);
+            return cb();
+          },
+          startSectionSync: (opts, cb) => {
+            console.info(`Starting section ${opts.reportHeader}`);
+            return cb();
+          },
+          startTimerPromise: (what, opts, cb) => {
+            console.log(`Starting timer ${what}`);
+            return cb();
+          },
+          startCacheReport: cb => {
+            console.log('Starting cache report');
+            return cb();
+          },
+          reportSeparator: () => {
+            console.log(
+              '-------------------------------------------------------',
+            );
+          },
+          reportInfo: (name, text) => {
+            console.log(`${name} ${text}`);
+          },
+          reportWarning: (name, text) => {
+            console.log(`${name} ${text}`);
+          },
+          reportError: (name, text) => {
+            console.log(`${name} ${text}`);
+          },
+          reportProgress: progress => {
+            console.log(`Progress: ${progress}`);
+          },
+          reportJson: data => {
+            console.log(JSON.stringify(data, null, 2));
+          },
+          finalize: () => {
+            console.log('Finalizing report');
+          },
+        } as Report,
+      });
 
-      // }});
+      console.info(`${chalk.green('✔')} installed dependencies`);
 
-      // const report = Report;
-
-      // await yarn.install({
-      //   cache: new Cache('.', {
-      //     configuration: {},
-      //   }),
-      //   report: {
-
-      //   }
-      // });
-      await shellExec('yarn init');
-      await shellExec('yarn set version stable');
       await shellExec('yarn plugin import interactive-tools');
       await shellExec(
         'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
       );
-
+      console.info(`${chalk.green('✔')} added Yarn plugins`);
       // if (
       //   config.environments.development.staticTyping.includes(
       //     StaticTypingTool.TypeScript,
@@ -288,9 +341,7 @@ export default new Command<Project, LibifyFlags>({
       //   await shellExec('yarn plugin import typescript');
       // }
 
-      await shellExec('yarn install');
-
-      console.info(`${chalk.green('✔')} installed dependencies`);
+      // await shellExec('yarn install');
 
       if (build) {
         await shellExec('yarn build');
