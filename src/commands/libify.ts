@@ -348,6 +348,14 @@ export default new Command<Project, LibifyFlags>({
           );
         }
 
+        // if (
+        //   config.environments.development.staticTyping.includes(
+        //     StaticTypingTool.TypeScript,
+        //   )
+        // ) {
+        //   await shellExec('yarn plugin import typescript');
+        // }
+
         await shellExec('yarn install');
 
         console.info(`${chalk.green('✔')} installed dependencies`);
