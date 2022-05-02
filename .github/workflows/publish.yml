@@ -74,6 +74,7 @@ jobs:
             package.json
             README.md
             LICENSE.md
+            yarn.lock
 
   test:
     name: Run tests
