@@ -334,6 +334,16 @@ export default new Command<Project, LibifyFlags>({
         await shellExec('yarn init');
         await shellExec('yarn set version stable');
         await shellExec('yarn plugin import interactive-tools');
+        await shellExec(
+          'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
+        );
+
+        if (config.release?.package?.publish) {
+          await shellExec(
+            'yarn plugin import https://raw.githubusercontent.com/mhassan1/yarn-plugin-licenses/v0.8.1/bundles/@yarnpkg/plugin-licenses.js',
+          );
+        }
+
         await shellExec('yarn install');
 
         console.info(`${chalk.green('✔')} installed dependencies`);
