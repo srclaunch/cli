@@ -1,5 +1,8 @@
 import latestVersion from 'latest-version';
-import maxSatisfying from 'semver/ranges/max-satisfying';
+import semverMaxSatisfying from 'semver/ranges/max-satisfying';
+import semverGreaterThan from 'semver/functions/gt';
+import semverDiff from 'semver/functions/diff';
+import { shellExec } from '../cli';
 import {
   BrowserPackage,
   NodePackage,
@@ -79,7 +82,16 @@ import {
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
-import { shellExec } from '../cli';
+import chalk from 'chalk';
+
+const emoji = {
+  log: '\u26aa\ufe0f',
+  info: '\ud83d\udd35',
+  warn: '\u26a0\ufe0f',
+  warning: '\ud83d\udfe1',
+  error: '\ud83d\udd34',
+  success: '\u2705',
+};
 
 export async function getDependenciesLatestVersions(packages: {
   [key: string]: string;
@@ -93,14 +105,51 @@ export async function getDependenciesLatestVersions(packages: {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${package_[0]} versions --json`),
       );
-      const maxVersion = maxSatisfying(availableVersions, package_[1]);
+      const maxVersion = semverMaxSatisfying(availableVersions, package_[1]);
 
       if (maxVersion) {
-        const version = await latestVersion(package_[0], {
+        const latest = await latestVersion(package_[0]);
+        const semverRange = await latestVersion(package_[0], {
           version:
             typeof maxVersion === 'object' ? maxVersion.version : maxVersion,
         });
-        versions[package_[0]] = version;
+
+        if (semverGreaterThan(semverRange, latest)) {
+          const diff = semverDiff(semverRange, latest);
+
+          switch (diff) {
+            case 'major':
+              console.log(
+                `${emoji.error} ${chalk.red(
+                  `${package_[0]} is outdated. (v${semverRange} -> v${latest})`,
+                )}`,
+              );
+              break;
+            case 'minor':
+              console.log(
+                `${emoji.warning} ${chalk.yellow(
+                  `${package_[0]} is outdated. (v${semverRange} -> v${latest})`,
+                )}`,
+              );
+              break;
+            case 'patch':
+              console.log(
+                `${emoji.log} ${chalk.yellow(
+                  `${package_[0]} is outdated. (v${semverRange} -> v${latest})`,
+                )}`,
+              );
+              break;
+            default:
+              console.log(
+                `${emoji.log} ${chalk.green(
+                  `${package_[0]} is up to date. (v${semverRange} -> v${latest})`,
+                )}`,
+              );
+              break;
+          }
+        }
+
+        versions[package_[0]] = semverRange;
       } else {
         versions[package_[0]] = package_[1];
       }
