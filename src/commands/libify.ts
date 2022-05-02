@@ -132,7 +132,11 @@ export default new Command<Project, LibifyFlags>({
           CodeLinterTool.Stylelint,
         ),
         testCoverage: Boolean(config.test?.coverage),
-        typescript: config?.environments?.development?.typescript ?? true,
+        typescript:
+          // config?.environments?.development?.staticTyping.includes(
+          //   StaticTypingTool.TypeScript,
+          // ) ??
+          true,
       });
 
       console.log('devDependencies', devDependencies);

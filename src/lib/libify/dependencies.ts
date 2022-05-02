@@ -96,26 +96,40 @@ const emoji = {
 export async function getDependenciesLatestVersions(packages: {
   [key: string]: string;
 }) {
-  const versions: { [key: string]: string } = {};
+  let versions: { [key: string]: string } = {};
 
   for (const package_ of Object.entries(packages).map(([key, value]) => ({
     [key]: value,
   }))) {
+    console.log('package_', package_);
     if (package_[0] && package_[1]) {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${package_[0]} versions --json`),
       );
+      console.log('availableVersions', availableVersions);
+
       const maxVersion = semverMaxSatisfying(availableVersions, package_[1]);
+      console.log('maxVersion', maxVersion);
 
       if (maxVersion) {
         const latest = await latestVersion(package_[0]);
+        console.log('latest', latest);
+
         const semverRange = await latestVersion(package_[0], {
           version:
             typeof maxVersion === 'object' ? maxVersion.version : maxVersion,
         });
+        console.log('semverRange', semverRange);
+
+        console.log(
+          'semverGreaterThan(semverRange, latest)',
+          semverGreaterThan(semverRange, latest),
+        );
 
         if (semverGreaterThan(semverRange, latest)) {
           const diff = semverDiff(semverRange, latest);
+
+          console.log('semverDiff', diff);
 
           switch (diff) {
             case 'major':
@@ -150,11 +164,15 @@ export async function getDependenciesLatestVersions(packages: {
         }
 
         versions[package_[0]] = semverRange;
+        console.log('versions[package_[0]]', versions[package_[0]]);
       } else {
         versions[package_[0]] = package_[1];
+        console.log('versions[package_[0]]', versions[package_[0]]);
       }
     }
   }
+
+  console.log('versions at bottom', versions);
   return versions;
 }
 
@@ -354,107 +372,21 @@ export async function getDevDependencies({
   testCoverage?: boolean;
   typescript?: boolean;
 }): Promise<Record<string, string>> {
-  let dependencies = {
+  return await getDependenciesLatestVersions({
     ...COMMON_DEV_DEPENDENCIES,
-  };
-
-  if (ava) {
-    dependencies = {
-      ...dependencies,
-      ...AVA_TESTING_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (eslint) {
-    dependencies = {
-      ...dependencies,
-      ...ESLINT_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (github) {
-    dependencies = {
-      ...dependencies,
-      ...GITHUB_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (jest) {
-    dependencies = {
-      ...dependencies,
-      ...JEST_TESTING_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (jestReact) {
-    dependencies = {
-      ...dependencies,
-      ...JEST_REACT_TESTING_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (prettier) {
-    dependencies = {
-      ...dependencies,
-      ...PRETTIER_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (react) {
-    dependencies = {
-      ...dependencies,
-      ...REACT_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (reactRouter) {
-    dependencies = {
-      ...dependencies,
-      ...REACT_ROUTER_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (release) {
-    dependencies = {
-      ...dependencies,
-      ...RELEASE_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (srclaunch) {
-    dependencies = {
-      ...dependencies,
-      ...SRCLAUNCH_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (styledComponents) {
-    dependencies = {
-      ...dependencies,
-      ...STYLED_COMPONENTS_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (stylelint) {
-    dependencies = {
-      ...dependencies,
-      ...STYLELINT_DEV_DEPEENDENCIES,
-    };
-  }
-
-  if (testCoverage) {
-    dependencies = {
-      ...dependencies,
-      ...TEST_COVERAGE_DEV_DEPENDENCIES,
-    };
-  }
-
-  if (typescript) {
-    dependencies = {
-      ...dependencies,
-      ...TYPESCRIPT_DEV_DEPENDENCIES,
-    };
-  }
-
-  return await getDependenciesLatestVersions(dependencies);
+    ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
+    ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
+    ...(github ? GITHUB_DEV_DEPENDENCIES : {}),
+    ...(jest ? JEST_TESTING_DEV_DEPENDENCIES : {}),
+    ...(jestReact ? JEST_REACT_TESTING_DEV_DEPENDENCIES : {}),
+    ...(prettier ? PRETTIER_DEV_DEPENDENCIES : {}),
+    ...(react ? REACT_DEV_DEPENDENCIES : {}),
+    ...(reactRouter ? REACT_ROUTER_DEV_DEPENDENCIES : {}),
+    ...(release ? RELEASE_DEV_DEPENDENCIES : {}),
+    ...(srclaunch ? SRCLAUNCH_DEV_DEPENDENCIES : {}),
+    ...(styledComponents ? STYLED_COMPONENTS_DEV_DEPENDENCIES : {}),
+    ...(stylelint ? STYLELINT_DEV_DEPEENDENCIES : {}),
+    ...(testCoverage ? TEST_COVERAGE_DEV_DEPENDENCIES : {}),
+    ...(typescript ? TYPESCRIPT_DEV_DEPENDENCIES : {}),
+  });
 }

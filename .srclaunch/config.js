@@ -3,6 +3,8 @@ import {
   BuildPlatform,
   BuildTarget,
   BuildTool,
+  License,
+  PackageAccess,
   ProjectType,
 } from '@srclaunch/types';
 
@@ -36,5 +38,14 @@ export default {
     platform: BuildPlatform.Node,
     target: BuildTarget.ESNext,
     tool: BuildTool.ESBuild,
+  },
+  release: {
+    package: {
+      publish: {
+        access: PackageAccess.Public,
+        license: License.MIT,
+        registry: 'https://registry.npmjs.org/',
+      },
+    },
   },
 };
