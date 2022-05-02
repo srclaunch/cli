@@ -52,6 +52,7 @@ import {
   STYLELINT_CONFIG_CONTENT,
   STYLELINT_UI_CONFIG_CONTENT,
 } from '../constants/linters.js';
+import { writeToolingConfiguration } from '../lib/libify/tooling.js';
 
 type LibifyFlags = TypedFlags<{
   build: {
@@ -111,33 +112,36 @@ export default new Command<Project, LibifyFlags>({
         };
       }
 
-      const devDependencies = await getDevDependencies({
-        ava: config.test?.tool === TestTool.Ava,
-        eslint: config.environments?.development?.linters?.includes(
-          CodeLinterTool.ESLint,
-        ),
-        github: config.type === ProjectType.GitHubAction,
-        jest: config.test?.tool === TestTool.Jest,
-        jestReact: config.test?.tool === TestTool.Jest && flags.react,
-        prettier: config.environments?.development?.formatters?.includes(
-          CodeFormatterTool.Prettier,
-        ),
-        react:
-          config?.type === ProjectType.WebApplication ||
-          config?.type === ProjectType.ComponentLibrary ||
-          flags.react,
-        reactRouter: flags.reactRouter,
-        styledComponents: flags.styledComponents,
-        stylelint: config.environments?.development?.linters?.includes(
-          CodeLinterTool.Stylelint,
-        ),
-        testCoverage: Boolean(config.test?.coverage),
-        typescript:
-          // config?.environments?.development?.staticTyping.includes(
-          //   StaticTypingTool.TypeScript,
-          // ) ??
-          true,
-      });
+      const devDependencies = {
+        ...(await getDevDependencies({
+          ava: config.test?.tool === TestTool.Ava,
+          eslint: config.environments?.development?.linters?.includes(
+            CodeLinterTool.ESLint,
+          ),
+          github: config.type === ProjectType.GitHubAction,
+          jest: config.test?.tool === TestTool.Jest,
+          jestReact: config.test?.tool === TestTool.Jest && flags.react,
+          prettier: config.environments?.development?.formatters?.includes(
+            CodeFormatterTool.Prettier,
+          ),
+          react:
+            config?.type === ProjectType.WebApplication ||
+            config?.type === ProjectType.ComponentLibrary ||
+            flags.react,
+          reactRouter: flags.reactRouter,
+          styledComponents: flags.styledComponents,
+          stylelint: config.environments?.development?.linters?.includes(
+            CodeLinterTool.Stylelint,
+          ),
+          testCoverage: Boolean(config.test?.coverage),
+          typescript:
+            // config?.environments?.development?.staticTyping.includes(
+            //   StaticTypingTool.TypeScript,
+            // ) ??
+            true,
+        })),
+        ...((await getDependencies(config.requirements?.devPackages)) ?? {}),
+      };
 
       console.log('devDependencies', devDependencies);
 
@@ -145,10 +149,7 @@ export default new Command<Project, LibifyFlags>({
         author: 'Steven Bennett <steven@srclaunch.com>',
         dependencies: await getDependencies(config.requirements?.packages),
         description: config.description,
-        devDependencies: {
-          ...devDependencies,
-          ...((await getDependencies(config.requirements?.devPackages)) ?? {}),
-        },
+        devDependencies,
         engines: {
           node: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
           npm: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.npm,
@@ -208,7 +209,7 @@ export default new Command<Project, LibifyFlags>({
 
       await add('.');
       await commit('Clean project');
-      await push({});
+      await push({ followTags: false });
 
       await writeFile('./.gitignore', GITIGNORE_CONTENT);
 
@@ -223,155 +224,79 @@ export default new Command<Project, LibifyFlags>({
       );
       console.info(`${chalk.green('✔')} updated publish workflow`);
 
+      /* 
+        Write package.yml which will be used by the `yarn-plugin-yaml-manifest`
+        plugin to generate a package.json manifest.
+      */
       await writeFile(
         path.resolve('./package.yml'),
         YAML.stringify(newPackageMetadata),
       );
       console.info(`${chalk.green('✔')} resolved dependencies`);
 
-      if (config.environments?.development) {
-        // @ts-expect-error
-        if (config.environments?.development?.staticTyping) {
-          // @ts-expect-error
-          for (const tool of config.environments?.development.staticTyping) {
-            switch (tool) {
-              case StaticTypingTool.TypeScript:
-                const uiConfig =
-                  config.type === ProjectType.WebApplication ||
-                  config?.type === ProjectType.ComponentLibrary ||
-                  flags['react'];
-                await writeFile(
-                  path.resolve('./tsconfig.json'),
-                  JSON.stringify(
-                    uiConfig
-                      ? TYPESCRIPT_UI_CONFIG_CONTENT
-                      : TYPESCRIPT_CONFIG_CONTENT,
-                    null,
-                    2,
-                  ),
-                );
-                console.info(`${chalk.green('✔')} added TypeScript config`);
-                break;
-              default:
-                break;
-            }
-          }
+      await writeToolingConfiguration({
+        formatters: config.environments?.development?.formatters,
+        linters: config.environments?.development?.linters,
+        project: config,
+        staticTyping: [StaticTypingTool.TypeScript],
+        // config.environments?.development?.staticTyping,
+      });
 
-          if (config.environments?.development?.formatters) {
-            for (const formatter of config.environments?.development
-              ?.formatters) {
-              switch (formatter) {
-                case CodeFormatterTool.Prettier:
-                  await writeFile(
-                    path.resolve('./.prettierrc.cjs'),
-                    JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
-                  );
-                  console.info(`${chalk.green('✔')} added Prettier config`);
-                  break;
-                default:
-                  break;
-              }
-            }
-          }
+      console.info(`${chalk.green('✔')} created DX tooling configurations`);
 
-          if (config.environments?.development?.linters) {
-            const ui =
-              config.type === ProjectType.WebApplication ||
-              config?.type === ProjectType.ComponentLibrary ||
-              flags['react'];
+      // }
 
-            for (const linter of config.environments?.development?.linters) {
-              switch (linter) {
-                case CodeLinterTool.ESLint:
-                  await writeFile(
-                    path.resolve('./.eslintrc.cjs'),
-                    JSON.stringify(
-                      ui ? ESLINT_UI_CONFIG_CONTENT : ESLINT_CONFIG_CONTENT,
-                      null,
-                      2,
-                    ),
-                  );
-                  console.info(`${chalk.green('✔')} added ESLint config`);
-                  break;
-                case CodeLinterTool.Stylelint:
-                  await writeFile(
-                    path.resolve('./.stylelintrc.js'),
-                    JSON.stringify(
-                      ui
-                        ? STYLELINT_UI_CONFIG_CONTENT
-                        : STYLELINT_CONFIG_CONTENT,
-                      null,
-                      2,
-                    ),
-                  );
-                  console.info(`${chalk.green('✔')} added Stylelint config`);
-                  break;
-                default:
-                  break;
-              }
-            }
-          }
-        }
-        // }
+      // const yarn = new YarnProject(
+      //   // @ts-expect-error - Not sure how to use this API to be frank
+      //   './',
+      //   { configuration: {} },
+      // );
+      // const plugin = Yarn .commands?.['SetVersionCommand']
 
-        // const yarn = new YarnProject(
-        //   // @ts-expect-error - Not sure how to use this API to be frank
-        //   './',
-        //   { configuration: {} },
-        // );
-        // const plugin = Yarn .commands?.['SetVersionCommand']
+      // const workspace = new Workspace('./', { project: {
 
-        // const workspace = new Workspace('./', { project: {
+      // }});
 
-        // }});
+      // const report = Report;
 
-        // const report = Report;
+      // await yarn.install({
+      //   cache: new Cache('.', {
+      //     configuration: {},
+      //   }),
+      //   report: {
 
-        // await yarn.install({
-        //   cache: new Cache('.', {
-        //     configuration: {},
-        //   }),
-        //   report: {
+      //   }
+      // });
+      await shellExec('yarn init');
+      await shellExec('yarn set version stable');
+      await shellExec('yarn plugin import interactive-tools');
+      await shellExec(
+        'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
+      );
 
-        //   }
-        // });
-        await shellExec('yarn init');
-        await shellExec('yarn set version stable');
-        await shellExec('yarn plugin import interactive-tools');
-        await shellExec(
-          'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
-        );
+      // if (
+      //   config.environments.development.staticTyping.includes(
+      //     StaticTypingTool.TypeScript,
+      //   )
+      // ) {
+      //   await shellExec('yarn plugin import typescript');
+      // }
 
-        if (config.release?.package?.publish) {
-          await shellExec(
-            'yarn plugin import https://raw.githubusercontent.com/mhassan1/yarn-plugin-licenses/v0.8.1/bundles/@yarnpkg/plugin-licenses.js',
-          );
-        }
+      await shellExec('yarn install');
 
-        // if (
-        //   config.environments.development.staticTyping.includes(
-        //     StaticTypingTool.TypeScript,
-        //   )
-        // ) {
-        //   await shellExec('yarn plugin import typescript');
-        // }
+      console.info(`${chalk.green('✔')} installed dependencies`);
 
-        await shellExec('yarn install');
-
-        console.info(`${chalk.green('✔')} installed dependencies`);
-
-        if (build) {
-          await shellExec('yarn build');
-        }
-
-        if (test) {
-          await shellExec('yarn test');
-        }
-
-        await add('./');
-        await commit('Libified project');
-        await push({ followTags: false });
+      if (build) {
+        await shellExec('yarn build');
       }
+
+      if (test) {
+        await shellExec('yarn test');
+      }
+
+      await add('./');
+      await commit('Libified project');
+      await push({ followTags: false });
     } catch (err: any) {
       console.error(chalk.red(err.message));
       process.exit(1);
