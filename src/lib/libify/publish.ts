@@ -47,6 +47,11 @@ export function getPublishYml({
           with:
             path: |
               .yarn/cache
+              .yarn/patches
+              .yarn/plugins
+              .yarn/releases
+              .yarn/sdks
+              .yarn/versions
             key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
             restore-keys: |
               \${{ runner.os }}-yarn-
@@ -58,7 +63,6 @@ export function getPublishYml({
           run: yarn set version stable
   
         - name: Install dependencies
-          if: \${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
           run: yarn install
           env:
             NODE_ENV: production
@@ -97,6 +101,11 @@ export function getPublishYml({
           with:
             path: |
               .yarn/cache
+              .yarn/patches
+              .yarn/plugins
+              .yarn/releases
+              .yarn/sdks
+              .yarn/versions
             key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
             restore-keys: |
               \${{ runner.os }}-yarn-
@@ -149,6 +158,11 @@ export function getPublishYml({
           with:
             path: |
               .yarn/cache
+              .yarn/patches
+              .yarn/plugins
+              .yarn/releases
+              .yarn/sdks
+              .yarn/versions
             key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
             restore-keys: |
               \${{ runner.os }}-yarn-
@@ -192,6 +206,11 @@ export function getPublishYml({
           with:
             path: |
               .yarn/cache
+              .yarn/patches
+              .yarn/plugins
+              .yarn/releases
+              .yarn/sdks
+              .yarn/versions
             key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
             restore-keys: |
               \${{ runner.os }}-yarn-
@@ -203,7 +222,6 @@ export function getPublishYml({
           run: yarn set version stable
         
         - name: Install dependencies
-          if: \${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
           run: yarn install
           env:
             NODE_ENV: production

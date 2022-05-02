@@ -43,6 +43,12 @@ jobs:
         with:
           path: |
             .yarn/cache
+            .yarn/patches
+            .yarn/plugins
+            .yarn/releases
+            .yarn/sdks
+            .yarn/versions
+
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -68,7 +74,6 @@ jobs:
             package.json
             README.md
             LICENSE.md
-            yarn.lock
 
   test:
     name: Run tests
@@ -89,6 +94,11 @@ jobs:
         with:
           path: |
             .yarn/cache
+            .yarn/patches
+            .yarn/plugins
+            .yarn/releases
+            .yarn/sdks
+            .yarn/versions
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -137,6 +147,11 @@ jobs:
         with:
           path: |
             .yarn/cache
+            .yarn/patches
+            .yarn/plugins
+            .yarn/releases
+            .yarn/sdks
+            .yarn/versions
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
