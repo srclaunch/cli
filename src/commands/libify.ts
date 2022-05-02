@@ -266,7 +266,9 @@ export default new Command<Project, LibifyFlags>({
 
       console.info(`${chalk.green('✔')} created DX tooling configurations`);
 
+      await shellExec('corepack enable yarn');
       await shellExec('yarn set version stable');
+
       console.info(`${chalk.green('✔')} initialized Yarn`);
 
       const yarn = new YarnProject(
