@@ -183,7 +183,7 @@ export default new Command<Project, LibifyFlags>({
 
       await add('.');
       await commit('Clean project');
-      await push({ followTags: false });
+      await push({});
 
       await writeFile('./.gitignore', GITIGNORE_CONTENT);
 

@@ -20,8 +20,10 @@ export async function push({ followTags = true }: { followTags?: boolean }) {
     await git.getRemotes()
   ).find(remote => remote.name === 'origin');
 
+  const followTagsArg = followTags ? { '--follow-tags': '' } : undefined;
+
   const result = await git.push(currentRepo?.name ?? 'origin', currentBranch, {
-    '--follow-tags': followTags ? 'true' : 'false',
+    ...followTagsArg,
   });
 
   return result;
