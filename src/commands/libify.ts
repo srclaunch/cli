@@ -112,42 +112,50 @@ export default new Command<Project, LibifyFlags>({
         };
       }
 
+      const coreDevDependencies = await getDevDependencies({
+        ava: config.test?.tool === TestTool.Ava,
+        eslint: config.environments?.development?.linters?.includes(
+          CodeLinterTool.ESLint,
+        ),
+        github: config.type === ProjectType.GitHubAction,
+        jest: config.test?.tool === TestTool.Jest,
+        jestReact: config.test?.tool === TestTool.Jest && flags.react,
+        prettier: config.environments?.development?.formatters?.includes(
+          CodeFormatterTool.Prettier,
+        ),
+        react:
+          config?.type === ProjectType.WebApplication ||
+          config?.type === ProjectType.ComponentLibrary ||
+          flags.react,
+        reactRouter: flags.reactRouter,
+        styledComponents: flags.styledComponents,
+        stylelint: config.environments?.development?.linters?.includes(
+          CodeLinterTool.Stylelint,
+        ),
+        testCoverage: Boolean(config.test?.coverage),
+        typescript:
+          // config?.environments?.development?.staticTyping.includes(
+          //   StaticTypingTool.TypeScript,
+          // ) ??
+          true,
+      });
+      const customDevDependencies = await getDependencies(
+        config.requirements?.devPackages,
+      );
+      console.log('customDevDependencies', customDevDependencies);
       const devDependencies = {
-        ...(await getDevDependencies({
-          ava: config.test?.tool === TestTool.Ava,
-          eslint: config.environments?.development?.linters?.includes(
-            CodeLinterTool.ESLint,
-          ),
-          github: config.type === ProjectType.GitHubAction,
-          jest: config.test?.tool === TestTool.Jest,
-          jestReact: config.test?.tool === TestTool.Jest && flags.react,
-          prettier: config.environments?.development?.formatters?.includes(
-            CodeFormatterTool.Prettier,
-          ),
-          react:
-            config?.type === ProjectType.WebApplication ||
-            config?.type === ProjectType.ComponentLibrary ||
-            flags.react,
-          reactRouter: flags.reactRouter,
-          styledComponents: flags.styledComponents,
-          stylelint: config.environments?.development?.linters?.includes(
-            CodeLinterTool.Stylelint,
-          ),
-          testCoverage: Boolean(config.test?.coverage),
-          typescript:
-            // config?.environments?.development?.staticTyping.includes(
-            //   StaticTypingTool.TypeScript,
-            // ) ??
-            true,
-        })),
-        ...((await getDependencies(config.requirements?.devPackages)) ?? {}),
+        ...coreDevDependencies,
+        ...customDevDependencies,
       };
-
+      const dependencies = await getDependencies(config.requirements?.packages);
+      const peerDependencies = await getDependencies(
+        config.requirements?.peerPackages,
+      );
       console.log('devDependencies', devDependencies);
 
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
-        dependencies: await getDependencies(config.requirements?.packages),
+        dependencies,
         description: config.description,
         devDependencies,
         engines: {
@@ -161,9 +169,7 @@ export default new Command<Project, LibifyFlags>({
         main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
         module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
         name: config.name,
-        peerDependencies: await getDependencies(
-          config.requirements?.peerPackages,
-        ),
+        peerDependencies,
         publishConfig: {
           access: config?.release?.package?.publish?.access ?? 'private',
           registry:
