@@ -92,7 +92,7 @@ export default new Command<Project, LibifyFlags>({
   run: async ({ config, flags }) => {
     try {
       console.info(
-        chalk.bgMagenta(
+        chalk.magenta(
           `Setting up ${chalk.bold(config.name)} with SrcLaunch...`,
         ),
       );
