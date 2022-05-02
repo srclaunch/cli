@@ -99,35 +99,23 @@ export async function getDependenciesLatestVersions(packages: {
   let versions: { [key: string]: string } = {};
 
   for (const package_ of [...Object.entries(packages)]) {
-    console.log('package_', package_);
     if (package_[0] && package_[1]) {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${package_[0]} versions --json`),
       );
-      console.log('availableVersions', availableVersions);
 
       const maxVersion = semverMaxSatisfying(availableVersions, package_[1]);
-      console.log('maxVersion', maxVersion);
 
       if (maxVersion) {
         const latest = await latestVersion(package_[0]);
-        console.log('latest', latest);
 
         const semverRange = await latestVersion(package_[0], {
           version:
             typeof maxVersion === 'object' ? maxVersion.version : maxVersion,
         });
-        console.log('semverRange', semverRange);
-
-        console.log(
-          'semverGreaterThan(semverRange, latest)',
-          semverGreaterThan(semverRange, latest),
-        );
 
         if (semverGreaterThan(semverRange, latest)) {
           const diff = semverDiff(semverRange, latest);
-
-          console.log('semverDiff', diff);
 
           switch (diff) {
             case 'major':
@@ -162,15 +150,12 @@ export async function getDependenciesLatestVersions(packages: {
         }
 
         versions[package_[0]] = semverRange;
-        console.log('versions[package_[0]]', versions[package_[0]]);
       } else {
         versions[package_[0]] = package_[1];
-        console.log('versions[package_[0]]', versions[package_[0]]);
       }
     }
   }
 
-  console.log('versions at bottom', versions);
   return versions;
 }
 

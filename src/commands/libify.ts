@@ -116,7 +116,7 @@ export default new Command<Project, LibifyFlags>({
         ),
         github: config.type === ProjectType.GitHubAction,
         jest: config.test?.tool === TestTool.Jest,
-        jestReact: config.test?.tool === TestTool.Jest && flags.react,
+        jestReact: config.test?.tool === TestTool.Jest || (flags.react && test),
         prettier: config.environments?.development?.formatters?.includes(
           CodeFormatterTool.Prettier,
         ),
@@ -136,17 +136,27 @@ export default new Command<Project, LibifyFlags>({
           // ) ??
           true,
       });
-      console.log('coreDevDependencies', coreDevDependencies);
+
+      const sortDependencies = (
+        dependencies: { [key: string]: string } | undefined,
+      ) => {
+        if (!dependencies) {
+          return;
+        }
+
+        return Object.entries(dependencies)
+          .sort(([, v1], [, v2]) => +v2 - +v1)
+          .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+      };
 
       const customDevDependencies = await getDependencies(
         config.requirements?.devPackages,
       );
-      console.log('customDevDependencies', customDevDependencies);
+
       const devDependencies = {
         ...coreDevDependencies,
         ...customDevDependencies,
       };
-      console.log('devDependencies', devDependencies);
 
       const dependencies = await getDependencies(config.requirements?.packages);
       const peerDependencies = await getDependencies(
@@ -155,9 +165,9 @@ export default new Command<Project, LibifyFlags>({
 
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
-        dependencies,
+        dependencies: sortDependencies(dependencies),
         description: config.description,
-        devDependencies,
+        devDependencies: sortDependencies(devDependencies),
         engines: {
           node: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
           npm: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.npm,
@@ -169,7 +179,7 @@ export default new Command<Project, LibifyFlags>({
         main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
         module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
         name: config.name,
-        peerDependencies,
+        peerDependencies: sortDependencies(peerDependencies),
         publishConfig: {
           access: config?.release?.package?.publish?.access ?? 'private',
           registry:
