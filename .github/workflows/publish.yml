@@ -1,4 +1,3 @@
-
 name: Build, test and publish to NPM
 on:
   push:
@@ -38,12 +37,6 @@ jobs:
         with:
           node-version: '16.x'
           cache: 'yarn'
-
-      - name: Enable corepack
-        run: corepack enable
-
-      - name: Enable Yarn Berry
-        run: yarn set version stable
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -89,12 +82,6 @@ jobs:
           node-version: '16.x'
           cache: 'yarn'
 
-      - name: Enable corepack
-        run: corepack enable
-
-      - name: Enable Yarn Berry
-        run: yarn set version stable
-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -125,11 +112,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload test coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-
   publish:
     name: Publish package
     needs: [env-vars, build, test]
@@ -143,13 +125,8 @@ jobs:
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
+          cache: 'yarn'
           node-version: '16.x'
-
-      - name: Enable corepack
-        run: corepack enable
-
-      - name: Enable Yarn Berry
-        run: yarn set version stable
 
       - name: Allow private package registry access
         id: allow-private-package-registry-access
