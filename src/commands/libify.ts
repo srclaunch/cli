@@ -114,6 +114,8 @@ export default new Command<Project, LibifyFlags>({
         typescript: config?.environments?.development?.typescript ?? true,
       });
 
+      console.log('devDependencies', devDependencies);
+
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
         dependencies: await getDependencies(config.requirements?.packages),
