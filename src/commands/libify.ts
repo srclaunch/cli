@@ -204,6 +204,7 @@ export default new Command<Project, LibifyFlags>({
 
       const diff = diffJson(existingPackageJsonContents, newPackageMetadata);
 
+      console.info(chalk.bold('Changes to package.json:'));
       for (const change of diff) {
         if (change.added) {
           console.log(chalk.green.bold(`+ Added: ${change.count}`));
