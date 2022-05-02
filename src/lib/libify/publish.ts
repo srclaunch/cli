@@ -198,11 +198,11 @@ export function getPublishYml({
         - name: Use Node.js 16.x
           uses: actions/setup-node@v3
           with:
-            node-version: '16.x'
             cache: 'yarn'
+            node-version: '16.x'
 
         - uses: actions/cache@v3
-          id: yarn-cache # use this to check for 'cache-hit' (steps.yarn-cache.outputs.cache-hit != 'true')
+          id: yarn-cache
           with:
             path: |
               .yarn/cache
