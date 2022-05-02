@@ -7,7 +7,12 @@ import {
   CodeLinterTool,
   StaticTypingTool,
 } from '@srclaunch/types';
-import { Cache, Project as YarnProject, Report } from '@yarnpkg/core';
+import {
+  Cache,
+  Configuration,
+  Project as YarnProject,
+  Report,
+} from '@yarnpkg/core';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
 import YAML from 'json-to-pretty-yaml';
@@ -263,7 +268,7 @@ export default new Command<Project, LibifyFlags>({
           // @ts-expect-error - Not sure how to use this API
           { __pathType: 1 },
           {
-            configuration: {},
+            configuration: Configuration,
           },
         ),
         report: {
