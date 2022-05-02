@@ -38,18 +38,20 @@ jobs:
           node-version: '16.x'
           cache: 'yarn'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
       - uses: actions/cache@v3
-        id: yarn-cache # use this to check for 'cache-hit' ('steps.yarn-cache.outputs.cache-hit != 'true'')
+        id: yarn-cache # use this to check for 'cache-hit' (steps.yarn-cache.outputs.cache-hit != 'true')
         with:
           path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            .yarn/cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Enable Yarn Berry
+        run: yarn set version stable
 
       - name: Install dependencies
         run: yarn install
@@ -82,18 +84,20 @@ jobs:
           node-version: '16.x'
           cache: 'yarn'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
       - uses: actions/cache@v3
         id: yarn-cache # use this to check for 'cache-hit' (steps.yarn-cache.outputs.cache-hit != 'true')
         with:
           path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            .yarn/cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Enable Yarn Berry
+        run: yarn set version stable
 
       - name: Install dependencies
         run: yarn install
@@ -127,6 +131,21 @@ jobs:
         with:
           cache: 'yarn'
           node-version: '16.x'
+
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for 'cache-hit' (steps.yarn-cache.outputs.cache-hit != 'true')
+        with:
+          path: |
+            .yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Enable Yarn Berry
+        run: yarn set version stable
 
       - name: Allow private package registry access
         id: allow-private-package-registry-access
