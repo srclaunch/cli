@@ -7,6 +7,7 @@ export async function createRelease() {
   const git: SimpleGit = Git();
   const currentBranch = await (await git.branchLocal()).current;
 
+  // https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.1.0/README.md
   await standardVersion({
     noVerify: true,
     infile: 'CHANGELOG.md',
