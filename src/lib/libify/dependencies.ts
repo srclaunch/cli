@@ -358,22 +358,6 @@ export async function getDevDependencies({
   testCoverage?: boolean;
   typescript?: boolean;
 }): Promise<Record<string, string>> {
-  console.log({
-    ava,
-    eslint,
-    github,
-    jest,
-    jestReact,
-    prettier,
-    react,
-    reactRouter,
-    release,
-    srclaunch,
-    styledComponents,
-    stylelint,
-    testCoverage,
-    typescript,
-  });
   return await getDependenciesLatestVersions({
     ...COMMON_DEV_DEPENDENCIES,
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
