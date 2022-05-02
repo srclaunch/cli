@@ -289,7 +289,8 @@ export default new Command<Project, LibifyFlags>({
       const yarn = new YarnProject(
         // @ts-expect-error - Not sure how to use this API to be frank
         './',
-        { configuration: {} },
+        // @ts-expect-error - Not sure how to use this API
+        { configuration: Configuration.findRcFiles('./') },
       );
 
       await yarn.install({
@@ -297,7 +298,8 @@ export default new Command<Project, LibifyFlags>({
           // @ts-expect-error - Not sure how to use this API
           { __pathType: 1 },
           {
-            configuration: Configuration,
+            // @ts-expect-error - Not sure how to use this API
+            configuration: Configuration.findRcFiles('./'),
           },
         ),
         report: {
