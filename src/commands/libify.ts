@@ -275,6 +275,15 @@ export default new Command<Project, LibifyFlags>({
       await shellExec(
         'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
       );
+
+      // if (
+      //   config.environments.development.staticTyping.includes(
+      //     StaticTypingTool.TypeScript,
+      //   )
+      // ) {
+      //   await shellExec('yarn plugin import typescript');
+      // }
+
       console.info(`${chalk.green('✔')} added Yarn plugins`);
 
       const yarn = new YarnProject(
@@ -342,16 +351,6 @@ export default new Command<Project, LibifyFlags>({
       });
 
       console.info(`${chalk.green('✔')} installed dependencies`);
-
-      // if (
-      //   config.environments.development.staticTyping.includes(
-      //     StaticTypingTool.TypeScript,
-      //   )
-      // ) {
-      //   await shellExec('yarn plugin import typescript');
-      // }
-
-      // await shellExec('yarn install');
 
       if (build) {
         await shellExec('yarn build');
