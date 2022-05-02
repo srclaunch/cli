@@ -279,7 +279,7 @@ export default new Command<Project, LibifyFlags>({
       await shellExec('corepack enable yarn');
       await shellExec('yarn set version stable');
 
-      console.info(`${chalk.green('✔')} initialized Yarn`);
+      console.info(`${chalk.green('✔')} initialized yarn`);
 
       await shellExec('yarn plugin import interactive-tools');
       await shellExec(
