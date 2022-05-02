@@ -271,6 +271,12 @@ export default new Command<Project, LibifyFlags>({
 
       console.info(`${chalk.green('✔')} initialized Yarn`);
 
+      await shellExec('yarn plugin import interactive-tools');
+      await shellExec(
+        'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
+      );
+      console.info(`${chalk.green('✔')} added Yarn plugins`);
+
       const yarn = new YarnProject(
         // @ts-expect-error - Not sure how to use this API to be frank
         './',
@@ -337,11 +343,6 @@ export default new Command<Project, LibifyFlags>({
 
       console.info(`${chalk.green('✔')} installed dependencies`);
 
-      await shellExec('yarn plugin import interactive-tools');
-      await shellExec(
-        'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
-      );
-      console.info(`${chalk.green('✔')} added Yarn plugins`);
       // if (
       //   config.environments.development.staticTyping.includes(
       //     StaticTypingTool.TypeScript,
