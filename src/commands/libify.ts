@@ -15,7 +15,7 @@ import {
 } from '@yarnpkg/core';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
-import YAML from 'json-to-pretty-yaml';
+import { Document } from 'yaml';
 import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
 import {
@@ -253,12 +253,16 @@ export default new Command<Project, LibifyFlags>({
         Write package.yml which will be used by the `yarn-plugin-yaml-manifest`
         plugin to generate a package.json manifest.
       */
-      await writeFile(
-        path.resolve('./package.yml'),
-        YAML.stringify(newPackageMetadata),
-      );
+      const packageYml = new Document();
+      packageYml.contents = newPackageMetadata;
+
+      await writeFile(path.resolve('./package.yml'), packageYml.toString());
       console.info(`${chalk.green('✔')} created package.yml`);
 
+      /*
+        Create configuration files for linters, formatters and static typing
+        tools.
+      */
       await writeToolingConfiguration({
         formatters: config.environments?.development?.formatters,
         linters: config.environments?.development?.linters,
