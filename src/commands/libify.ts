@@ -293,13 +293,13 @@ export default new Command<Project, LibifyFlags>({
       //   await shellExec('yarn plugin import typescript');
       // }
 
-      console.info(`${chalk.green('✔')} added Yarn plugins`);
+      console.info(`${chalk.green('✔')} added yarn plugins`);
 
       const yarn = new YarnProject(
         // @ts-expect-error - Not sure how to use this API to be frank
         './',
         // @ts-expect-error - Not sure how to use this API
-        { configuration: Configuration.findRcFiles('./') },
+        { configuration: await Configuration.find('./') },
       );
 
       await yarn.install({
@@ -308,7 +308,7 @@ export default new Command<Project, LibifyFlags>({
           { __pathType: 1 },
           {
             // @ts-expect-error - Not sure how to use this API
-            configuration: Configuration.findRcFiles('./'),
+            configuration: await Configuration.find('./'),
           },
         ),
         report: {
