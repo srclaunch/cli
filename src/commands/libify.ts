@@ -12,6 +12,7 @@ import {
   Configuration,
   Project as YarnProject,
   Report,
+  ThrowReport,
 } from '@yarnpkg/core';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
@@ -297,13 +298,21 @@ export default new Command<Project, LibifyFlags>({
 
       // @ts-ignore
       const yarnConfig = await Configuration.find(path.resolve(), null, {});
-      const yarn = new YarnProject(
-        // @ts-expect-error - Not sure how to use this API to be frank
-        './',
-        { configuration: yarnConfig },
-      );
+      // @ts-ignore
+      const { project } = await YarnProject.find(yarnConfig, '.');
 
-      await yarn.install({
+      // await project.resolveEverything({
+      //   lockfileOnly: true,
+      //   report: new ThrowReport(),
+      // });
+
+      // const yarn = new YarnProject(
+      //   // @ts-expect-error - Not sure how to use this API to be frank
+      //   './',
+      //   { configuration: yarnConfig },
+      // );
+
+      await project.install({
         cache: await Cache.find(yarnConfig),
         report: {
           reportCacheHit: locator => {
