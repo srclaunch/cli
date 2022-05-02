@@ -98,9 +98,11 @@ export async function getDependenciesLatestVersions(packages: {
 }) {
   let versions: { [key: string]: string } = {};
 
-  for (const package_ of Object.entries(packages).map(([key, value]) => ({
-    [key]: value,
-  }))) {
+  for (const package_ of [
+    ...Object.entries(packages).map(([key, value]) => ({
+      [key]: value,
+    })),
+  ]) {
     console.log('package_', package_);
     if (package_[0] && package_[1]) {
       const availableVersions = await JSON.parse(
@@ -338,7 +340,10 @@ export async function getDependencies(packages?: Package[]) {
     };
   }
 
-  return await getDependenciesLatestVersions(dependencies);
+  const dependenciesLatestVersions = await getDependenciesLatestVersions(
+    dependencies,
+  );
+  return dependenciesLatestVersions;
 }
 
 export async function getDevDependencies({
@@ -372,6 +377,22 @@ export async function getDevDependencies({
   testCoverage?: boolean;
   typescript?: boolean;
 }): Promise<Record<string, string>> {
+  console.log({
+    ava,
+    eslint,
+    github,
+    jest,
+    jestReact,
+    prettier,
+    react,
+    reactRouter,
+    release,
+    srclaunch,
+    styledComponents,
+    stylelint,
+    testCoverage,
+    typescript,
+  });
   return await getDependenciesLatestVersions({
     ...COMMON_DEV_DEPENDENCIES,
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
