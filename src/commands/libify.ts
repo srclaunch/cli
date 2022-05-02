@@ -9,6 +9,7 @@ import {
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
+import YAML from 'json-to-pretty-yaml';
 import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
 import {
@@ -219,8 +220,8 @@ export default new Command<Project, LibifyFlags>({
       console.info(`${chalk.green('✔')} updated publish workflow`);
 
       await writeFile(
-        path.resolve('./package-test.json'),
-        JSON.stringify(newPackageMetadata, null, 2),
+        path.resolve('./package.yml'),
+        YAML.stringify(newPackageMetadata),
       );
       console.info(`${chalk.green('✔')} resolved dependencies`);
 
