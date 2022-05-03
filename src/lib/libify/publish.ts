@@ -139,7 +139,7 @@ export function getPublishYml({
   const publishBuildJob = `
     publish:
       name: Publish package
-      needs: [env-vars, build, test]
+      needs: [env-vars, build${test ? ', test' : ''}]
       runs-on: ubuntu-latest
       steps:
         - name: Download a single artifact
