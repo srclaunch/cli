@@ -101,6 +101,8 @@ export default new Command<Project, LibifyFlags>({
       const build = Boolean(config.build) || flags['build'];
       const test = Boolean(config.test) || flags['test'];
 
+      console.log('build', build);
+      console.log('test', test);
       const existingPackageJsonContents = await JSON.parse(
         (await readFile('./package.json')).toString(),
       );

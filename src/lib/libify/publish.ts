@@ -85,7 +85,7 @@ export function getPublishYml({
     test:
       name: Run tests
       runs-on: ubuntu-latest
-      needs: [env-vars, build]
+      needs: [env-vars${build ? ', build' : ''}]
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -189,7 +189,7 @@ export function getPublishYml({
   const publishWithoutBuildJob = `
     publish:
       name: Publish package
-      needs: [env-vars]
+      needs: [env-vars${test ? ', test' : ''}]
       runs-on: ubuntu-latest
       steps:
         - name: Checkout
