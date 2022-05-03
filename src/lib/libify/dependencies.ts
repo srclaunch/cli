@@ -76,7 +76,9 @@ import {
   REACT_DEV_DEPENDENCIES,
   REACT_ROUTER_DEV_DEPENDENCIES,
   RELEASE_DEV_DEPENDENCIES,
-  SRCLAUNCH_DEV_DEPENDENCIES,
+  SRCLAUNCH_CLI_DEV_DEPENDENCIES,
+  SRCLAUNCH_DX_DEV_DEPENDENCIES,
+  SRCLAUNCH_TYPES_DEV_DEPENDENCIES,
   STYLED_COMPONENTS_DEV_DEPENDENCIES,
   STYLELINT_DEV_DEPEENDENCIES,
   TEST_COVERAGE_DEV_DEPENDENCIES,
@@ -337,7 +339,11 @@ export async function getDevDependencies({
   react,
   reactRouter,
   release = true,
-  srclaunch = true,
+  srclaunch = {
+    dx: true,
+    cli: true,
+    types: true,
+  },
   styledComponents,
   stylelint = true,
   testCoverage,
@@ -352,7 +358,11 @@ export async function getDevDependencies({
   react?: boolean;
   reactRouter?: boolean;
   release?: boolean;
-  srclaunch?: boolean;
+  srclaunch?: {
+    cli?: boolean;
+    dx?: boolean;
+    types?: boolean;
+  };
   styledComponents?: boolean;
   stylelint?: boolean;
   testCoverage?: boolean;
@@ -369,7 +379,9 @@ export async function getDevDependencies({
     ...(react ? REACT_DEV_DEPENDENCIES : {}),
     ...(reactRouter ? REACT_ROUTER_DEV_DEPENDENCIES : {}),
     ...(release ? RELEASE_DEV_DEPENDENCIES : {}),
-    ...(srclaunch ? SRCLAUNCH_DEV_DEPENDENCIES : {}),
+    ...(srclaunch?.cli ? SRCLAUNCH_CLI_DEV_DEPENDENCIES : {}),
+    ...(srclaunch?.dx ? SRCLAUNCH_DX_DEV_DEPENDENCIES : {}),
+    ...(srclaunch?.types ? SRCLAUNCH_TYPES_DEV_DEPENDENCIES : {}),
     ...(styledComponents ? STYLED_COMPONENTS_DEV_DEPENDENCIES : {}),
     ...(stylelint ? STYLELINT_DEV_DEPEENDENCIES : {}),
     ...(testCoverage ? TEST_COVERAGE_DEV_DEPENDENCIES : {}),

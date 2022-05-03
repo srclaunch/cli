@@ -100,9 +100,15 @@ export const STYLED_COMPONENTS_DEV_DEPENDENCIES = {
   'stylelint-config-styled-components': '^0.1.1',
 };
 
-export const SRCLAUNCH_DEV_DEPENDENCIES = {
+export const SRCLAUNCH_CLI_DEV_DEPENDENCIES = {
   '@srclaunch/cli': '^0.1.346',
+};
+
+export const SRCLAUNCH_DX_DEV_DEPENDENCIES = {
   '@srclaunch/dx': '^0.1.52',
+};
+
+export const SRCLAUNCH_TYPES_DEV_DEPENDENCIES = {
   '@srclaunch/types': '^0.1.117',
 };
 

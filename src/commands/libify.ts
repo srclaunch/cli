@@ -132,6 +132,12 @@ export default new Command<Project, LibifyFlags>({
           config?.type === ProjectType.ComponentLibrary ||
           flags.react,
         reactRouter: flags.reactRouter,
+        srclaunch: {
+          cli: true,
+          dx: true,
+          types: false,
+        },
+        // config.requirements ??
         styledComponents: flags.styledComponents,
         stylelint: config.environments?.development?.linters?.includes(
           CodeLinterTool.Stylelint,
