@@ -302,13 +302,14 @@ export default new Command<Project, LibifyFlags>({
       // ) {
       //   await shellExec('yarn plugin import typescript');
       // }
+      await shellExec('yarn install');
 
       console.info(`${chalk.green('✔')} added yarn plugins`);
 
       // @ts-ignore
-      const yarnConfig = await Configuration.find(path.resolve(), null, {});
+      // const yarnConfig = await Configuration.find(path.resolve(), null, {});
       // @ts-ignore
-      const { project } = await YarnProject.find(yarnConfig, '.');
+      // const { project } = await YarnProject.find(yarnConfig, '.');
 
       // await project.resolveEverything({
       //   lockfileOnly: true,
@@ -321,60 +322,58 @@ export default new Command<Project, LibifyFlags>({
       //   { configuration: yarnConfig },
       // );
 
-      await project.install({
-        cache: await Cache.find(yarnConfig),
-        mode: InstallMode.SkipBuild,
-        report: new ThrowReport(),
-
-        // {
-        //   reportCacheHit: locator => {
-        //     console.info(`Cache hit for ${locator.toString()}`);
-        //   },
-        //   reportCacheMiss: (locator, message) => {
-        //     console.info(`Cache miss for ${locator.toString()}`);
-        //     console.log(message);
-        //   },
-        //   startSectionPromise: (opts, cb) => {
-        //     console.info(`Starting section ${opts.reportHeader}`);
-        //     return cb();
-        //   },
-        //   startSectionSync: (opts, cb) => {
-        //     console.info(`Starting section ${opts.reportHeader}`);
-        //     return cb();
-        //   },
-        //   startTimerPromise: (what, opts, cb) => {
-        //     console.log(`Starting timer ${what}`);
-        //     return cb();
-        //   },
-        //   startCacheReport: cb => {
-        //     console.log('Starting cache report');
-        //     return cb();
-        //   },
-        //   reportSeparator: () => {
-        //     console.log(
-        //       '-------------------------------------------------------',
-        //     );
-        //   },
-        //   reportInfo: (name, text) => {
-        //     console.log(`${name} ${text}`);
-        //   },
-        //   reportWarning: (name, text) => {
-        //     console.log(`${name} ${text}`);
-        //   },
-        //   reportError: (name, text) => {
-        //     console.log(`${name} ${text}`);
-        //   },
-        //   reportProgress: progress => {
-        //     console.log(`Progress: ${progress}`);
-        //   },
-        //   reportJson: data => {
-        //     console.log(JSON.stringify(data, null, 2));
-        //   },
-        //   finalize: () => {
-        //     console.log('Finalizing report');
-        //   },
-        // } as Report,
-      });
+      // await project.install({
+      //   cache: await Cache.find(yarnConfig),
+      //   report: new ThrowReport(),
+      //   // {
+      //   //   reportCacheHit: locator => {
+      //   //     console.info(`Cache hit for ${locator.toString()}`);
+      //   //   },
+      //   //   reportCacheMiss: (locator, message) => {
+      //   //     console.info(`Cache miss for ${locator.toString()}`);
+      //   //     console.log(message);
+      //   //   },
+      //   //   startSectionPromise: (opts, cb) => {
+      //   //     console.info(`Starting section ${opts.reportHeader}`);
+      //   //     return cb();
+      //   //   },
+      //   //   startSectionSync: (opts, cb) => {
+      //   //     console.info(`Starting section ${opts.reportHeader}`);
+      //   //     return cb();
+      //   //   },
+      //   //   startTimerPromise: (what, opts, cb) => {
+      //   //     console.log(`Starting timer ${what}`);
+      //   //     return cb();
+      //   //   },
+      //   //   startCacheReport: cb => {
+      //   //     console.log('Starting cache report');
+      //   //     return cb();
+      //   //   },
+      //   //   reportSeparator: () => {
+      //   //     console.log(
+      //   //       '-------------------------------------------------------',
+      //   //     );
+      //   //   },
+      //   //   reportInfo: (name, text) => {
+      //   //     console.log(`${name} ${text}`);
+      //   //   },
+      //   //   reportWarning: (name, text) => {
+      //   //     console.log(`${name} ${text}`);
+      //   //   },
+      //   //   reportError: (name, text) => {
+      //   //     console.log(`${name} ${text}`);
+      //   //   },
+      //   //   reportProgress: progress => {
+      //   //     console.log(`Progress: ${progress}`);
+      //   //   },
+      //   //   reportJson: data => {
+      //   //     console.log(JSON.stringify(data, null, 2));
+      //   //   },
+      //   //   finalize: () => {
+      //   //     console.log('Finalizing report');
+      //   //   },
+      //   // } as Report,
+      // });
 
       console.info(`${chalk.green('✔')} installed dependencies`);
 
