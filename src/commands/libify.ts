@@ -10,6 +10,7 @@ import {
 import {
   Cache,
   Configuration,
+  InstallMode,
   Project as YarnProject,
   Report,
   ThrowReport,
@@ -215,16 +216,18 @@ export default new Command<Project, LibifyFlags>({
 
       const diff = diffJson(existingPackageJsonContents, newPackageMetadata);
 
-      console.info(chalk.bold('Changes to package.json:'));
-      for (const change of diff) {
-        if (change.added) {
-          console.log(chalk.green.bold(`+ Added: ${change.count}`));
-          console.log(chalk.green(`+ ${change.value.toString().trim()}`));
-        }
+      if (diff.length > 0) {
+        console.info(chalk.bold('Changes to package.json:'));
+        for (const change of diff) {
+          if (change.added) {
+            console.log(chalk.green.bold(`+ Added: ${change.count}`));
+            console.log(chalk.green(`+ ${change.value.toString().trim()}`));
+          }
 
-        if (change.removed) {
-          console.log(chalk.red.bold(`- Removed: ${change.count}`));
-          console.log(chalk.red(`- ${change.value.toString().trim()}`));
+          if (change.removed) {
+            console.log(chalk.red.bold(`- Removed: ${change.count}`));
+            console.log(chalk.red(`- ${change.value.toString().trim()}`));
+          }
         }
       }
 
@@ -320,7 +323,9 @@ export default new Command<Project, LibifyFlags>({
 
       await project.install({
         cache: await Cache.find(yarnConfig),
+        mode: InstallMode.SkipBuild,
         report: new ThrowReport(),
+
         // {
         //   reportCacheHit: locator => {
         //     console.info(`Cache hit for ${locator.toString()}`);
