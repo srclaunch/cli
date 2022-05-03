@@ -40,13 +40,9 @@ export async function writeToolingConfiguration({
             project.type === ProjectType.ComponentLibrary;
           await writeFile(
             path.resolve('./tsconfig.json'),
-            JSON.stringify(
-              uiConfig
-                ? TYPESCRIPT_UI_CONFIG_CONTENT
-                : TYPESCRIPT_CONFIG_CONTENT,
-              null,
-              2,
-            ),
+            uiConfig
+              ? JSON.stringify(TYPESCRIPT_UI_CONFIG_CONTENT, null, 2)
+              : JSON.stringify(TYPESCRIPT_CONFIG_CONTENT, null, 2),
           );
           console.info(`${chalk.green('✔')} added TypeScript config`);
           break;
