@@ -117,7 +117,6 @@ export function getPublishYml({
           run: yarn set version stable
   
         - name: Install dependencies
-          if: \${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
           run: yarn install
           env:
             NODE_ENV: test
