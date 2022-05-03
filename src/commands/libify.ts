@@ -50,7 +50,6 @@ import {
   PROJECT_PACKAGE_JSON_TYPES,
 } from '../constants/project.js';
 import { writeToolingConfiguration } from '../lib/libify/tooling.js';
-import release from './release.js';
 import { createRelease } from '../lib/release.js';
 
 type LibifyFlags = TypedFlags<{
@@ -101,8 +100,6 @@ export default new Command<Project, LibifyFlags>({
       const build = Boolean(config.build) ?? Boolean(flags['build']);
       const test = Boolean(config.test) ?? Boolean(flags['test']);
 
-      console.log('build', build);
-      console.log('test', test);
       const existingPackageJsonContents = await JSON.parse(
         (await readFile('./package.json')).toString(),
       );
@@ -213,7 +210,6 @@ export default new Command<Project, LibifyFlags>({
       const diff = diffJson(existingPackageJsonContents, newPackageMetadata);
 
       if (diff.length > 0) {
-        console.log('diff', diff);
         console.info(chalk.bold('Changes to package.json:'));
         for (const change of diff) {
           if (change.added) {
