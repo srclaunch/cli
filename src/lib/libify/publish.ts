@@ -248,8 +248,8 @@ export function getPublishYml({
         - main
   jobs:
 ${environmentVariablesJob}
-${build && buildJob}
-${test && testJob}
+${build ? buildJob : ''}
+${test ? testJob : ''}
 ${build ? publishBuildJob : publishWithoutBuildJob}
   `;
 }
