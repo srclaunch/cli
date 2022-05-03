@@ -170,9 +170,14 @@ export default new Command<Project, LibifyFlags>({
         config.requirements?.peerPackages,
       );
       const existingPackageYaml = await readFile('./package.yml');
-      const parsedPackageYml = await Yaml.load(existingPackageYaml.toString());
+      const parsedPackageYml: { version: string } = (await Yaml.load(
+        existingPackageYaml.toString(),
+      )) as { version: string };
+      const version =
+        parsedPackageYml?.version ??
+        existingPackageJsonContents.version ??
+        '0.0.0';
 
-      console.log('parsedPackageYml', parsedPackageYml);
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
         dependencies: sortDependencies(dependencies),
@@ -207,7 +212,7 @@ export default new Command<Project, LibifyFlags>({
         },
         types: config.release?.package?.types ?? PROJECT_PACKAGE_JSON_TYPES,
         type: config.release?.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
-        version: existingPackageJsonContents.version ?? '0.0.0',
+        version,
       });
 
       const diff = diffJson(existingPackageJsonContents, newPackageMetadata);
