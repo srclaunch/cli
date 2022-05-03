@@ -98,8 +98,8 @@ export default new Command<Project, LibifyFlags>({
         ),
       );
 
-      const build = Boolean(config.build) || flags['build'];
-      const test = Boolean(config.test) || flags['test'];
+      const build = Boolean(config.build) ?? Boolean(flags['build']);
+      const test = Boolean(config.test) ?? Boolean(flags['test']);
 
       console.log('build', build);
       console.log('test', test);
@@ -135,22 +135,16 @@ export default new Command<Project, LibifyFlags>({
           config?.type === ProjectType.ComponentLibrary ||
           flags.react,
         reactRouter: flags.reactRouter,
-        srclaunch: {
-          cli: true,
-          dx: true,
-          types: false,
-        },
-        // config.requirements ??
+        srclaunch: config?.requirements?.srclaunch,
         styledComponents: flags.styledComponents,
         stylelint: config.environments?.development?.linters?.includes(
           CodeLinterTool.Stylelint,
         ),
         testCoverage: Boolean(config.test?.coverage),
         typescript:
-          // config?.environments?.development?.staticTyping.includes(
-          //   StaticTypingTool.TypeScript,
-          // ) ??
-          true,
+          config?.environments?.development?.staticTyping?.includes(
+            StaticTypingTool.TypeScript,
+          ) ?? true,
       });
 
       const sortDependencies = (
@@ -282,8 +276,9 @@ export default new Command<Project, LibifyFlags>({
         formatters: config.environments?.development?.formatters,
         linters: config.environments?.development?.linters,
         project: config,
-        staticTyping: [StaticTypingTool.TypeScript],
-        // config.environments?.development?.staticTyping,
+        staticTyping: config.environments?.development?.staticTyping ?? [
+          StaticTypingTool.TypeScript,
+        ],
       });
 
       console.info(`${chalk.green('✔')} created DX tooling configurations`);
@@ -314,11 +309,6 @@ export default new Command<Project, LibifyFlags>({
       // @ts-ignore
       // const { project } = await YarnProject.find(yarnConfig, '.');
 
-      // await project.resolveEverything({
-      //   lockfileOnly: true,
-      //   report: new ThrowReport(),
-      // });
-
       // const yarn = new YarnProject(
       //   // @ts-expect-error - Not sure how to use this API to be frank
       //   './',
@@ -328,54 +318,6 @@ export default new Command<Project, LibifyFlags>({
       // await project.install({
       //   cache: await Cache.find(yarnConfig),
       //   report: new ThrowReport(),
-      //   // {
-      //   //   reportCacheHit: locator => {
-      //   //     console.info(`Cache hit for ${locator.toString()}`);
-      //   //   },
-      //   //   reportCacheMiss: (locator, message) => {
-      //   //     console.info(`Cache miss for ${locator.toString()}`);
-      //   //     console.log(message);
-      //   //   },
-      //   //   startSectionPromise: (opts, cb) => {
-      //   //     console.info(`Starting section ${opts.reportHeader}`);
-      //   //     return cb();
-      //   //   },
-      //   //   startSectionSync: (opts, cb) => {
-      //   //     console.info(`Starting section ${opts.reportHeader}`);
-      //   //     return cb();
-      //   //   },
-      //   //   startTimerPromise: (what, opts, cb) => {
-      //   //     console.log(`Starting timer ${what}`);
-      //   //     return cb();
-      //   //   },
-      //   //   startCacheReport: cb => {
-      //   //     console.log('Starting cache report');
-      //   //     return cb();
-      //   //   },
-      //   //   reportSeparator: () => {
-      //   //     console.log(
-      //   //       '-------------------------------------------------------',
-      //   //     );
-      //   //   },
-      //   //   reportInfo: (name, text) => {
-      //   //     console.log(`${name} ${text}`);
-      //   //   },
-      //   //   reportWarning: (name, text) => {
-      //   //     console.log(`${name} ${text}`);
-      //   //   },
-      //   //   reportError: (name, text) => {
-      //   //     console.log(`${name} ${text}`);
-      //   //   },
-      //   //   reportProgress: progress => {
-      //   //     console.log(`Progress: ${progress}`);
-      //   //   },
-      //   //   reportJson: data => {
-      //   //     console.log(JSON.stringify(data, null, 2));
-      //   //   },
-      //   //   finalize: () => {
-      //   //     console.log('Finalizing report');
-      //   //   },
-      //   // } as Report,
       // });
 
       console.info(`${chalk.green('✔')} installed dependencies`);
