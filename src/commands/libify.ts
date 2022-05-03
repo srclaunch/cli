@@ -18,6 +18,7 @@ import {
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
 import Yaml from 'js-yaml';
+import Git, { SimpleGit } from 'simple-git';
 import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
 import {
@@ -297,14 +298,13 @@ export default new Command<Project, LibifyFlags>({
         'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
       );
 
-      // if (
-      //   config.environments.development.staticTyping.includes(
-      //     StaticTypingTool.TypeScript,
-      //   )
-      // ) {
-      //   await shellExec('yarn plugin import typescript');
-      // }
-      await shellExec('yarn install');
+      if (
+        config.environments?.development?.staticTyping?.includes(
+          StaticTypingTool.TypeScript,
+        )
+      ) {
+        await shellExec('yarn plugin import typescript');
+      }
 
       console.info(`${chalk.green('✔')} added yarn plugins`);
 
@@ -324,6 +324,7 @@ export default new Command<Project, LibifyFlags>({
       //   report: new ThrowReport(),
       // });
 
+      await shellExec('yarn install');
       console.info(`${chalk.green('✔')} installed dependencies`);
 
       if (build) {
@@ -336,7 +337,28 @@ export default new Command<Project, LibifyFlags>({
 
       await add('.');
       await commit('Libified project');
+
       await createRelease();
+
+      const updatedPackageJson = await readFile('./package.json');
+      const updatedPackageJsonContents = JSON.parse(
+        updatedPackageJson.toString(),
+      );
+      const yml = Yaml.dump({
+        ...newPackageMetadata,
+        version: updatedPackageJsonContents.version,
+      });
+      await writeFile(path.resolve('./package.yml'), yml.toString());
+
+      const git: SimpleGit = Git();
+      const currentBranch = await (await git.branchLocal()).current;
+      const result = await push({ followTags: true });
+
+      console.log(
+        `${chalk.green('✔')} pushed release to ${chalk.bold(
+          result.repo,
+        )} on branch ${chalk.bold(currentBranch)}`,
+      );
     } catch (err: any) {
       console.error(chalk.red(err));
       process.exit(1);
