@@ -169,11 +169,10 @@ export default new Command<Project, LibifyFlags>({
       const peerDependencies = await getDependencies(
         config.requirements?.peerPackages,
       );
-      const existingPackageYml = await Yaml.load(
-        await readFile('./package.yml').toString(),
-      );
+      const existingPackageYaml = await readFile('./package.yml');
+      const parsedPackageYml = await Yaml.load(existingPackageYaml.toString());
 
-      console.log('existingPackageYml', existingPackageYml);
+      console.log('parsedPackageYml', parsedPackageYml);
       const newPackageMetadata = constructPackageJson({
         author: 'Steven Bennett <steven@srclaunch.com>',
         dependencies: sortDependencies(dependencies),
