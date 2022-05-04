@@ -16,6 +16,15 @@ export async function emptyDirectory(directory: string): Promise<void> {
   }
 }
 
+export async function fileExists(path: string): Promise<boolean> {
+  try {
+    await fs.access(path);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 export async function deleteDirectory(directory: string): Promise<void> {
   if (!directory) {
     throw new Error('Directory must be provided');

@@ -24,6 +24,7 @@ import chalk from 'chalk';
 import {
   deleteDirectory,
   deleteFile,
+  fileExists,
   readFile,
   writeFile,
 } from '../lib/file-system.js';
@@ -101,10 +102,6 @@ export default new Command<Project, LibifyFlags>({
       const build = Boolean(config.build) ?? Boolean(flags['build']);
       const test = Boolean(config.test) ?? Boolean(flags['test']);
 
-      const existingPackageJsonContents = await JSON.parse(
-        (await readFile('./package.json')).toString(),
-      );
-
       let exports = {};
       for (const export_ of config.release?.package?.exports ??
         PROJECT_PACKAGE_JSON_EXPORTS) {
@@ -170,10 +167,17 @@ export default new Command<Project, LibifyFlags>({
       const peerDependencies = await getDependencies(
         config.requirements?.peerPackages,
       );
-      const existingPackageYaml = await readFile('./package.yml');
-      const parsedPackageYml: { version: string } = (await Yaml.load(
-        existingPackageYaml.toString(),
-      )) as { version: string };
+      const existingPackageJsonContents = await JSON.parse(
+        (await readFile('./package.json')).toString(),
+      );
+      const existingPackageYaml = (await fileExists('./package.yml'))
+        ? await readFile('./package.yml')
+        : null;
+      const parsedPackageYml: { version: string } | null = existingPackageYaml
+        ? ((await Yaml.load(existingPackageYaml.toString())) as {
+            version: string;
+          })
+        : null;
       const version =
         parsedPackageYml?.version ??
         existingPackageJsonContents.version ??
