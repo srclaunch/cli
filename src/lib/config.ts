@@ -7,18 +7,13 @@ export async function getSrcLaunchConfig() {
     // const configFormats = ['js', 'json', 'ts'];
     try {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
-      console.log('configPath,', configPath);
-      const program = ts.createProgram([configPath], {
-        module: ts.ModuleKind.ESNext,
-        target: ts.ScriptTarget.ESNext,
-        esModuleInterop: true,
+      const config = await readFile(configPath);
+
+      let result = ts.transpileModule(config.toString(), {
+        compilerOptions: { module: ts.ModuleKind.CommonJS },
       });
 
-      console.log('program', program);
-
-      const emit = program.emit();
-
-      console.log(JSON.stringify(emit));
+      console.log(JSON.stringify(result));
       // let result = require(configPath);
       // if (result && result.__esModule && result.default) {
       //   result = result.default;
