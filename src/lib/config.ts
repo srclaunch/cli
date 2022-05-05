@@ -9,8 +9,8 @@ export async function getSrcLaunchConfig() {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
       const config = await readFile(configPath);
 
-      let result = ts.transpileModule(config.toString(), {
-        compilerOptions: { module: ts.ModuleKind.CommonJS },
+      let result = await ts.transpileModule(config.toString(), {
+        compilerOptions: { module: ts.ModuleKind.ESNext },
       });
 
       console.log(result.outputText);
