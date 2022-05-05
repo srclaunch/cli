@@ -24,18 +24,17 @@ export async function getSrcLaunchConfig() {
       await createDirectory(tempPath);
       await writeFile(tempConfigPath, result.outputText);
 
-      const config = await import(tempConfigPath);
+      const tempConfig = await import(tempConfigPath);
 
-      console.log(config);
-      // let result = require(configPath);
-      // if (result && result.__esModule && result.default) {
-      //   result = result.default;
-      // }
-      // return result;
       await deleteFile(tempConfigPath);
       await deleteDirectory(tempPath);
+
+      if (tempConfig && tempConfig.__esModule && tempConfig.default) {
+        return tempConfig.default;
+      }
+
+      throw new Error('Could not parse config');
     } catch (tsImportError: any) {
-      console.log('tsImportError', tsImportError);
       try {
         const configPath = path.join(path.resolve(), './.srclaunch/config.js');
         let result = await import(configPath);
@@ -44,7 +43,6 @@ export async function getSrcLaunchConfig() {
         }
         return result;
       } catch (jsImportError: any) {
-        console.log('jsImportError', jsImportError);
         const configPath = path.join(
           path.resolve(),
           '.srclaunch',
