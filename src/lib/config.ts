@@ -1,21 +1,25 @@
 import { readFile } from './file-system';
 import path from 'node:path';
+import { create } from 'ts-node';
 
 export async function getSrcLaunchConfig() {
   try {
     // const configFormats = ['js', 'json', 'ts'];
-
     try {
-      const configPath = path.join(path.resolve(), './.srclaunch/config.js');
-      const config = await import(configPath);
-
-      return config.default;
+      const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
+      let result = require(configPath);
+      if (result && result.__esModule && result.default) {
+        result = result.default;
+      }
+      return result;
     } catch (jsImportError: any) {
       try {
-        const configPath = path.join(path.resolve(), './.srclaunch/config');
-        const config = await import(configPath);
-
-        return config.default;
+        const configPath = path.join(path.resolve(), './.srclaunch/config.js');
+        let result = require(configPath);
+        if (result && result.__esModule && result.default) {
+          result = result.default;
+        }
+        return result;
       } catch (jsImportError: any) {
         const configPath = path.join(
           path.resolve(),
