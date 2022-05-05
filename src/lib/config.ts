@@ -1,6 +1,6 @@
 import { readFile } from './file-system';
 import path from 'node:path';
-import ts, { ModuleKind, Program } from 'typescript';
+import ts from 'typescript';
 
 export async function getSrcLaunchConfig() {
   try {
@@ -9,7 +9,7 @@ export async function getSrcLaunchConfig() {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
       console.log('configPath,', configPath);
       const program = ts.createProgram([configPath], {
-        module: ModuleKind.ESNext,
+        module: ts.ModuleKind.ESNext,
         target: ts.ScriptTarget.ESNext,
         esModuleInterop: true,
       });
