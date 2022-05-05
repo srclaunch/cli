@@ -42,6 +42,12 @@ export function getPublishYml({
             node-version: '16.x'
             cache: 'yarn'
 
+        - name: Enable corepack
+          run: corepack enable
+  
+        - name: Enable Yarn Berry
+          run: yarn set version stable
+  
         - uses: actions/cache@v3
           id: yarn-cache # use this to check for 'cache-hit' (steps.yarn-cache.outputs.cache-hit != 'true')
           with:
@@ -56,12 +62,6 @@ export function getPublishYml({
             restore-keys: |
               \${{ runner.os }}-yarn-
 
-        - name: Enable corepack
-          run: corepack enable
-  
-        - name: Enable Yarn Berry
-          run: yarn set version stable
-  
         - name: Install dependencies
           run: yarn install
           env:
@@ -96,6 +96,12 @@ export function getPublishYml({
             node-version: '16.x'
             cache: 'yarn'
 
+        - name: Enable corepack
+          run: corepack enable
+  
+        - name: Enable Yarn Berry
+          run: yarn set version stable
+  
         - uses: actions/cache@v3
           id: yarn-cache
           with:
@@ -110,12 +116,6 @@ export function getPublishYml({
             restore-keys: |
               \${{ runner.os }}-yarn-
 
-        - name: Enable corepack
-          run: corepack enable
-  
-        - name: Enable Yarn Berry
-          run: yarn set version stable
-  
         - name: Install dependencies
           run: yarn install
           env:
@@ -151,7 +151,13 @@ export function getPublishYml({
           with:
             cache: 'yarn'
             node-version: '16.x'
-        
+
+        - name: Enable corepack
+          run: corepack enable
+  
+        - name: Enable Yarn Berry
+          run: yarn set version stable
+              
         - uses: actions/cache@v3
           id: yarn-cache
           with:
@@ -166,12 +172,6 @@ export function getPublishYml({
             restore-keys: |
               \${{ runner.os }}-yarn-
 
-        - name: Enable corepack
-          run: corepack enable
-  
-        - name: Enable Yarn Berry
-          run: yarn set version stable
-  
         - name: Allow private package registry access
           id: allow-private-package-registry-access
           run: |
@@ -200,6 +200,12 @@ export function getPublishYml({
             cache: 'yarn'
             node-version: '16.x'
 
+        - name: Enable corepack
+          run: corepack enable
+  
+        - name: Enable Yarn Berry
+          run: yarn set version stable
+        
         - uses: actions/cache@v3
           id: yarn-cache
           with:
@@ -214,12 +220,7 @@ export function getPublishYml({
             restore-keys: |
               \${{ runner.os }}-yarn-
 
-        - name: Enable corepack
-          run: corepack enable
-  
-        - name: Enable Yarn Berry
-          run: yarn set version stable
-        
+
         - name: Install dependencies
           run: yarn install
           env:
