@@ -103,16 +103,19 @@ export default new Command<Project, LibifyFlags>({
       const test = Boolean(config.test) ?? Boolean(flags['test']);
 
       let exports = {};
-      for (const export_ of config.release?.package?.exports ??
+      for (const _export of config.release?.package?.exports ??
         PROJECT_PACKAGE_JSON_EXPORTS) {
+        console.log('export', _export);
         exports = {
           ...exports,
-          [export_.path]: {
-            import: export_.import,
-            require: export_.require,
+          [_export.path]: {
+            import: _export.import,
+            require: _export.require,
           },
         };
       }
+
+      console.log('exports', exports);
 
       const coreDevDependencies = await getDevDependencies({
         ava: config.test?.tool === TestTool.Ava,
