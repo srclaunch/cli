@@ -1,4 +1,10 @@
-import { deleteFile, readFile, writeFile } from './file-system';
+import {
+  createDirectory,
+  deleteDirectory,
+  deleteFile,
+  readFile,
+  writeFile,
+} from './file-system';
 import path from 'node:path';
 import ts from 'typescript';
 
@@ -7,16 +13,18 @@ export async function getSrcLaunchConfig() {
     // const configFormats = ['js', 'json', 'ts'];
     try {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
-      const tempPath = path.join(path.resolve(), './.srclaunch/.tmp/config.js');
+      const tempPath = path.join(path.resolve(), './.srclaunch/.temp');
+      const tempConfigPath = path.join(tempPath, 'config.js');
       const configContents = await readFile(configPath);
 
       let result = await ts.transpileModule(configContents.toString(), {
         compilerOptions: { module: ts.ModuleKind.ESNext },
       });
 
-      await writeFile(tempPath, result.outputText);
+      await createDirectory(tempPath);
+      await writeFile(tempConfigPath, result.outputText);
 
-      const config = await import(tempPath);
+      const config = await import(tempConfigPath);
 
       console.log(config);
       // let result = require(configPath);
@@ -25,6 +33,7 @@ export async function getSrcLaunchConfig() {
       // }
       // return result;
       await deleteFile(tempPath);
+      await deleteDirectory(tempPath);
     } catch (tsImportError: any) {
       console.log('tsImportError', tsImportError);
       try {
