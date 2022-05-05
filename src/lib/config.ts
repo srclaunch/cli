@@ -1,16 +1,20 @@
 import { readFile } from './file-system';
 import path from 'node:path';
-import ts, { Program } from 'typescript';
+import ts, { ModuleKind, Program } from 'typescript';
 
 export async function getSrcLaunchConfig() {
   try {
     // const configFormats = ['js', 'json', 'ts'];
     try {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
-
+      console.log('configPath,', configPath);
       const program = ts.createProgram([configPath], {
+        module: ModuleKind.ESNext,
+        target: ts.ScriptTarget.ESNext,
         esModuleInterop: true,
       });
+
+      console.log('program', program);
 
       const emit = program.emit();
 
