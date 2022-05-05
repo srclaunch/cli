@@ -2,16 +2,21 @@ import {
   createDirectory,
   deleteDirectory,
   deleteFile,
+  fileExists,
   readFile,
   writeFile,
 } from './file-system';
 import path from 'node:path';
 import ts from 'typescript';
+import { SrcLaunchConfig } from '@srclaunch/types';
 
-export async function getSrcLaunchConfig() {
+export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
   try {
-    // const configFormats = ['js', 'json', 'ts'];
-    try {
+    const tsConfigPath = path.resolve(`./.srclaunch/config.ts`);
+    const jsConfigPath = path.resolve(`./.srclaunch/config.js`);
+    const jsonConfigPath = path.resolve(`./.srclaunch/config.json`);
+
+    if (await fileExists(tsConfigPath)) {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
       const tempPath = path.join(path.resolve(), './.srclaunch/.temp');
       const tempConfigPath = path.join(tempPath, 'config.js');
@@ -36,31 +41,20 @@ export async function getSrcLaunchConfig() {
       }
 
       return tempConfig;
-    } catch (tsImportError: any) {
-      try {
-        const configPath = path.join(path.resolve(), './.srclaunch/config.js');
-        let result = await import(configPath);
-        if (result && result.__esModule && result.default) {
-          result = result.default;
-        }
-        return result;
-      } catch (jsImportError: any) {
-        const configPath = path.join(
-          path.resolve(),
-          '.srclaunch',
-          'config.json',
-        );
-
-        try {
-          const config = await readFile(configPath);
-
-          return await JSON.parse(config.toString());
-        } catch (jsonReadError: any) {
-          throw new Error(
-            `Could not read config file: ${configPath}. ${jsonReadError.message}`,
-          );
-        }
+    } else if (await fileExists(jsConfigPath)) {
+      let result = await import(jsConfigPath);
+      if (result && result.__esModule && result.default) {
+        result = result.default;
       }
+      return result;
+    } else if (await fileExists(jsonConfigPath)) {
+      const config = await readFile(jsonConfigPath);
+
+      return await JSON.parse(config.toString());
+    } else {
+      throw new Error(
+        'Could not find .srclaunch/config.ts, .srclaunch/config.js, or .srclaunch/config.json',
+      );
     }
   } catch (err) {
     console.error(err);
