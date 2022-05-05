@@ -105,7 +105,6 @@ export default new Command<Project, LibifyFlags>({
       let exports = {};
       for (const _export of config.release?.package?.exports ??
         PROJECT_PACKAGE_JSON_EXPORTS) {
-        console.log('export', _export);
         exports = {
           ...exports,
           [_export.path]: {
@@ -114,8 +113,6 @@ export default new Command<Project, LibifyFlags>({
           },
         };
       }
-
-      console.log('exports', exports);
 
       const coreDevDependencies = await getDevDependencies({
         ava: config.test?.tool === TestTool.Ava,
@@ -193,8 +190,8 @@ export default new Command<Project, LibifyFlags>({
         devDependencies: sortDependencies(devDependencies),
         engines: {
           node: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
-          npm: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.npm,
-          yarn: config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.yarn,
+          npm: config.requirements?.npm ?? PROJECT_PACKAGE_JSON_ENGINES.npm,
+          yarn: config.requirements?.yarn ?? PROJECT_PACKAGE_JSON_ENGINES.yarn,
         },
         exports,
         files: config.release?.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
