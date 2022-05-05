@@ -13,7 +13,7 @@ export async function getSrcLaunchConfig() {
         compilerOptions: { module: ts.ModuleKind.CommonJS },
       });
 
-      console.log(JSON.stringify(result));
+      console.log(result.outputText);
       // let result = require(configPath);
       // if (result && result.__esModule && result.default) {
       //   result = result.default;
