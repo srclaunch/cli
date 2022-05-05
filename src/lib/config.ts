@@ -8,11 +8,13 @@ export async function getSrcLaunchConfig() {
     try {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
 
-      let result = ts.transpileModule(configPath, {
-        compilerOptions: { module: ts.ModuleKind.ESNext },
+      const program = ts.createProgram([configPath], {
+        noEmit: true,
       });
 
-      console.log(JSON.stringify(result));
+      const emit = program.emit();
+
+      console.log(JSON.stringify(emit));
       // let result = require(configPath);
       // if (result && result.__esModule && result.default) {
       //   result = result.default;
