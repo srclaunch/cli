@@ -1,17 +1,20 @@
 import { readFile } from './file-system';
 import path from 'node:path';
-import { create } from 'ts-node';
+import ts, { Program } from 'typescript';
 
 export async function getSrcLaunchConfig() {
   try {
     // const configFormats = ['js', 'json', 'ts'];
     try {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
-      let result = require(configPath);
-      if (result && result.__esModule && result.default) {
-        result = result.default;
-      }
-      return result;
+      const program: Program = ts.createProgram([configPath], {});
+      const emitResult = program.emit();
+      console.log('emitResult', emitResult);
+      // let result = require(configPath);
+      // if (result && result.__esModule && result.default) {
+      //   result = result.default;
+      // }
+      // return result;
     } catch (jsImportError: any) {
       try {
         const configPath = path.join(path.resolve(), './.srclaunch/config.js');
