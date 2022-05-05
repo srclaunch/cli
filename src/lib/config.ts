@@ -25,17 +25,17 @@ export async function getSrcLaunchConfig() {
       await writeFile(tempConfigPath, result.outputText);
 
       const tempConfig = await import(tempConfigPath);
-
+      console.log('tempConfig1', tempConfig);
       await deleteFile(tempConfigPath);
       await deleteDirectory(tempPath);
 
+      console.log('tempConfig2', tempConfig);
+
       if (tempConfig && tempConfig.__esModule && tempConfig.default) {
         return tempConfig.default;
-      } else if (tempConfig) {
-        return tempConfig;
       }
 
-      throw new Error('Could not parse config');
+      return tempConfig;
     } catch (tsImportError: any) {
       try {
         const configPath = path.join(path.resolve(), './.srclaunch/config.js');
