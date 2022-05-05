@@ -32,7 +32,7 @@ export async function getSrcLaunchConfig() {
       //   result = result.default;
       // }
       // return result;
-      await deleteFile(tempPath);
+      await deleteFile(tempConfigPath);
       await deleteDirectory(tempPath);
     } catch (tsImportError: any) {
       console.log('tsImportError', tsImportError);
