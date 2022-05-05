@@ -8,9 +8,7 @@ export async function getSrcLaunchConfig() {
     try {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
 
-      const program = ts.createProgram([configPath], {
-        noEmit: true,
-      });
+      const program = ts.createProgram([configPath], {});
 
       const emit = program.emit();
 
