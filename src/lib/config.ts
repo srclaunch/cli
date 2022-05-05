@@ -31,6 +31,8 @@ export async function getSrcLaunchConfig() {
 
       if (tempConfig && tempConfig.__esModule && tempConfig.default) {
         return tempConfig.default;
+      } else if (tempConfig) {
+        return tempConfig;
       }
 
       throw new Error('Could not parse config');
