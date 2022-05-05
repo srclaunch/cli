@@ -8,7 +8,9 @@ export async function getSrcLaunchConfig() {
     try {
       const configPath = path.join(path.resolve(), './.srclaunch/config.ts');
 
-      const program = ts.createProgram([configPath], {});
+      const program = ts.createProgram([configPath], {
+        esModuleInterop: true,
+      });
 
       const emit = program.emit();
 
@@ -18,7 +20,8 @@ export async function getSrcLaunchConfig() {
       //   result = result.default;
       // }
       // return result;
-    } catch (jsImportError: any) {
+    } catch (tsImportError: any) {
+      console.log('tsImportError', tsImportError);
       try {
         const configPath = path.join(path.resolve(), './.srclaunch/config.js');
         let result = require(configPath);
@@ -27,6 +30,7 @@ export async function getSrcLaunchConfig() {
         }
         return result;
       } catch (jsImportError: any) {
+        console.log('jsImportError', jsImportError);
         const configPath = path.join(
           path.resolve(),
           '.srclaunch',
