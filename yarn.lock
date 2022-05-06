@@ -1949,8 +1949,8 @@ __metadata:
     "@rauschma/stringio": ^1.4.0
     "@srclaunch/dx": ^0.1.52
     "@srclaunch/exceptions": ^0.1.71
-    "@srclaunch/node-environment": ^0.1.22
-    "@srclaunch/types": ^0.1.167
+    "@srclaunch/node-environment": ^0.1.23
+    "@srclaunch/types": ^0.1.170
     "@types/diff": ^5.0.2
     "@types/fs-extra": ^9.0.13
     "@types/js-yaml": ^4.0.5
@@ -2062,17 +2062,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/node-environment@npm:^0.1.22":
-  version: 0.1.22
-  resolution: "@srclaunch/node-environment@npm:0.1.22"
-  checksum: 20b5b8598aec99b5078eb4e7520572abaffe1f6c0f2f44f57b6c1483912a5befa072592edc98a49a5069841c933d97b30fd9b5c57a6d9d0e972859e9d0442472
+"@srclaunch/node-environment@npm:^0.1.23":
+  version: 0.1.23
+  resolution: "@srclaunch/node-environment@npm:0.1.23"
+  checksum: f4b7755b9029a1dc9dc56bdefc6ef759ac670e714032ae27b459c2b229db772c477727e2922e141277449a306cf695aab0fa18b803901314d7d12804ca8dd883
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.167":
-  version: 0.1.167
-  resolution: "@srclaunch/types@npm:0.1.167"
-  checksum: 773a5f79030b2d60ef19fe6321412f2032c660a1c7b2def5aeb1020e6c46700bb789562fd6e97531a3ac8ef4b4de643aabed21f90709e050285a0dc2820fcd24
+"@srclaunch/types@npm:^0.1.170":
+  version: 0.1.170
+  resolution: "@srclaunch/types@npm:0.1.170"
+  checksum: db36842e12a7a8fead11ce63ea84b17fbb458dbd0dbeb7939c3e5796b65c52bf4f3405c86c346bd1fcadd1ca6c4854048b47f0238c76db1dd1c858a47f87b18d
   languageName: node
   linkType: hard
 

@@ -1,6 +1,5 @@
 export const ASYNC_EXIT_HOOK_DEPENDENCIES = {
   'async-exit-hook': '^2.0.1',
-  '@types/async-exit-hook': '^2.0.0',
 };
 
 export const AWS_SDK_DEPENDENCIES = {
@@ -59,18 +58,15 @@ export const JS_FILE_DOWNLOAD_DEPENDENCIES = {
 };
 
 export const KEYGRIP_DEPENDENCIES = {
-  '@types/keygrip': '^1.0.2',
   keygrip: '^1.0.1',
 };
 
 export const LUXON_DEPENDENCIES = {
   luxon: '^2.3.2',
-  '@types/luxon': '^2.3.1',
 };
 
 export const MULTER_DEPENDENCIES = {
   multer: '^1.4.4',
-  '@types/multer': '^1.4.7',
 };
 
 export const NANOID_DEPENDENCIES = {
@@ -95,7 +91,6 @@ export const PLURALIZE_DEPENDENCIES = {
 
 export const QUERY_STRING_DEPENDENCIES = {
   'query-string': '^7.1.1',
-  '@types/query-string': '^6.3.0',
 };
 
 export const RGB_HEX_DEPENDENCIES = {
@@ -157,8 +152,10 @@ export const SEQUELIZE_DEPENDENCIES = {
   sequelize: '^6.18.0',
   pg: '^8.7.3',
   'pg-hstore': '^2.3.4',
-  '@types/pg': '^8.6.5',
-  '@types/pluralize': '^0.0.29',
+};
+
+export const SERIALIZE_ERROR_DEPENDENCIES = {
+  'serialize-error': '^10.0.0',
 };
 
 export const STRIPE_DEPENDENCIES = {

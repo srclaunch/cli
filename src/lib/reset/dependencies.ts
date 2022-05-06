@@ -63,6 +63,7 @@ import {
   SRCLAUNCH_WEB_ENVIRONMENT_DEPENDENCIES,
   ZXCVBN_DEPENDENCIES,
   PICO_COLORS_DEPENDENCIES,
+  SERIALIZE_ERROR_DEPENDENCIES,
 } from '../../constants/dependencies';
 import {
   ASYNC_EXIT_HOOK_DEV_DEPENDENCIES,
@@ -257,6 +258,8 @@ export function getPackageDependencies(package_: Package) {
       return REDUX_DEPENDENCIES;
     case UniversalPackage.ReduxToolkit:
       return REDUX_TOOLKIT_DEPENDENCIES;
+    case UniversalPackage.SerializeError:
+      return SERIALIZE_ERROR_DEPENDENCIES;
     case UniversalPackage.SrcLaunchExceptions:
       return SRCLAUNCH_EXCEPTIONS_DEPENDENCIES;
     case UniversalPackage.SrcLaunchHttpClient:
