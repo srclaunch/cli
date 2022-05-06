@@ -26,15 +26,15 @@ import { add, commit, push } from '../lib/git.js';
 import { GITIGNORE_CONTENT } from '../constants/git.js';
 import { YARNRC_CONTENT } from '../constants/yarn.js';
 import { shellExec } from '../lib/cli.js';
-import { getPublishYml } from '../lib/libify/publish.js';
+import { getPublishYml } from '../lib/reset/publish.js';
 import {
   constructPackageJson,
   getPackageScripts,
-} from '../lib/libify/package.js';
+} from '../lib/reset/package.js';
 import {
   getDependencies,
   getDevDependencies,
-} from '../lib/libify/dependencies.js';
+} from '../lib/reset/dependencies.js';
 import {
   PROJECT_PACKAGE_JSON_ENGINES,
   PROJECT_PACKAGE_JSON_EXPORTS,
@@ -44,10 +44,10 @@ import {
   PROJECT_PACKAGE_JSON_TYPE,
   PROJECT_PACKAGE_JSON_TYPES,
 } from '../constants/project.js';
-import { writeToolingConfiguration } from '../lib/libify/tooling.js';
+import { writeToolingConfiguration } from '../lib/reset/tooling.js';
 import { createRelease } from '../lib/release.js';
 
-type LibifyFlags = TypedFlags<{
+type ResetFlags = TypedFlags<{
   build: {
     default: false;
     description: 'The library will only be built, and not tested.';
@@ -80,15 +80,15 @@ type LibifyFlags = TypedFlags<{
   };
 }>;
 
-export default new Command<Project, LibifyFlags>({
-  name: 'libify',
+export default new Command<Project, ResetFlags>({
+  name: 'reset',
   description:
-    "The libify command cleans a project's cache and configures it with package.json scripts and Github Action workflows.",
+    "The `reset` command cleans a project's cache and configures it with package.json scripts and Github Action workflows.",
   run: async ({ config, flags }) => {
     try {
       console.info(
-        chalk.magenta(
-          `Setting up ${chalk.bold(config.name)} with SrcLaunch...`,
+        chalk.cyanBright(
+          `Resetting ${chalk.bold(config.name)} from SrcLaunch config...`,
         ),
       );
 
@@ -350,12 +350,13 @@ export default new Command<Project, LibifyFlags>({
       const git: SimpleGit = Git();
       const currentBranch = await (await git.branchLocal()).current;
       const result = await push({ followTags: true });
-
       console.log(
         `${chalk.green('✔')} pushed release to ${chalk.bold(
           result.repo,
         )} on branch ${chalk.bold(currentBranch)}`,
       );
+
+      console.log(`${chalk.green('✔')} project reset`);
     } catch (err: any) {
       console.error(chalk.red(err));
       process.exit(1);
@@ -363,11 +364,11 @@ export default new Command<Project, LibifyFlags>({
   },
   type: CommandType.Project,
   commands: [
-    new Command<Project, LibifyFlags>({
+    new Command<Project, ResetFlags>({
       name: 'help',
-      description: 'Shows help for the libify commands',
+      description: 'Shows help for the reset commands',
       run: async () => {
-        console.info('Available libify commands are: help');
+        console.info('Available reset commands are: help');
       },
       type: CommandType.Project,
     }),

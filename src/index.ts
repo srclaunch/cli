@@ -5,7 +5,8 @@ import * as changesetCommands from './commands/changesets.js';
 import * as devCommands from './commands/dev.js';
 import * as helpCommands from './commands/help.js';
 import * as infrastructureCommands from './commands/infrastructure.js';
-import * as libifyCommands from './commands/libify.js';
+import * as installCommands from './commands/install.js';
+import * as resetCommands from './commands/reset.js';
 import * as modelCommands from './commands/models.js';
 import * as previewCommands from './commands/preview.js';
 import * as projectCommands from './commands/projects.js';
@@ -56,7 +57,8 @@ export async function main() {
         devCommands.default,
         helpCommands.default,
         infrastructureCommands.default,
-        libifyCommands.default,
+        installCommands.default,
+        resetCommands.default,
         modelCommands.default,
         previewCommands.default,
         projectCommands.default,
