@@ -1,4 +1,4 @@
-import { Project } from '@srclaunch/types';
+import { ChangeType, Project } from '@srclaunch/types';
 import Yaml from 'js-yaml';
 import { Command, CommandType } from '../lib/command.js';
 import { createRelease } from '../lib/release.js';
@@ -8,6 +8,7 @@ import { InteractiveModeFlag } from '../lib/flags.js';
 import { readFile, writeFile } from '../lib/file-system.js';
 import path from 'path';
 import chalk from 'chalk';
+import { createChangeset } from '../lib/changesets.js';
 
 type ReleaseFlags = TypedFlags<
   InteractiveModeFlag & {
@@ -41,6 +42,12 @@ export default new Command<Project, ReleaseFlags>({
         version: updatedPackageJsonContents.version,
       });
       await writeFile(path.resolve('./package.yml'), yml.toString());
+
+      await createChangeset({
+        files: ['package.yml'],
+        type: ChangeType.Release,
+        message: `Release ${updatedPackageJsonContents.version}`,
+      });
 
       if (flags.push) {
         const result = await push({ followTags: true });
