@@ -68,7 +68,7 @@ export default new Command({
             console.log(
               `${chalk.green('✔')} added changeset ${chalk.bold(
                 commitMessage,
-              )}}`,
+              )}`,
             );
           } catch (err) {
             console.error('commit err', err);
