@@ -62,6 +62,7 @@ import {
   SRCLAUNCH_WEB_APPLICATION_STATE_DEPENDENCIES,
   SRCLAUNCH_WEB_ENVIRONMENT_DEPENDENCIES,
   ZXCVBN_DEPENDENCIES,
+  PICO_COLORS_DEPENDENCIES,
 } from '../../constants/dependencies';
 import {
   ASYNC_EXIT_HOOK_DEV_DEPENDENCIES,
@@ -239,6 +240,8 @@ export function getPackageDependencies(package_: Package) {
       return NANOID_DEPENDENCIES;
     case UniversalPackage.PasswordValidator:
       return PASSWORD_VALIDATOR_DEPENDENCIES;
+    case UniversalPackage.PicoColors:
+      return PICO_COLORS_DEPENDENCIES;
     case UniversalPackage.Pluralize:
       return PLURALIZE_DEPENDENCIES;
     case UniversalPackage.QueryString:

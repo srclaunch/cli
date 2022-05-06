@@ -81,6 +81,10 @@ export const PASSWORD_VALIDATOR_DEPENDENCIES = {
   'password-validator': '^5.2.1',
 };
 
+export const PICO_COLORS_DEPENDENCIES = {
+  picocolors: '^1.0.0',
+};
+
 export const PLAID_DEPENDENCIES = {
   plaid: '^9.12.0',
 };
