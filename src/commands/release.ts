@@ -24,9 +24,13 @@ type ReleaseFlags = TypedFlags<
 export default new Command<Project, ReleaseFlags>({
   name: 'release',
   description: 'Create a release',
-  run: async ({ flags }) => {
+  run: async ({ config, flags }) => {
     try {
-      await createRelease();
+      await createRelease({
+        changesets: config?.changesets,
+        package: config?.release?.package,
+        pipelines: config?.release?.pipelines,
+      });
 
       const updatedPackageJson = await readFile('./package.json');
       const updatedPackageJsonContents = JSON.parse(
@@ -44,7 +48,7 @@ export default new Command<Project, ReleaseFlags>({
         console.log(
           `${chalk.green('✔')} pushed release to ${chalk.bold(
             result.repo,
-          )} on branch ${chalk.bold(getBranchName())}`,
+          )} on branch ${chalk.bold(await getBranchName())}`,
         );
       }
     } catch (err) {

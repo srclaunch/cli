@@ -1,24 +1,25 @@
+import { ReleaseOptions, ChangesetOptions } from '@srclaunch/types';
 import Yaml from 'js-yaml';
 import path from 'path';
-import standardVersion from 'standard-version';
+import standardVersion, { Options } from 'standard-version';
+import { DEFAULT_COMMIT_TYPES } from '../constants/releases';
 import { readFile, writeFile } from '../lib/file-system';
 
-export async function createRelease() {
+export async function createRelease({
+  changesets,
+  package: packageOptions,
+  pipelines,
+}: {
+  changesets?: ChangesetOptions;
+  package: ReleaseOptions['package'];
+  pipelines: ReleaseOptions['pipelines'];
+}) {
   // https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.1.0/README.md
   await standardVersion({
     noVerify: true,
     infile: 'CHANGELOG.md',
     silent: false,
-    types: [
-      { type: 'feat', section: 'Features' },
-      { type: 'fix', section: 'Bug Fixes' },
-      { type: 'chore', hidden: true },
-      { type: 'docs', hidden: true },
-      { type: 'style', hidden: true },
-      { type: 'refactor', hidden: true },
-      { type: 'perf', hidden: true },
-      { type: 'test', hidden: true },
-    ],
+    types: (changesets?.types ?? DEFAULT_COMMIT_TYPES) as Options['types'],
   });
 
   const updatedPackageJson = await readFile(path.resolve('./package.json'));

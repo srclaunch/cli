@@ -1950,7 +1950,7 @@ __metadata:
     "@srclaunch/dx": ^0.1.52
     "@srclaunch/exceptions": ^0.1.71
     "@srclaunch/node-environment": ^0.1.19
-    "@srclaunch/types": ^0.1.154
+    "@srclaunch/types": ^0.1.157
     "@types/diff": ^5.0.2
     "@types/fs-extra": ^9.0.13
     "@types/js-yaml": ^4.0.5
@@ -2007,7 +2007,7 @@ __metadata:
     latest-version: ^6.0.0
     luxon: ^2.3.2
     meow: ^10.1.2
-    nanoid: ^3.3.3
+    nanoid: ^3.3.4
     pluralize: ^8.0.0
     prettier: ^2.6.2
     react: ^17.0.2
@@ -2026,7 +2026,7 @@ __metadata:
     ts-node: ^10.7.0
     typescript: ^4.6.4
     update-notifier: ^5.1.0
-    vite: ^2.9.7
+    vite: ^2.9.8
   bin:
     srclaunch: dist/index.mjs
   languageName: unknown
@@ -2069,10 +2069,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.154":
-  version: 0.1.154
-  resolution: "@srclaunch/types@npm:0.1.154"
-  checksum: 53cc85d4213cf2cc2b3c8a3b5746968d562adb488778e89f185b57fa852b1369f76d60fc2380013e44fe409d5a4b29f3c016545896619f3fd5e323e9842fb58b
+"@srclaunch/types@npm:^0.1.157":
+  version: 0.1.157
+  resolution: "@srclaunch/types@npm:0.1.157"
+  checksum: e3568a1afe8ab8be4573413d8f1265a1fb80a1d0c9b8b87adc2919fda07f73c87aae64902827176c6c4f97580d3bcc5338558b4856405cfe842d9d01d5567e73
   languageName: node
   linkType: hard
 
@@ -8834,6 +8834,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "nanoid@npm:3.3.4"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 2fddd6dee994b7676f008d3ffa4ab16035a754f4bb586c61df5a22cf8c8c94017aadd360368f47d653829e0569a92b129979152ff97af23a558331e47e37cd9c
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -11751,9 +11760,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.9.7":
-  version: 2.9.7
-  resolution: "vite@npm:2.9.7"
+"vite@npm:^2.9.8":
+  version: 2.9.8
+  resolution: "vite@npm:2.9.8"
   dependencies:
     esbuild: ^0.14.27
     fsevents: ~2.3.2
@@ -11776,7 +11785,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: d3d2a86855709e037d244c3066e785d7b700e41bf59ceb776818ea06ee2ed579055c10596ca883dd56de46b3654ec82da53369062013a012a1a60819dbb7c0ee
+  checksum: 7de3450bec4caa06f4540d1d252563ef0b7e1bdd167d04abf03db72cfd8c9a93879e18861283bc7d075e1d094b78b71770ca36f9b965bdf28c66665eafdc29dc
   languageName: node
   linkType: hard
 

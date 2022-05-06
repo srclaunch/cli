@@ -342,7 +342,11 @@ export default new Command<Project, ResetFlags>({
       await add('.');
       await commit('Reset project');
 
-      await createRelease();
+      await createRelease({
+        changesets: config.changesets,
+        package: config.release?.package,
+        pipelines: config.release?.pipelines,
+      });
 
       if (flags.push) {
         const result = await push({ followTags: true });
