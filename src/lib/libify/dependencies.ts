@@ -73,10 +73,15 @@ import {
   GITHUB_DEV_DEPENDENCIES,
   JEST_REACT_TESTING_DEV_DEPENDENCIES,
   JEST_TESTING_DEV_DEPENDENCIES,
+  KEYGRIP_DEV_DEPENDENCIES,
+  LUXON_DEV_DEPENDENCIES,
+  MULTER_DEV_DEPENDENCIES,
   PRETTIER_DEV_DEPENDENCIES,
+  QUERY_STRING_DEV_DEPENDENCIES,
   REACT_DEV_DEPENDENCIES,
   REACT_ROUTER_DEV_DEPENDENCIES,
   RELEASE_DEV_DEPENDENCIES,
+  SEQUELIZE_DEV_DEPENDENCIES,
   SRCLAUNCH_CLI_DEV_DEPENDENCIES,
   SRCLAUNCH_DX_DEV_DEPENDENCIES,
   SRCLAUNCH_TYPES_DEV_DEPENDENCIES,
@@ -283,30 +288,21 @@ export function getPackageDevDependencies(package_: Package) {
       return REACT_ROUTER_DEV_DEPENDENCIES;
     case BrowserPackage.StyledComponents:
       return STYLED_COMPONENTS_DEV_DEPENDENCIES;
+
     case NodePackage.AsyncExitHook:
       return ASYNC_EXIT_HOOK_DEV_DEPENDENCIES;
     case NodePackage.Express:
       return EXPRESS_DEV_DEPENDENCIES;
-    case NodePackage.AwsSDK:
-      return AWS_SDK_DEPENDENCIES;
-    case NodePackage.Compression:
-      return COMPRESSION_DEPENDENCIES;
-    case NodePackage.CORS:
-      return CORS_DEPENDENCIES;
-    case NodePackage.Config:
-      return CONFIG_DEPENDENCIES;
     case NodePackage.Keygrip:
-      return KEYGRIP_DEPENDENCIES;
+      return KEYGRIP_DEV_DEPENDENCIES;
     case NodePackage.Multer:
-      return MULTER_DEPENDENCIES;
-    case NodePackage.Plaid:
-      return PLAID_DEPENDENCIES;
-    case NodePackage.SrcLaunchDataClient:
-      return SRCLAUNCH_DATA_CLIENT_DEPENDENCIES;
-    case NodePackage.SrcLaunchNodeEnvironment:
-      return SRCLAUNCH_NODE_ENVIRONMENT_DEPENDENCIES;
-    case NodePackage.SrcLaunchHttpServer:
-      return SRCLAUNCH_HTTP_SERVER_DEPENDENCIES;
+      return MULTER_DEV_DEPENDENCIES;
+    case NodePackage.Sequelize:
+      return SEQUELIZE_DEV_DEPENDENCIES;
+
+    case UniversalPackage.QueryString:
+      return QUERY_STRING_DEV_DEPENDENCIES;
+
     default:
       return;
   }
@@ -338,6 +334,7 @@ export async function getDevDependencies({
   github,
   jest,
   jestReact,
+  packages = [],
   prettier = true,
   react,
   reactRouter,
@@ -357,6 +354,7 @@ export async function getDevDependencies({
   github?: boolean;
   jest?: boolean;
   jestReact?: boolean;
+  packages?: Package[];
   prettier?: boolean;
   react?: boolean;
   reactRouter?: boolean;
@@ -373,6 +371,7 @@ export async function getDevDependencies({
 }): Promise<Record<string, string>> {
   return await getDependenciesLatestVersions({
     ...COMMON_DEV_DEPENDENCIES,
+    ...(await getDependencies(packages)),
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
     ...(github ? GITHUB_DEV_DEPENDENCIES : {}),

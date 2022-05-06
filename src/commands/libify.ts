@@ -7,14 +7,7 @@ import {
   CodeLinterTool,
   StaticTypingTool,
 } from '@srclaunch/types';
-import {
-  Cache,
-  Configuration,
-  InstallMode,
-  Project as YarnProject,
-  Report,
-  ThrowReport,
-} from '@yarnpkg/core';
+
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
 import Yaml from 'js-yaml';
@@ -349,7 +342,7 @@ export default new Command<Project, LibifyFlags>({
         updatedPackageJson.toString(),
       );
       const yml = Yaml.dump({
-        ...newPackageMetadata,
+        ...updatedPackageJsonContents,
         version: updatedPackageJsonContents.version,
       });
       await writeFile(path.resolve('./package.yml'), yml.toString());
