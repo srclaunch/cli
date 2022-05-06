@@ -7,11 +7,11 @@ import { readFile, writeFile } from '../lib/file-system';
 
 export async function createRelease({
   changesets,
-  package: packageOptions,
+  publish,
   pipelines,
 }: {
   changesets?: ChangesetOptions;
-  package: ReleaseOptions['package'];
+  publish: ReleaseOptions['publish'];
   pipelines: ReleaseOptions['pipelines'];
 }) {
   // https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.1.0/README.md

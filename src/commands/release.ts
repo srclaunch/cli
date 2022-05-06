@@ -27,9 +27,9 @@ export default new Command<Project, ReleaseFlags>({
   run: async ({ config, flags }) => {
     try {
       await createRelease({
-        changesets: config?.changesets,
-        package: config?.release?.package,
-        pipelines: config?.release?.pipelines,
+        changesets: config.changesets,
+        pipelines: config.release?.pipelines,
+        publish: config.release?.publish,
       });
 
       const updatedPackageJson = await readFile('./package.json');

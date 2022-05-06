@@ -103,7 +103,7 @@ export default new Command<Project, ResetFlags>({
       const test = Boolean(config.test) ?? Boolean(flags['test']);
 
       let exports = {};
-      for (const _export of config.release?.package?.exports ??
+      for (const _export of config.package?.exports ??
         PROJECT_PACKAGE_JSON_EXPORTS) {
         exports = {
           ...exports,
@@ -194,17 +194,16 @@ export default new Command<Project, ResetFlags>({
           yarn: config.requirements?.yarn ?? PROJECT_PACKAGE_JSON_ENGINES.yarn,
         },
         exports,
-        files: config.release?.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
-        license: config.release?.package?.publish?.license ?? License.MIT,
-        main: config.release?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
-        module: config.release?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
+        files: config.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
+        license: config.release?.publish?.license ?? License.MIT,
+        main: config?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
+        module: config?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
         name: config.name,
         peerDependencies: sortDependencies(peerDependencies),
         publishConfig: {
-          access: config?.release?.package?.publish?.access ?? 'private',
+          access: config?.release?.publish?.access ?? 'private',
           registry:
-            config.release?.package?.publish?.registry ??
-            'https://registry.npmjs.org/',
+            config.release?.publish?.registry ?? 'https://registry.npmjs.org/',
         },
         scripts: {
           ...getPackageScripts({
@@ -213,10 +212,10 @@ export default new Command<Project, ResetFlags>({
             run: config.run,
             test: Boolean(config.test),
           }),
-          ...config.release?.package?.scripts,
+          ...config?.package?.scripts,
         },
-        types: config.release?.package?.types ?? PROJECT_PACKAGE_JSON_TYPES,
-        type: config.release?.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
+        types: config.package?.types ?? PROJECT_PACKAGE_JSON_TYPES,
+        type: config.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
         version,
       });
 
@@ -344,8 +343,8 @@ export default new Command<Project, ResetFlags>({
 
       await createRelease({
         changesets: config.changesets,
-        package: config.release?.package,
         pipelines: config.release?.pipelines,
+        publish: config.release?.publish,
       });
 
       if (flags.push) {
