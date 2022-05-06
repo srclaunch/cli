@@ -6,6 +6,7 @@ import {
   CodeFormatterTool,
   CodeLinterTool,
   StaticTypingTool,
+  ChangeType,
 } from '@srclaunch/types';
 
 import { TypedFlags } from 'meow';
@@ -46,6 +47,7 @@ import {
 } from '../constants/project.js';
 import { writeToolingConfiguration } from '../lib/reset/tooling.js';
 import { createRelease } from '../lib/release.js';
+import { createChangeset } from '../lib/changesets.js';
 
 type ResetFlags = TypedFlags<{
   build: {
@@ -247,15 +249,25 @@ export default new Command<Project, ResetFlags>({
       await writeFile(path.resolve('./yarn.lock'), '');
       await writeFile(path.resolve('./.yarnrc.yml'), YARNRC_CONTENT);
 
-      await add('.');
-      await commit('Clean project');
-      await push({ followTags: false });
+      await createChangeset({
+        files: ['.'],
+        message: 'Clean installation cache',
+        type: ChangeType.Chore,
+      });
+
+      if (flags['push']) {
+        await push({ followTags: false });
+      }
 
       await writeFile('./.gitignore', GITIGNORE_CONTENT);
+      await add('');
+      await commit('');
 
-      await add('./.gitignore');
-      await commit('Update .gitignore');
-
+      await createChangeset({
+        files: ['./.gitignore'],
+        message: 'Update .gitignore',
+        type: ChangeType.Chore,
+      });
       console.info(`${chalk.green('✔')} project cleaned`);
 
       /* 
@@ -338,8 +350,11 @@ export default new Command<Project, ResetFlags>({
         await shellExec('yarn test');
       }
 
-      await add('.');
-      await commit('Reset project');
+      await createChangeset({
+        files: ['.'],
+        message: 'Project reset',
+        type: ChangeType.Chore,
+      });
 
       await createRelease({
         changesets: config.changesets,

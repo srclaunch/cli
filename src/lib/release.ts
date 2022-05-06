@@ -1,9 +1,10 @@
-import { ReleaseOptions, ChangesetOptions } from '@srclaunch/types';
+import { ReleaseOptions, ChangesetOptions, ChangeType } from '@srclaunch/types';
 import Yaml from 'js-yaml';
 import path from 'path';
 import standardVersion, { Options } from 'standard-version';
 import { DEFAULT_COMMIT_TYPES } from '../constants/releases';
 import { readFile, writeFile } from '../lib/file-system';
+import { createChangeset } from './changesets';
 
 export async function createRelease({
   changesets,
@@ -29,4 +30,10 @@ export async function createRelease({
     version: updatedPackageJsonContents.version,
   });
   await writeFile(path.resolve('./package.yml'), yml.toString());
+
+  createChangeset({
+    files: ['package.yml'],
+    type: ChangeType.Release,
+    message: `Release ${updatedPackageJsonContents.version}`,
+  });
 }

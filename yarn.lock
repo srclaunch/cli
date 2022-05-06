@@ -1950,7 +1950,7 @@ __metadata:
     "@srclaunch/dx": ^0.1.52
     "@srclaunch/exceptions": ^0.1.71
     "@srclaunch/node-environment": ^0.1.19
-    "@srclaunch/types": ^0.1.158
+    "@srclaunch/types": ^0.1.163
     "@types/diff": ^5.0.2
     "@types/fs-extra": ^9.0.13
     "@types/js-yaml": ^4.0.5
@@ -2069,10 +2069,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/types@npm:^0.1.158":
-  version: 0.1.158
-  resolution: "@srclaunch/types@npm:0.1.158"
-  checksum: 262d74fde738125ce6d94eec2c4d71edf7960797f44f4122c08aaf189b499d5b649545a0a8ca0788c904cb077ddc20c8666cbfd09b83e44cc5ebb8a8545e822b
+"@srclaunch/types@npm:^0.1.163":
+  version: 0.1.163
+  resolution: "@srclaunch/types@npm:0.1.163"
+  checksum: c73e355ddc9bb7f8baefa22d76c870a258f4f6ab2aebceeb51526fbfbb771a7ff75c139832aa98178d5cc94b0790071aa41650536f25fe536661c9f288e3df18
   languageName: node
   linkType: hard
 
