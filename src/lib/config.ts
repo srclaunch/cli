@@ -30,21 +30,19 @@ export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
       await writeFile(tempConfigPath, result.outputText);
 
       const tempConfig = await import(tempConfigPath);
-      console.log('tempConfig1', tempConfig);
+
       await deleteFile(tempConfigPath);
       await deleteDirectory(tempPath);
 
-      console.log('tempConfig2', tempConfig);
-
-      if (tempConfig && tempConfig.__esModule && tempConfig.default) {
+      if (tempConfig && tempConfig.default) {
         return tempConfig.default;
       }
 
       return tempConfig;
     } else if (await fileExists(jsConfigPath)) {
       let result = await import(jsConfigPath);
-      if (result && result.__esModule && result.default) {
-        result = result.default;
+      if (result && result.default) {
+        return result.default;
       }
       return result;
     } else if (await fileExists(jsonConfigPath)) {
