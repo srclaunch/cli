@@ -13,7 +13,9 @@ export async function createChangeset({
 }): Promise<{
   commitMessage: string;
 }> {
-  const paths = files.map(file => path.resolve(file)).join(' ');
+  const paths = files
+    .map(file => (file === '.' ? '.' : path.resolve(file)))
+    .join(' ');
 
   await add(paths);
 
