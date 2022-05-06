@@ -1949,7 +1949,7 @@ __metadata:
     "@rauschma/stringio": ^1.4.0
     "@srclaunch/dx": ^0.1.52
     "@srclaunch/exceptions": ^0.1.71
-    "@srclaunch/node-environment": ^0.1.19
+    "@srclaunch/node-environment": ^0.1.22
     "@srclaunch/types": ^0.1.167
     "@types/diff": ^5.0.2
     "@types/fs-extra": ^9.0.13
@@ -2062,10 +2062,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/node-environment@npm:^0.1.19":
-  version: 0.1.19
-  resolution: "@srclaunch/node-environment@npm:0.1.19"
-  checksum: 8b0ee014fc7de7338af499f87a336030eb847b72115bbbe606711d98f23b1f6a33972b5add28d235eed29a528fe57e8b24bc731165edd9a73b1d557cf3c77c06
+"@srclaunch/node-environment@npm:^0.1.22":
+  version: 0.1.22
+  resolution: "@srclaunch/node-environment@npm:0.1.22"
+  checksum: 20b5b8598aec99b5078eb4e7520572abaffe1f6c0f2f44f57b6c1483912a5befa072592edc98a49a5069841c933d97b30fd9b5c57a6d9d0e972859e9d0442472
   languageName: node
   linkType: hard
 

@@ -27,37 +27,18 @@ export default new Command<Project, ReleaseFlags>({
   description: 'Create a release',
   run: async ({ config, flags }) => {
     try {
-      await createRelease({
+      const result = await createRelease({
         changesets: config.changesets,
         pipelines: config.release?.pipelines,
         publish: config.release?.publish,
+        push: flags.push,
       });
 
-      const updatedPackageJson = await readFile('./package.json');
-      const updatedPackageJsonContents = JSON.parse(
-        updatedPackageJson.toString(),
+      console.log(
+        `${chalk.green('✔')} created release ${chalk.bold(result.version)} ${
+          flags.push ? `and pushed to ${chalk.bold(result.repo)}` : ``
+        } on branch ${chalk.bold(result.branch)}`,
       );
-      const yml = Yaml.dump({
-        ...updatedPackageJsonContents,
-        version: updatedPackageJsonContents.version,
-      });
-      await writeFile(path.resolve('./package.yml'), yml.toString());
-
-      await createChangeset({
-        files: ['package.yml'],
-        type: ChangeType.Release,
-        message: `Release ${updatedPackageJsonContents.version}`,
-      });
-
-      if (flags.push) {
-        const result = await push({ followTags: true });
-
-        console.log(
-          `${chalk.green('✔')} pushed release to ${chalk.bold(
-            result.repo,
-          )} on branch ${chalk.bold(await getBranchName())}`,
-        );
-      }
     } catch (err) {
       console.error('err', err);
     }

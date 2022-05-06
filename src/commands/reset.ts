@@ -361,7 +361,7 @@ export default new Command<Project, ResetFlags>({
         console.log(
           `${chalk.green('✔')} pushed release to ${chalk.bold(
             result.repo,
-          )} on branch ${chalk.bold(getBranchName())}`,
+          )} on branch ${chalk.bold(await getBranchName())}`,
         );
       }
 
