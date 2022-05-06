@@ -1,4 +1,5 @@
 import { Changeset } from '@srclaunch/types';
+import chalk from 'chalk';
 import path from 'path';
 import { add, commit } from './git';
 
@@ -14,5 +15,10 @@ export async function createChangeset({
 
   await add(paths);
 
-  await commit(`${type}${scope ? `(${scope})` : ''}: ${message}`);
+  const commitMessage = `${type}${scope ? `(${scope})` : ''}: ${message}`;
+  await commit(commitMessage);
+
+  console.log(
+    `${chalk.green('✔')} added changeset ${chalk.bold(commitMessage)}}`,
+  );
 }
