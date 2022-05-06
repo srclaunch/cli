@@ -12,6 +12,14 @@ export async function commit(message: string) {
   await git.commit(message);
 }
 
+export async function getBranchName() {
+  const git: SimpleGit = Git();
+
+  return await (
+    await git.branchLocal()
+  ).current;
+}
+
 export async function push({ followTags = true }: { followTags?: boolean }) {
   const git: SimpleGit = Git();
   const currentBranch = await (await git.branchLocal()).current;

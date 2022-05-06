@@ -22,7 +22,7 @@ import {
   writeFile,
 } from '../lib/file-system.js';
 import path from 'path';
-import { add, commit, push } from '../lib/git.js';
+import { add, commit, getBranchName, push } from '../lib/git.js';
 import { GITIGNORE_CONTENT } from '../constants/git.js';
 import { YARNRC_CONTENT } from '../constants/yarn.js';
 import { shellExec } from '../lib/cli.js';
@@ -51,6 +51,13 @@ type ResetFlags = TypedFlags<{
   build: {
     default: false;
     description: 'The library will only be built, and not tested.';
+    type: 'boolean';
+  };
+  push: {
+    alias: 'p';
+    default: false;
+    description: 'Pushes changes to remote repository';
+    isRequired: false;
     type: 'boolean';
   };
   react: {
@@ -333,28 +340,19 @@ export default new Command<Project, ResetFlags>({
       }
 
       await add('.');
-      await commit('Libified project');
+      await commit('Reset project');
 
       await createRelease();
 
-      const updatedPackageJson = await readFile('./package.json');
-      const updatedPackageJsonContents = JSON.parse(
-        updatedPackageJson.toString(),
-      );
-      const yml = Yaml.dump({
-        ...updatedPackageJsonContents,
-        version: updatedPackageJsonContents.version,
-      });
-      await writeFile(path.resolve('./package.yml'), yml.toString());
+      if (flags.push) {
+        const result = await push({ followTags: true });
 
-      const git: SimpleGit = Git();
-      const currentBranch = await (await git.branchLocal()).current;
-      const result = await push({ followTags: true });
-      console.log(
-        `${chalk.green('✔')} pushed release to ${chalk.bold(
-          result.repo,
-        )} on branch ${chalk.bold(currentBranch)}`,
-      );
+        console.log(
+          `${chalk.green('✔')} pushed release to ${chalk.bold(
+            result.repo,
+          )} on branch ${chalk.bold(getBranchName())}`,
+        );
+      }
 
       console.log(`${chalk.green('✔')} project reset`);
     } catch (err: any) {
