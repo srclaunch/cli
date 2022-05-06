@@ -39,21 +39,25 @@ export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
       }
 
       return tempConfig;
-    } else if (await fileExists(jsConfigPath)) {
+    }
+
+    if (await fileExists(jsConfigPath)) {
       let result = await import(jsConfigPath);
       if (result && result.default) {
         return result.default;
       }
       return result;
-    } else if (await fileExists(jsonConfigPath)) {
+    }
+
+    if (await fileExists(jsonConfigPath)) {
       const config = await readFile(jsonConfigPath);
 
       return await JSON.parse(config.toString());
-    } else {
-      throw new Error(
-        'Could not find .srclaunch/config.ts, .srclaunch/config.js, or .srclaunch/config.json',
-      );
     }
+
+    throw new Error(
+      'Could not find .srclaunch/config.ts, .srclaunch/config.js, or .srclaunch/config.json',
+    );
   } catch (err) {
     console.error(err);
     throw new Error(
