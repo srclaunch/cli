@@ -247,7 +247,7 @@ export default new Command<Project, ResetFlags>({
       await writeFile(path.resolve('./.yarnrc.yml'), YARNRC_CONTENT);
 
       await createChangeset({
-        files: ['.'],
+        files: '.',
         message: 'Clean installation cache',
         type: ChangeType.Chore,
       });
@@ -255,10 +255,6 @@ export default new Command<Project, ResetFlags>({
       if (flags['push']) {
         await push({ followTags: false });
       }
-
-      await writeFile('./.gitignore', GITIGNORE_CONTENT);
-      await add('');
-      await commit('');
 
       await createChangeset({
         files: ['./.gitignore'],
