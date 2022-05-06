@@ -238,9 +238,6 @@ export default new Command<Project, ResetFlags>({
         }
       }
 
-      // const projectType = config.type;
-
-      // // Clear Yarn cache
       await deleteDirectory(path.resolve('./node_modules'));
       await deleteDirectory(path.resolve('./coverage'));
       await deleteDirectory(path.resolve('./dist'));

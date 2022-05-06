@@ -8,14 +8,16 @@ export async function createChangeset({
   message,
   scope,
   type,
-}: Omit<Changeset, 'type'> & {
+}: Omit<Changeset, 'files' | 'type'> & {
+  files: string | string[];
   type: Changeset['type'] | string;
 }): Promise<{
   commitMessage: string;
 }> {
-  const paths = files
-    .map(file => (file === '.' ? '.' : path.resolve(file)))
-    .join(' ');
+  const paths =
+    typeof files === 'string'
+      ? files
+      : files.map(file => (file === '.' ? '.' : path.resolve(file))).join(' ');
 
   await add(paths);
 
