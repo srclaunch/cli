@@ -16,6 +16,12 @@ export default new Command({
       Project,
       TypedFlags<
         InteractiveModeFlag & {
+          files: {
+            alias: 'f';
+            description: 'A comma-separated list of files to add to the changeset';
+            isRequired: true;
+            type: 'string';
+          };
           message: {
             alias: 'm';
             description: 'A message describing the changes';
@@ -53,6 +59,7 @@ export default new Command({
         } else {
           try {
             const { commitMessage } = await createChangeset({
+              files: flags.files.split(','),
               message,
               scope,
               type,

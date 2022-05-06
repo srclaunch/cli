@@ -1,5 +1,4 @@
 import { Changeset } from '@srclaunch/types';
-import chalk from 'chalk';
 import path from 'path';
 import { add, commit } from './git';
 
