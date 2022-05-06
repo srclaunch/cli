@@ -1,6 +1,6 @@
 import { Project } from '@srclaunch/types';
-import { AnyFlag, TypedFlags } from 'meow';
-import Git, { SimpleGit } from 'simple-git';
+import { TypedFlags } from 'meow';
+import { add, commit } from '../lib/git';
 import { Command, CommandType } from '../lib/command.js';
 import { render } from 'ink';
 import { AppContainer } from '../containers/AppContainer.js';
@@ -38,7 +38,7 @@ export default new Command({
     >({
       name: 'add',
       description: 'Create a changeset',
-      run: async ({ cli, config, flags }) => {
+      run: async ({ cli, flags }) => {
         const message = flags.message;
 
         if (flags.interactive) {
@@ -52,9 +52,8 @@ export default new Command({
           await waitUntilExit();
         } else {
           try {
-            const git: SimpleGit = Git();
-            await git.add('.');
-            await git.commit(message);
+            await add('.');
+            await commit(message);
             console.log(`${chalk.green('✔')} added new changeset`);
           } catch (err) {
             console.error('commit err', err);
