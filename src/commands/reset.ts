@@ -123,7 +123,11 @@ export default new Command<Project, ResetFlags>({
         ),
         github: config.type === ProjectType.GitHubAction,
         jest: config.test?.tool === TestTool.Jest,
-        jestReact: config.test?.tool === TestTool.Jest || (flags.react && test),
+        jestReact:
+          config.test?.tool === TestTool.Jest ||
+          (flags.react && test) ||
+          (config.type === ProjectType.WebApplication && test) ||
+          (config.type === ProjectType.ComponentLibrary && test),
         prettier: config.environments?.development?.formatters?.includes(
           CodeFormatterTool.Prettier,
         ),
