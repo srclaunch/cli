@@ -27,7 +27,7 @@ export const PROJECT_PACKAGE_JSON_EXPORTS = [
 ];
 export const PROJECT_PACKAGE_JSON_COMMON_SCRIPTS = {
   yui: 'yarn upgrade-interactive',
-  qr: 'yarn srclaunch changesets add --message "Quick release" --type "chore" && yarn srclaunch release --push',
+  qr: 'yarn srclaunch changesets add --files "." --message "Quick release" --type "chore" && yarn srclaunch release --push',
 };
 export const PROJECT_PACKAGE_JSON_BUILD_SCRIPTS = {
   build: 'yarn srclaunch build',

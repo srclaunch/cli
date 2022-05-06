@@ -344,7 +344,7 @@ export default new Command<Project, ResetFlags>({
       }
 
       await createChangeset({
-        files: ['.'],
+        files: '.',
         message: 'Project reset',
         type: ChangeType.Chore,
       });
