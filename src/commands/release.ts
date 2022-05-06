@@ -1,20 +1,39 @@
 import { Project } from '@srclaunch/types';
 import { Command, CommandType } from '../lib/command.js';
 import { createRelease } from '../lib/release.js';
+import { push } from '../lib/git.js';
+import { TypedFlags } from 'meow';
+import { InteractiveModeFlag } from '../lib/flags.js';
 
-export default new Command<Project>({
+type ReleaseFlags = TypedFlags<
+  InteractiveModeFlag & {
+    push: {
+      alias: 'p';
+      default: false;
+      description: 'Pushes changes to remote repository';
+      isRequired: false;
+      type: 'boolean';
+    };
+  }
+>;
+
+export default new Command<Project, ReleaseFlags>({
   name: 'release',
   description: 'Create a release',
-  run: async () => {
+  run: async ({ flags }) => {
     try {
       await createRelease();
+
+      if (flags.push) {
+        await push({ followTags: true });
+      }
     } catch (err) {
       console.error('err', err);
     }
   },
   type: CommandType.Project,
   commands: [
-    new Command<Project>({
+    new Command<Project, ReleaseFlags>({
       name: 'help',
       description: 'Shows help for release commands',
       run: async () => {
