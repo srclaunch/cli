@@ -10,7 +10,9 @@ export async function createChangeset({
   type,
 }: Omit<Changeset, 'type'> & {
   type: Changeset['type'] | string;
-}) {
+}): Promise<{
+  commitMessage: string;
+}> {
   const paths = files.map(file => path.resolve(file)).join(' ');
 
   await add(paths);
@@ -18,7 +20,7 @@ export async function createChangeset({
   const commitMessage = `${type}${scope ? `(${scope})` : ''}: ${message}`;
   await commit(commitMessage);
 
-  console.log(
-    `${chalk.green('✔')} added changeset ${chalk.bold(commitMessage)}}`,
-  );
+  return {
+    commitMessage,
+  };
 }

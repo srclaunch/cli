@@ -52,8 +52,17 @@ export default new Command({
           await waitUntilExit();
         } else {
           try {
-            await createChangeset({ message, scope, type });
-            console.log(`${chalk.green('✔')} added new changeset`);
+            const { commitMessage } = await createChangeset({
+              message,
+              scope,
+              type,
+            });
+
+            console.log(
+              `${chalk.green('✔')} added changeset ${chalk.bold(
+                commitMessage,
+              )}}`,
+            );
           } catch (err) {
             console.error('commit err', err);
           }
