@@ -4,16 +4,16 @@ import { loadConfig } from 'unconfig';
 import { readFile } from './file-system';
 
 export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
-  const names = ['.srclaunchrc', 'srclaunch.config'];
+  const fileNames = ['.srclaunchrc', 'srclaunch.config'];
   const { config, sources } = await loadConfig<SrcLaunchConfig>({
     sources: [
       {
-        files: names,
+        files: fileNames,
         // default extensions
         extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
       },
       {
-        files: names,
+        files: fileNames,
         extensions: ['yml', 'yaml'],
         parser: async path => {
           const content = await readFile(path);
