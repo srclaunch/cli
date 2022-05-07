@@ -1,16 +1,17 @@
 import meow, { AnyFlags, TypedFlags } from 'meow';
 import updateNotifier, { Package } from 'update-notifier';
-import * as buildCommands from './commands/build.js';
-import * as changesetCommands from './commands/changesets.js';
-import * as helpCommands from './commands/help.js';
-import * as infrastructureCommands from './commands/infrastructure.js';
-import * as installCommands from './commands/install.js';
-import * as resetCommands from './commands/reset.js';
-import * as modelCommands from './commands/models.js';
-import * as projectCommands from './commands/projects.js';
-import * as releaseCommands from './commands/release.js';
-import * as runCommands from './commands/run.js';
-import * as testCommands from './commands/test.js';
+import buildCommands from './commands/build.js';
+import changesetCommands from './commands/changesets.js';
+import configCommands from './commands/config.js';
+import helpCommands from './commands/help.js';
+import infrastructureCommands from './commands/infrastructure.js';
+import installCommands from './commands/install.js';
+import resetCommands from './commands/reset.js';
+import modelCommands from './commands/models.js';
+import projectCommands from './commands/projects.js';
+import releaseCommands from './commands/release.js';
+import runCommands from './commands/run.js';
+import testCommands from './commands/test.js';
 
 import { getSrcLaunchConfig } from './lib/config.js';
 import { Command, CommandType, handleCommand } from './lib/command.js';
@@ -49,17 +50,18 @@ export async function main() {
       cli,
       command,
       commands: [
-        buildCommands.default,
-        changesetCommands.default,
-        helpCommands.default,
-        infrastructureCommands.default,
-        installCommands.default,
-        resetCommands.default,
-        modelCommands.default,
-        projectCommands.default,
-        releaseCommands.default,
-        runCommands.default,
-        testCommands.default,
+        buildCommands,
+        changesetCommands,
+        configCommands,
+        helpCommands,
+        infrastructureCommands,
+        installCommands,
+        resetCommands,
+        modelCommands,
+        projectCommands,
+        releaseCommands,
+        runCommands,
+        testCommands,
       ] as Command<any, TypedFlags<AnyFlags> & Record<string, unknown>>[],
       config,
       flags,
