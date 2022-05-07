@@ -2,13 +2,11 @@ import meow, { AnyFlags, TypedFlags } from 'meow';
 import updateNotifier, { Package } from 'update-notifier';
 import * as buildCommands from './commands/build.js';
 import * as changesetCommands from './commands/changesets.js';
-import * as devCommands from './commands/dev.js';
 import * as helpCommands from './commands/help.js';
 import * as infrastructureCommands from './commands/infrastructure.js';
 import * as installCommands from './commands/install.js';
 import * as resetCommands from './commands/reset.js';
 import * as modelCommands from './commands/models.js';
-import * as previewCommands from './commands/preview.js';
 import * as projectCommands from './commands/projects.js';
 import * as releaseCommands from './commands/release.js';
 import * as runCommands from './commands/run.js';
@@ -53,13 +51,11 @@ export async function main() {
       commands: [
         buildCommands.default,
         changesetCommands.default,
-        devCommands.default,
         helpCommands.default,
         infrastructureCommands.default,
         installCommands.default,
         resetCommands.default,
         modelCommands.default,
-        previewCommands.default,
         projectCommands.default,
         releaseCommands.default,
         runCommands.default,
