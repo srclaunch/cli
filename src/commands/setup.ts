@@ -23,6 +23,7 @@ import {
   writeFile,
 } from '../lib/file-system.js';
 import path from 'path';
+import ora from 'ora';
 import { add, commit, getBranchName, push } from '../lib/git.js';
 import { GITIGNORE_CONTENT } from '../constants/git.js';
 import { YARNRC_CONTENT } from '../constants/yarn.js';
@@ -90,16 +91,20 @@ type ResetFlags = TypedFlags<{
 }>;
 
 export default new Command<Project, ResetFlags>({
-  name: 'reset',
+  name: 'setup',
   description:
-    "The `reset` command cleans a project's cache and configures it with package.json scripts and Github Action workflows.",
+    'The "setup" command configures a project for use with SrcLaunch.',
   run: async ({ config, flags }) => {
+    const spinner = ora({
+      discardStdin: false,
+      text: chalk.cyanBright(
+        ` ${chalk.bold(config.name)} from SrcLaunch config...`,
+      ),
+      spinner: 'dots',
+    });
+
     try {
-      console.info(
-        chalk.cyanBright(
-          `Resetting ${chalk.bold(config.name)} from SrcLaunch config...`,
-        ),
-      );
+      spinner.start();
 
       const build = Boolean(config.build) ?? Boolean(flags['build']);
       const test = Boolean(config.test) ?? Boolean(flags['test']);
@@ -349,7 +354,7 @@ export default new Command<Project, ResetFlags>({
 
       await createChangeset({
         files: '.',
-        message: 'Project reset',
+        message: 'Project setup',
         type: ChangeType.Chore,
       });
 
@@ -370,8 +375,9 @@ export default new Command<Project, ResetFlags>({
       }
 
       console.log(`${chalk.green('✔')} project reset`);
+      spinner.succeed('Done!');
     } catch (err: any) {
-      console.error(chalk.red(err));
+      spinner.fail(chalk.red(err));
       process.exit(1);
     }
   },

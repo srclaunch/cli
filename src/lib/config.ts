@@ -1,5 +1,5 @@
 import Yaml from 'js-yaml';
-import { SrcLaunchConfig } from '@srclaunch/types';
+import { ProjectType, SrcLaunchConfig } from '@srclaunch/types';
 import { loadConfig } from 'unconfig';
 import { readFile } from './file-system';
 
@@ -46,7 +46,21 @@ export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
     merge: false,
   });
 
-  console.info('Loaded config from ' + sources.join(', '));
-
   return config;
+}
+
+export function isValidSrcLaunchConfig(
+  config?: SrcLaunchConfig & { type?: ProjectType | undefined },
+): boolean {
+  if (!config) {
+    return false;
+  }
+
+  if (config.type) {
+    if (!config.name) {
+      return false;
+    }
+  }
+
+  return false;
 }

@@ -6,7 +6,7 @@ import configCommands from './commands/config.js';
 import helpCommands from './commands/help.js';
 import infrastructureCommands from './commands/infrastructure.js';
 import installCommands from './commands/install.js';
-import resetCommands from './commands/reset.js';
+import setupCommands from './commands/setup.js';
 import modelCommands from './commands/models.js';
 import projectCommands from './commands/projects.js';
 import releaseCommands from './commands/release.js';
@@ -56,7 +56,7 @@ export async function main() {
         helpCommands,
         infrastructureCommands,
         installCommands,
-        resetCommands,
+        setupCommands,
         modelCommands,
         projectCommands,
         releaseCommands,
