@@ -1,3 +1,7 @@
+export const AMAZON_COGNITO_IDENTITY_JS_DEPENDENCIES = {
+  'amazon-cognito-identity-js': '^5.2.8',
+};
+
 export const ASYNC_EXIT_HOOK_DEPENDENCIES = {
   'async-exit-hook': '^2.0.1',
 };
@@ -49,6 +53,10 @@ export const EXPRESS_DEPENDENCIES = {
 
 export const HEX_RGB_DEPENDENCIES = {
   'hex-rgb': '^5.0.0',
+};
+
+export const HISTORY_DEPENDENCIES = {
+  history: '5.3.0',
 };
 
 export const JS_FILE_DOWNLOAD_DEPENDENCIES = {
