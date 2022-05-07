@@ -17,7 +17,11 @@ export type SrcLaunchProjectConfigGeneratorOptions<T = {}> = {
 } & T;
 
 export type SrcLaunchConfigGeneratorOutput<T = {}> = ConfigGeneratorOutput<
-  {} & T
+  {
+    name: string;
+    description: string;
+    type: Project['type'];
+  } & T
 >;
 
 export class SrcLaunchProjectConfigGenerator<
@@ -31,7 +35,7 @@ export class SrcLaunchProjectConfigGenerator<
     super({ ...input, file: { ...input.file, extension: 'json' } });
   }
 
-  override async generate(): Promise<void> {
+  override async generate(): Promise<SrcLaunchConfigGeneratorOutput<Out>> {
     const { name, description, type } = this.options;
 
     if (!name) {
@@ -48,12 +52,10 @@ export class SrcLaunchProjectConfigGenerator<
       throw new Error('SrcLaunchProjectConfigGenerator: type is required');
     }
 
-    const project: Project = {
+    return {
       name,
       description,
       type,
-    };
-
-    console.log('project', project);
+    } as SrcLaunchConfigGeneratorOutput<Out>;
   }
 }

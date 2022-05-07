@@ -13,7 +13,7 @@ export type GeneratorOutput<T = {}> = {
 } & T;
 
 interface GeneratorProps<Opt = {}, Out = {}> {
-  generate(): Promise<Out | void>;
+  generate(): Promise<Out>;
   readonly name: string;
   readonly description: string;
   options?: GeneratorOptions<Opt>;
@@ -30,7 +30,7 @@ export class Generator<Opt = {}, Out = {}> implements GeneratorProps<Opt, Out> {
     this.options = options as GeneratorOptions<Opt>;
   }
 
-  async generate() {
-    return;
+  async generate(): Promise<GeneratorOutput<Out>> {
+    return {} as GeneratorOutput<Out>;
   }
 }

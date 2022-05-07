@@ -14,6 +14,7 @@ export type FileGeneratorOptions<I = {}> = GeneratorOptions<
 export type FileGeneratorOutput<T = {}> = GeneratorOutput<
   {
     contents: string;
+    path: string;
   } & T
 >;
 
@@ -25,7 +26,7 @@ export class FileGenerator<Opt = {}, Out = {}> extends Generator<
     super(options);
   }
 
-  override async generate(): Promise<void> {
+  override async generate(): Promise<FileGeneratorOutput<Out>> {
     const { name, path = '', extension, contents } = this.options;
 
     if (!name) {
@@ -43,5 +44,10 @@ export class FileGenerator<Opt = {}, Out = {}> extends Generator<
     const filePath = `${path}/${name}.${extension}`;
 
     await writeFile(filePath, contents.toString());
+
+    return {
+      path: filePath,
+      contents,
+    } as FileGeneratorOutput<Out>;
   }
 }
