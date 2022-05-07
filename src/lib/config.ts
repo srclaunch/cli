@@ -219,6 +219,7 @@ export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
 export function isValidSrcLaunchConfig(
   config?: SrcLaunchConfig & { type?: ProjectType | undefined },
 ): boolean {
+  console.log('config', config);
   if (!config) {
     return false;
   }
