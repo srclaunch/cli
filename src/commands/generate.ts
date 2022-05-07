@@ -37,7 +37,12 @@ export default new Command({
               type: 'text',
               name: 'value',
               message: 'What do you want to name your project?',
-              validate: value => typeof value === 'string' && value.length > 0,
+              validate: value =>
+                typeof value === 'string' &&
+                value.length > 0 &&
+                value.match(
+                  /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/,
+                ),
             })
           ).value;
 
