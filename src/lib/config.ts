@@ -1,36 +1,16 @@
-import {
-  createDirectory,
-  deleteDirectory,
-  deleteFile,
-  fileExists,
-  readFile,
-  writeFile,
-} from './file-system';
-import path from 'node:path';
-import ts from 'typescript';
 import Yaml from 'js-yaml';
 import { SrcLaunchConfig } from '@srclaunch/types';
-import { CustomParser, loadConfig } from 'unconfig';
+import { loadConfig } from 'unconfig';
+import { readFile } from './file-system';
 
 export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
-  const names = ['.srclaunch', '.srclaunchrc', 'srclaunch', 'srclaunch.config'];
+  const names = ['.srclaunchrc', 'srclaunch.config'];
   const { config, sources } = await loadConfig<SrcLaunchConfig>({
     sources: [
       {
         files: names,
         // default extensions
-        extensions: [
-          'ts',
-          'mts',
-          'cts',
-          'js',
-          'mjs',
-          'cjs',
-          'json',
-          'yml',
-          'yaml',
-          '',
-        ],
+        extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
       },
       {
         files: names,
