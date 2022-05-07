@@ -4,6 +4,7 @@ import buildCommands from './commands/build.js';
 import changesetCommands from './commands/changesets.js';
 import configCommands from './commands/config.js';
 import helpCommands from './commands/help.js';
+import generateCommands from './commands/generate.js';
 import infrastructureCommands from './commands/infrastructure.js';
 import installCommands from './commands/install.js';
 import setupCommands from './commands/setup.js';
@@ -53,6 +54,7 @@ export async function main() {
         buildCommands,
         changesetCommands,
         configCommands,
+        generateCommands,
         helpCommands,
         infrastructureCommands,
         installCommands,

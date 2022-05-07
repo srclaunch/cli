@@ -13,7 +13,21 @@ export default new Command({
       run: async () => {
         const config = await getSrcLaunchConfig();
 
-        console.info('config', config);
+        if (config) {
+          console.info(`${chalk.green('✔')} project cleaned`);
+        }
+      },
+    }),
+    new Command({
+      name: 'create',
+      description:
+        'Creates a SrcLaunch configuration file in the current directory.',
+      run: async () => {
+        const config = await getSrcLaunchConfig();
+
+        if (config) {
+          console.info(`${chalk.green('✔')} project cleaned`);
+        }
       },
     }),
   ],

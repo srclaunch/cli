@@ -1,19 +1,186 @@
 import Yaml from 'js-yaml';
-import { ProjectType, SrcLaunchConfig } from '@srclaunch/types';
+import {
+  BuildFormat,
+  BuildPlatform,
+  BuildTarget,
+  BuildTool,
+  CodeFormatterTool,
+  CodeLinterTool,
+  Project,
+  ProjectType,
+  SrcLaunchConfig,
+  StaticTypingTool,
+  TestReporter,
+  TestTool,
+} from '@srclaunch/types';
 import { loadConfig } from 'unconfig';
-import { readFile } from './file-system';
+import { readFile, writeFile } from './file-system';
+
+export type SrcLaunchConfigFile = {
+  name: '.srclaunchrc' | 'srclaunch.config';
+  extension?:
+    | 'ts'
+    | 'mts'
+    | 'cts'
+    | 'js'
+    | 'mjs'
+    | 'cjs'
+    | 'json'
+    | 'yaml'
+    | 'yml';
+};
+
+const CONFIG_FILE_NAMES = ['.srclaunchrc', 'srclaunch.config'];
+
+export function getDefaultSrcLaunchProjectConfig(): Omit<
+  Project,
+  'name' | 'type'
+> {
+  return {
+    build: {
+      input: {
+        directory: 'src',
+        file: 'index.ts',
+      },
+      formats: [BuildFormat.ESM, BuildFormat.UMD],
+      platform: BuildPlatform.Browser,
+      target: BuildTarget.ESNext,
+      tool: BuildTool.Vite,
+    },
+    environments: {
+      development: {
+        formatters: [CodeFormatterTool.Prettier],
+        linters: [CodeLinterTool.ESLint],
+        staticTyping: [StaticTypingTool.TypeScript],
+      },
+    },
+    test: {
+      coverage: {
+        reporters: [TestReporter.Lcov, TestReporter.JSONSummary],
+      },
+      tool: TestTool.Jest,
+    },
+    requirements: {
+      node: '>=16',
+      yarn: '>=3.2.0',
+      srclaunch: {
+        dx: true,
+        cli: true,
+        types: true,
+      },
+    },
+  };
+}
+
+export async function createSrcLaunchProjectConfig({
+  file = {
+    name: '.srclaunchrc',
+    extension: 'ts',
+  },
+  ...project
+}: Project & {
+  file?: SrcLaunchConfigFile;
+}): Promise<void> {
+  switch (file.extension) {
+    case 'ts':
+    case 'mts':
+    case 'cts':
+      await writeSrcLaunchConfig({
+        config: constructSrcLaunchProjectTSConfig(project),
+      });
+    case 'js':
+    case 'mjs':
+    case 'cjs':
+    case 'json':
+    case 'yaml':
+    case 'yml':
+  }
+}
+
+export function constructSrcLaunchProjectTSConfig(config?: Project): string {
+  return `import {
+    BuildFormat,
+    BuildPlatform,
+    BuildTarget,
+    BuildTool,
+    CodeFormatterTool,
+    CodeLinterTool,
+    Project,
+    ProjectType,
+    SrcLaunchConfig,
+    StaticTypingTool,
+    TestReporter,
+    TestTool,
+  } from '@srclaunch/types';
+
+const config: Project = {
+  name: '${config?.name}',
+  description: '${config?.description}',
+  build: {
+    input: {
+      directory: 'src',
+      file: 'index.ts',
+    },
+    formats: [BuildFormat.ESM, BuildFormat.UMD],
+    platform: BuildPlatform.Browser,
+    target: BuildTarget.ESNext,
+    tool: BuildTool.Vite,
+  },
+  environments: {
+    development: {
+      formatters: [CodeFormatterTool.Prettier],
+      linters: [CodeLinterTool.ESLint],
+      staticTyping: [StaticTypingTool.TypeScript],
+    },
+  },
+  test: {
+    coverage: {
+      reporters: [TestReporter.Lcov, TestReporter.JSONSummary],
+    },
+    tool: TestTool.Jest,
+  },
+  requirements: {
+    node: '>=16',
+    yarn: '>=3.2.0',
+    srclaunch: {
+      dx: true,
+      cli: true,
+      types: true,
+    },
+  },
+};
+
+export default config;`;
+}
+
+export async function constructSrcLaunchJSConfig({
+  name,
+  description,
+  type,
+}: Project): string {}
+
+export async function constructSrcLaunchJSONConfig({
+  name,
+  description,
+  type,
+}: Project): string {}
+
+export async function constructSrcLaunchYAMLConfig({
+  name,
+  description,
+  type,
+}: Project): string {}
 
 export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
-  const fileNames = ['.srclaunchrc', 'srclaunch.config'];
   const { config, sources } = await loadConfig<SrcLaunchConfig>({
     sources: [
       {
-        files: fileNames,
+        files: CONFIG_FILE_NAMES,
         // default extensions
         extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
       },
       {
-        files: fileNames,
+        files: CONFIG_FILE_NAMES,
         extensions: ['yml', 'yaml'],
         parser: async path => {
           const content = await readFile(path);
@@ -63,4 +230,14 @@ export function isValidSrcLaunchConfig(
   }
 
   return false;
+}
+
+export async function writeSrcLaunchConfig({
+  config,
+  file = { name: '.srclaunchrc', extension: 'ts' },
+}: {
+  config: string;
+  file?: SrcLaunchConfigFile;
+}): Promise<void> {
+  await writeFile(`${file.name}.${file.extension}`, config);
 }
