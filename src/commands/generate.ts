@@ -72,8 +72,6 @@ export default new Command({
             })
           ).value;
 
-        console.log('config exists', Boolean(config));
-
         const configGenerator = new SrcLaunchProjectConfigGenerator({
           description,
           file: { extension: 'ts', name: '.srclaunchrc' },

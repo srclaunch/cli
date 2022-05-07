@@ -52,10 +52,8 @@ export class SrcLaunchProjectConfigGenerator<
       throw new Error('SrcLaunchProjectConfigGenerator: type is required');
     }
 
-    return {
-      name,
-      description,
-      type,
-    } as SrcLaunchConfigGeneratorOutput<Out>;
+    this.output = await super.generate();
+
+    return this.output;
   }
 }

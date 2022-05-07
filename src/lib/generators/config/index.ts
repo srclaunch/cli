@@ -14,4 +14,10 @@ export class ConfigGenerator<Opt = {}, Out = {}> extends FileGenerator<
   constructor(options: FileGeneratorOptions<Opt>) {
     super(options);
   }
+
+  override async generate(): Promise<ConfigGeneratorOutput<Out>> {
+    this.output = await super.generate();
+
+    return this.output;
+  }
 }

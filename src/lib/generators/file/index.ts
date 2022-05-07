@@ -45,9 +45,8 @@ export class FileGenerator<Opt = {}, Out = {}> extends Generator<
 
     await writeFile(filePath, contents.toString());
 
-    return {
-      path: filePath,
-      contents,
-    } as FileGeneratorOutput<Out>;
+    this.output = await super.generate();
+
+    return this.output;
   }
 }
