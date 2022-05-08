@@ -3,8 +3,8 @@ import {
   ConfigGenerator,
   ConfigGeneratorOptions,
   ConfigGeneratorOutput,
-} from '.';
-import { SrcLaunchConfigFile } from '../../config';
+} from '..';
+import { SrcLaunchConfigFile } from '../../../config';
 
 export type SrcLaunchProjectConfigGeneratorOptions<T = {}> = {
   file?: ConfigGeneratorOptions<{

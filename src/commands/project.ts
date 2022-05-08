@@ -55,7 +55,7 @@ import {
   promptForProjectOptions,
   promptForProjectCreate,
 } from '../prompts/generators/srclaunch/project.js';
-import { SrcLaunchProjectConfigGenerator } from '../lib/generators/config/srclaunch-project.js';
+import { SrcLaunchProjectConfigGenerator } from '../lib/generators/config/srclaunch/project.js';
 
 type ProjectSetupFlags = TypedFlags<{
   build: {

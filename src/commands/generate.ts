@@ -3,7 +3,7 @@ import prompts from 'prompts';
 import { Project, ProjectType } from '@srclaunch/types';
 import { getSrcLaunchConfig } from '../lib/config.js';
 import { Command } from '../lib/command.js';
-import { SrcLaunchProjectConfigGenerator } from '../lib/generators/config/srclaunch-project.js';
+import { SrcLaunchProjectConfigGenerator } from '../lib/generators/config/srclaunch/project.js';
 import { TypedFlags } from 'meow';
 import {
   promptForProjectDescription,

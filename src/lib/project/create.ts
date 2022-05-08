@@ -7,7 +7,7 @@ import {
   promptForProjectOptions,
   promptForProjectType,
 } from '../../prompts/generators/srclaunch/project';
-import { SrcLaunchProjectConfigGenerator } from '../generators/config/srclaunch-project';
+import { SrcLaunchProjectConfigGenerator } from '../generators/config/srclaunch/project';
 
 export async function createNewProjectInteractive({
   name,
@@ -46,5 +46,7 @@ export async function createNewProjectInteractive({
     const result = await configGenerator.generate();
 
     console.log('result', result);
+
+    return result;
   }
 }
