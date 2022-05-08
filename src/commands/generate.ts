@@ -29,7 +29,7 @@ export type GenerateSrcLaunchProjectFlags = TypedFlags<{
 
 export default new Command({
   name: 'generate',
-  description: `Shows help for ${chalk.bold('generate')} commands`,
+  description: `Generate code, configuration, and files for various patterns and libraries.`,
   commands: [
     new Command<Project, GenerateSrcLaunchProjectFlags>({
       name: 'srclaunch-project-config',
