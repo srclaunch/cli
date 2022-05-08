@@ -12,14 +12,14 @@ export type SrcLaunchProjectConfigGeneratorOptions<T = {}> = {
     name: SrcLaunchConfigFile['name'];
   }>;
   name: string;
-  description: string;
+  description?: string;
   type: Project['type'];
 } & T;
 
 export type SrcLaunchConfigGeneratorOutput<T = {}> = ConfigGeneratorOutput<
   {
     name: string;
-    description: string;
+    description?: string;
     type: Project['type'];
   } & T
 >;

@@ -7,9 +7,8 @@ import helpCommands from './commands/help.js';
 import generateCommands from './commands/generate.js';
 import infrastructureCommands from './commands/infrastructure.js';
 import installCommands from './commands/install.js';
-import setupCommands from './commands/setup.js';
 import modelCommands from './commands/models.js';
-import projectCommands from './commands/projects.js';
+import projectCommands from './commands/project.js';
 import releaseCommands from './commands/release.js';
 import runCommands from './commands/run.js';
 import testCommands from './commands/test.js';
@@ -58,7 +57,6 @@ export async function main() {
         helpCommands,
         infrastructureCommands,
         installCommands,
-        setupCommands,
         modelCommands,
         projectCommands,
         releaseCommands,

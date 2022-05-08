@@ -157,19 +157,25 @@ export async function constructSrcLaunchJSConfig({
   name,
   description,
   type,
-}: Project): string {}
+}: Project): Promise<string> {
+  return '';
+}
 
 export async function constructSrcLaunchJSONConfig({
   name,
   description,
   type,
-}: Project): string {}
+}: Project): Promise<string> {
+  return '';
+}
 
 export async function constructSrcLaunchYAMLConfig({
   name,
   description,
   type,
-}: Project): string {}
+}: Project): Promise<string> {
+  return '';
+}
 
 export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
   const { config, sources } = await loadConfig<SrcLaunchConfig>({
@@ -219,18 +225,17 @@ export async function getSrcLaunchConfig(): Promise<SrcLaunchConfig> {
 export function isValidSrcLaunchConfig(
   config?: SrcLaunchConfig & { type?: ProjectType | undefined },
 ): boolean {
-  console.log('config', config);
   if (!config) {
     return false;
   }
 
-  if (config.type) {
-    if (!config.name) {
-      return false;
-    }
+  if (!config.name || !config.description || !config.type) {
+    return false;
   }
 
-  return false;
+  // TODO: Add more checks here
+
+  return true;
 }
 
 export async function writeSrcLaunchConfig({
