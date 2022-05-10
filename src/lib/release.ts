@@ -26,7 +26,7 @@ export async function createRelease({
   await standardVersion({
     noVerify: true,
     infile: 'CHANGELOG.md',
-    silent: false,
+    silent: true,
     types: (changesets?.types ?? DEFAULT_COMMIT_TYPES) as Options['types'],
   });
 
