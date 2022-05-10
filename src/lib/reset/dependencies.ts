@@ -354,7 +354,7 @@ export async function getDevDependencies({
     types: true,
   },
   styledComponents,
-  stylelint = true,
+  stylelint = false,
   testCoverage,
   typescript = true,
 }: {

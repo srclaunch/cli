@@ -239,7 +239,7 @@ export default new Command<Workspace & Project>({
             }
           }
           await generateFile({
-            contents: JSON.stringify(packageJSON, null, 2),
+            contents: packageJSON,
             name: 'package',
             extension: 'json',
           });
