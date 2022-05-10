@@ -85,10 +85,6 @@ export const REACT_ROUTER_DEV_DEPENDENCIES = {
   '@types/react-router-dom': '^5.3.3',
 };
 
-export const RELEASE_DEV_DEPENDENCIES = {
-  'standard-version': '^9.3.2',
-};
-
 export const SEQUELIZE_DEV_DEPENDENCIES = {
   '@types/pg': '^8.6.5',
   '@types/pluralize': '^0.0.29',
