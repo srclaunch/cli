@@ -6,7 +6,7 @@ export const AVA_TESTING_DEV_DEPENDENCIES = {
   ava: '^4.2.0',
 };
 
-export const COMMON_DEV_DEPENDENCIES = {
+export const COMMON_NODE_PLATFORM_DEV_DEPENDENCIES = {
   '@types/node': '^17.0.30',
 };
 

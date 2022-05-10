@@ -7,7 +7,9 @@ import {
   BrowserPackage,
   NodePackage,
   Package,
+  Platform,
   Project,
+  ProjectType,
   UniversalPackage,
 } from '@srclaunch/types';
 import {
@@ -70,7 +72,7 @@ import {
 import {
   ASYNC_EXIT_HOOK_DEV_DEPENDENCIES,
   AVA_TESTING_DEV_DEPENDENCIES,
-  COMMON_DEV_DEPENDENCIES,
+  COMMON_NODE_PLATFORM_DEV_DEPENDENCIES,
   ESLINT_DEV_DEPENDENCIES,
   EXPRESS_DEV_DEPENDENCIES,
   GITHUB_DEV_DEPENDENCIES,
@@ -93,6 +95,7 @@ import {
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
 import chalk from 'chalk';
+import { sortDependencies } from '../project/dependencies';
 
 const emoji = {
   log: '\u26aa\ufe0f',
@@ -102,6 +105,108 @@ const emoji = {
   error: '\ud83d\udd34',
   success: '\u2705',
 };
+
+export function getPlatformDependencies(platform?: Platform) {
+  switch (platform) {
+    case Platform.Desktop:
+      return [];
+    case Platform.Mobile:
+      return [];
+    case Platform.NodeJS:
+      return [];
+    case Platform.TV:
+      return [];
+    case Platform.Universal:
+      return {};
+    case Platform.Watch:
+      return [];
+    case Platform.Web:
+      return [];
+  }
+}
+
+export function getPlatformDevDependencies(platform?: Platform) {
+  switch (platform) {
+    case Platform.Desktop:
+      return {};
+    case Platform.Mobile:
+      return {};
+    case Platform.NodeJS:
+      return { ...COMMON_NODE_PLATFORM_DEV_DEPENDENCIES };
+    case Platform.TV:
+      return {};
+    case Platform.Universal:
+      return {};
+    case Platform.Watch:
+      return {};
+    case Platform.Web:
+      return {};
+  }
+}
+
+export function getProjectTypeDependencies(type: ProjectType) {
+  switch (type) {
+    case ProjectType.APIService:
+    case ProjectType.CLIApplication:
+    case ProjectType.ComponentLibrary:
+    case ProjectType.CoreAPI:
+    case ProjectType.DesktopApplication:
+    case ProjectType.GitHubApp:
+    case ProjectType.GitHubAction:
+    case ProjectType.FiniteStateMachine:
+    case ProjectType.Function:
+    case ProjectType.NodeApplication:
+    case ProjectType.TaskQueue:
+    case ProjectType.UniversalApplication:
+    case ProjectType.WebApplication:
+    case ProjectType.WebHook:
+    case ProjectType.WebService:
+    case ProjectType.WebSocketService:
+    default:
+      return {};
+  }
+}
+
+export function getProjectTypeDevDependencies(type?: ProjectType) {
+  switch (type) {
+    case ProjectType.APIService:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.CLIApplication:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.ComponentLibrary:
+      return getPlatformDevDependencies(Platform.Web);
+    case ProjectType.CoreAPI:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.DesktopApplication:
+      return getPlatformDevDependencies(Platform.Desktop);
+    case ProjectType.GitHubApp:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.GitHubAction:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.FiniteStateMachine:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.Function:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.Library:
+      return {};
+    case ProjectType.NodeApplication:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.TaskQueue:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.UniversalApplication:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.WebApplication:
+      return getPlatformDevDependencies(Platform.Web);
+    case ProjectType.WebHook:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.WebService:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    case ProjectType.WebSocketService:
+      return getPlatformDevDependencies(Platform.NodeJS);
+    default:
+      return {};
+  }
+}
 
 export async function getDependenciesLatestVersions(packages: {
   [key: string]: string;
@@ -335,7 +440,7 @@ export async function getDependencies(packages?: Package[]) {
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
-  return dependenciesLatestVersions;
+  return sortDependencies(dependenciesLatestVersions);
 }
 
 export async function getDevDependencies({
@@ -346,6 +451,7 @@ export async function getDevDependencies({
   jestReact,
   packages = [],
   prettier,
+  project,
   react,
   reactRouter,
   srclaunch,
@@ -361,6 +467,7 @@ export async function getDevDependencies({
   jestReact?: boolean;
   packages?: Package[];
   prettier?: boolean;
+  project?: Project;
   react?: boolean;
   reactRouter?: boolean;
   srclaunch?: {
@@ -374,7 +481,7 @@ export async function getDevDependencies({
   typescript?: boolean;
 }): Promise<Record<string, string>> {
   return await getDependenciesLatestVersions({
-    ...COMMON_DEV_DEPENDENCIES,
+    ...getProjectTypeDevDependencies(project?.type),
     ...(await getDependencies(packages)),
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
