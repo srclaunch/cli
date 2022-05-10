@@ -186,11 +186,9 @@ export default new Command<Workspace & Project>({
             author: 'Steven Bennett <steven@srclaunch.com>',
             version: existingPackageJSON.version ?? '0.0.0',
             engines: {
-              node:
-                config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
-              npm: config.requirements?.npm ?? PROJECT_PACKAGE_JSON_ENGINES.npm,
-              yarn:
-                config.requirements?.yarn ?? PROJECT_PACKAGE_JSON_ENGINES.yarn,
+              node: config.requirements?.node,
+              npm: config.requirements?.npm,
+              yarn: config.requirements?.yarn,
             },
             license:
               config.release?.publish?.license ?? PROJECT_PACKAGE_JSON_LICENSE,
@@ -201,10 +199,12 @@ export default new Command<Workspace & Project>({
                 'https://registry.npmjs.org/',
             },
             type: config.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
-            main: config?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
-            types: config.package?.types ?? PROJECT_PACKAGE_JSON_TYPES,
+            main: config?.package?.main,
+            types: config?.environments?.development?.staticTyping?.length
+              ? config.package?.types ?? PROJECT_PACKAGE_JSON_TYPES
+              : undefined,
             files: config.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
-            module: config?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
+            module: config?.package?.module,
             exports: config.package?.exports ?? PROJECT_PACKAGE_JSON_EXPORTS,
             scripts: {
               ...getPackageScripts({
