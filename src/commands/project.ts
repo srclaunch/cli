@@ -171,17 +171,11 @@ export default new Command<Workspace & Project>({
           const existingPackageJsonContents = await JSON.parse(
             (await readFile('./package.json')).toString(),
           );
-
           const packageJSON = generatePackageJSON({
-            author: 'Steven Bennett <steven@srclaunch.com>',
-            dependencies: sortDependencies(
-              await getDependencies(config.requirements?.packages),
-            ),
+            name: config.name,
             description: config.description,
-            devDependencies: sortDependencies({
-              ...coreDevDependencies,
-              ...(await getDependencies(config.requirements?.devPackages)),
-            }),
+            author: 'Steven Bennett <steven@srclaunch.com>',
+            version: existingPackageJsonContents.version ?? '0.0.0',
             engines: {
               node:
                 config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
@@ -189,22 +183,20 @@ export default new Command<Workspace & Project>({
               yarn:
                 config.requirements?.yarn ?? PROJECT_PACKAGE_JSON_ENGINES.yarn,
             },
-            exports: config.package?.exports ?? PROJECT_PACKAGE_JSON_EXPORTS,
-            files: config.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
             license:
               config.release?.publish?.license ?? PROJECT_PACKAGE_JSON_LICENSE,
-            main: config?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
-            module: config?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
-            name: config.name,
-            peerDependencies: sortDependencies(
-              await getDependencies(config.requirements?.peerPackages),
-            ),
             publishConfig: {
               access: config?.release?.publish?.access ?? 'private',
               registry:
                 config.release?.publish?.registry ??
                 'https://registry.npmjs.org/',
             },
+            type: config.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
+            main: config?.package?.main ?? PROJECT_PACKAGE_JSON_MAIN,
+            types: config.package?.types ?? PROJECT_PACKAGE_JSON_TYPES,
+            files: config.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
+            module: config?.package?.module ?? PROJECT_PACKAGE_JSON_MODULE,
+            exports: config.package?.exports ?? PROJECT_PACKAGE_JSON_EXPORTS,
             scripts: {
               ...getPackageScripts({
                 build: Boolean(config.build) || flags['build'],
@@ -214,9 +206,16 @@ export default new Command<Workspace & Project>({
               }),
               ...config?.package?.scripts,
             },
-            types: config.package?.types ?? PROJECT_PACKAGE_JSON_TYPES,
-            type: config.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
-            version: existingPackageJsonContents.version ?? '0.0.0',
+            dependencies: sortDependencies(
+              await getDependencies(config.requirements?.packages),
+            ),
+            devDependencies: sortDependencies({
+              ...coreDevDependencies,
+              ...(await getDependencies(config.requirements?.devPackages)),
+            }),
+            peerDependencies: sortDependencies(
+              await getDependencies(config.requirements?.peerPackages),
+            ),
           });
 
           const diff = diffJson(existingPackageJsonContents, packageJSON);
@@ -247,7 +246,7 @@ export default new Command<Workspace & Project>({
             contents: await generateYarnConfig({
               nodeLinker: YarnNodeLinker.NodeModules,
             }),
-            extension: '.yml',
+            extension: 'yml',
             name: '.yarnrc',
           });
 
@@ -273,17 +272,18 @@ export default new Command<Workspace & Project>({
           });
 
           spinner.succeed('project cleaned');
-          // console.info(`${chalk.green('✔')} project cleaned`);
 
           /* 
             Create a GitHub Action workflow file based on the project
             configuration.
           */
           spinner.start('Creating GitHub Actions public workflow...');
-          await writeFile(
-            './.github/workflows/publish.yml',
-            getPublishYml({ build, test }),
-          );
+          await generateFile({
+            contents: getPublishYml({ build, test }),
+            extension: 'yml',
+            name: 'publish',
+            path: '.github/workflows/',
+          });
           spinner.succeed('added GitHub Actions publish workflow');
 
           /*
