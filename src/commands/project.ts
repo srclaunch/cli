@@ -167,7 +167,7 @@ export default new Command<Workspace & Project>({
             typescript:
               config?.environments?.development?.staticTyping?.includes(
                 StaticTypingTool.TypeScript,
-              ) ?? true,
+              ),
           });
 
           const devDependencies = await getDependencies(
