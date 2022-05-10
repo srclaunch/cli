@@ -314,9 +314,7 @@ export default new Command<Workspace & Project>({
             formatters: config.environments?.development?.formatters,
             linters: config.environments?.development?.linters,
             project: config,
-            staticTyping: config.environments?.development?.staticTyping ?? [
-              StaticTypingTool.TypeScript,
-            ],
+            staticTyping: config.environments?.development?.staticTyping,
           });
           spinner.succeed('Created DX tooling configurations');
 
