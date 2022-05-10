@@ -134,14 +134,56 @@ export default new Command<Workspace & Project>({
           const test = Boolean(config.test) ?? Boolean(flags['test']);
 
           spinner.start('Updating dependencies...');
-          const existingPackageJson = await JSON.parse(
+          const existingPackageJSON = await JSON.parse(
             (await readFile('package.json')).toString(),
           );
-          const packageJSON = generatePackageJSON({
+          const coreDevDependencies = await getDevDependencies({
+            ava: config.test?.tool === TestTool.Ava,
+            eslint: config.environments?.development?.linters?.includes(
+              CodeLinterTool.ESLint,
+            ),
+            github: config.type === ProjectType.GitHubAction,
+            jest: config.test?.tool === TestTool.Jest,
+            jestReact:
+              config.test?.tool === TestTool.Jest ||
+              (flags.react && test) ||
+              (config.type === ProjectType.WebApplication && test) ||
+              (config.type === ProjectType.ComponentLibrary && test),
+            prettier: config.environments?.development?.formatters?.includes(
+              CodeFormatterTool.Prettier,
+            ),
+            react:
+              config?.type === ProjectType.WebApplication ||
+              config?.type === ProjectType.ComponentLibrary ||
+              flags.react,
+            reactRouter: flags.reactRouter,
+            srclaunch: config?.requirements?.srclaunch,
+            styledComponents: flags.styledComponents,
+            stylelint: config.environments?.development?.linters?.includes(
+              CodeLinterTool.Stylelint,
+            ),
+            testCoverage: Boolean(config.test?.coverage),
+            typescript:
+              config?.environments?.development?.staticTyping?.includes(
+                StaticTypingTool.TypeScript,
+              ) ?? true,
+          });
+
+          const devDependencies = await getDependencies(
+            config.requirements?.devPackages,
+          );
+          const dependencies = await getDependencies(
+            config.requirements?.packages,
+          );
+          const peerDependencies = await getDependencies(
+            config.requirements?.peerPackages,
+          );
+
+          const packageJSON = await generatePackageJSON({
             name: config.name,
             description: config.description,
             author: 'Steven Bennett <steven@srclaunch.com>',
-            version: existingPackageJson.version ?? '0.0.0',
+            version: existingPackageJSON.version ?? '0.0.0',
             engines: {
               node:
                 config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
@@ -172,50 +214,15 @@ export default new Command<Workspace & Project>({
               }),
               ...config?.package?.scripts,
             },
-            dependencies: sortDependencies(
-              await getDependencies(config.requirements?.packages),
-            ),
-            devDependencies: sortDependencies({
-              ...(await getDevDependencies({
-                ava: config.test?.tool === TestTool.Ava,
-                eslint: config.environments?.development?.linters?.includes(
-                  CodeLinterTool.ESLint,
-                ),
-                github: config.type === ProjectType.GitHubAction,
-                jest: config.test?.tool === TestTool.Jest,
-                jestReact:
-                  config.test?.tool === TestTool.Jest ||
-                  (flags.react && test) ||
-                  (config.type === ProjectType.WebApplication && test) ||
-                  (config.type === ProjectType.ComponentLibrary && test),
-                prettier:
-                  config.environments?.development?.formatters?.includes(
-                    CodeFormatterTool.Prettier,
-                  ),
-                react:
-                  config?.type === ProjectType.WebApplication ||
-                  config?.type === ProjectType.ComponentLibrary ||
-                  flags.react,
-                reactRouter: flags.reactRouter,
-                srclaunch: config?.requirements?.srclaunch,
-                styledComponents: flags.styledComponents,
-                stylelint: config.environments?.development?.linters?.includes(
-                  CodeLinterTool.Stylelint,
-                ),
-                testCoverage: Boolean(config.test?.coverage),
-                typescript:
-                  config?.environments?.development?.staticTyping?.includes(
-                    StaticTypingTool.TypeScript,
-                  ) ?? true,
-              })),
-              ...(await getDependencies(config.requirements?.devPackages)),
-            }),
-            peerDependencies: sortDependencies(
-              await getDependencies(config.requirements?.peerPackages),
-            ),
+            dependencies,
+            devDependencies: {
+              ...coreDevDependencies,
+              ...devDependencies,
+            },
+            peerDependencies,
           });
 
-          const diff = diffJson(existingPackageJson, packageJSON);
+          const diff = diffJson(existingPackageJSON, packageJSON);
 
           if (diff.length > 0) {
             console.info(chalk.bold('Changes to package.json:'));
@@ -231,6 +238,12 @@ export default new Command<Workspace & Project>({
               }
             }
           }
+          await generateFile({
+            contents: JSON.stringify(packageJSON, null, 2),
+            name: 'package',
+            extension: 'json',
+          });
+
           spinner.succeed('Dependencies updated');
 
           spinner.start('Cleaning project cache...');

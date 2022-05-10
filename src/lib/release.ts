@@ -30,32 +30,23 @@ export async function createRelease({
     types: (changesets?.types ?? DEFAULT_COMMIT_TYPES) as Options['types'],
   });
 
-  const updatedPackageJson = await readFile('./package.json');
-  const updatedPackageJsonContents = JSON.parse(updatedPackageJson.toString());
-  const yml = Yaml.dump({
-    ...updatedPackageJsonContents,
-    version: updatedPackageJsonContents.version,
-  });
-  await writeFile(path.resolve('./package.yml'), yml.toString());
-
-  await createChangeset({
-    files: ['package.yml'],
-    type: ChangeType.Release,
-    message: `Release ${updatedPackageJsonContents.version}`,
-  });
+  const packageJson = await JSON.parse(
+    (await readFile('./package.json')).toString(),
+  );
+  const branch = await getBranchName();
 
   if (pushFlag) {
     const result = await push({ followTags: true });
 
     return {
       repo: result.repo,
-      branch: await getBranchName(),
-      version: updatedPackageJsonContents.version,
+      branch,
+      version: packageJson.version,
     };
   }
 
   return {
-    branch: await getBranchName(),
-    version: updatedPackageJsonContents.version,
+    branch,
+    version: packageJson.version,
   };
 }

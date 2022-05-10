@@ -41,6 +41,11 @@ export default new Command({
       description:
         'Generates a package.yml file that can be used as a replacement for package.json',
       async run({ config, flags }): Promise<void> {
+        // const yml = Yaml.dump({
+        //   ...updatedPackageJsonContents,
+        //   version: updatedPackageJsonContents.version,
+        // });
+        // await writeFile(path.resolve('./package.yml'), yml.toString());
         // const existingPackageYml = (await fileExists('./package.yml'))
         //   ? await readFile('./package.yml')
         //   : null;
@@ -57,6 +62,11 @@ export default new Command({
         // await writeFile(path.resolve('./package.yml'), packageYml.toString());
         // console.info(`${chalk.green('✔')} created package.yml`);
         // console.info('resulttt', result);
+        // await createChangeset({
+        //   files: ['package.yml'],
+        //   type: ChangeType.Release,
+        //   message: `Release ${updatedPackageJsonContents.version}`,
+        // });
       },
     }),
   ],
