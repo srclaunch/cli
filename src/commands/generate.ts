@@ -1,15 +1,6 @@
-import chalk from 'chalk';
-import prompts from 'prompts';
-import { Project, ProjectType } from '@srclaunch/types';
-import { getSrcLaunchConfig } from '../lib/config.js';
+import { Project } from '@srclaunch/types';
 import { Command } from '../lib/command.js';
-import { SrcLaunchProjectConfigGenerator } from '../lib/generators/config/srclaunch/project.js';
 import { TypedFlags } from 'meow';
-import {
-  promptForProjectDescription,
-  promptForProjectName,
-  promptForProjectType,
-} from '../prompts/generators/srclaunch/project.js';
 import { createNewProjectInteractive } from '../lib/project/create.js';
 
 export type GenerateSrcLaunchProjectFlags = TypedFlags<{
@@ -43,6 +34,29 @@ export default new Command({
         });
 
         console.info('resulttt', result);
+      },
+    }),
+    new Command<Project>({
+      name: 'package-yml',
+      description:
+        'Generates a package.yml file that can be used as a replacement for package.json',
+      async run({ config, flags }): Promise<void> {
+        // const existingPackageYml = (await fileExists('./package.yml'))
+        //   ? await readFile('./package.yml')
+        //   : null;
+        // const parsedPackageYml: { version: string } | null = existingPackageYml
+        //   ? (Yaml.load(existingPackageYml.toString()) as {
+        //       version: string;
+        //     })
+        //   : null;
+        // /*
+        //     Write package.yml which will be used by the `yarn-plugin-yaml-manifest`
+        //     plugin to generate a package.json manifest.
+        //   */
+        // const packageYml = Yaml.dump(newPackageMetadata);
+        // await writeFile(path.resolve('./package.yml'), packageYml.toString());
+        // console.info(`${chalk.green('✔')} created package.yml`);
+        // console.info('resulttt', result);
       },
     }),
   ],

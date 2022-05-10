@@ -1,6 +1,7 @@
-import { File, PackageOptions, PackageType } from '@srclaunch/types';
+import { PackageOptions, PackageType } from '@srclaunch/types';
+import { transformObjectToYaml } from '../../../transformers/object-to-yaml';
 
-export type PackageJSONGeneratorOptions = {
+export type PackageYMLGeneratorOptions = {
   author?: string;
   description?: string;
   dependencies?: Record<string, string>;
@@ -42,7 +43,7 @@ export async function generatePackageJSON({
   type,
   types,
   version,
-}: PackageJSONGeneratorOptions): Promise<string> {
+}: PackageYMLGeneratorOptions): Promise<string> {
   if (!name) {
     throw new Error('Name is required');
   }
@@ -58,27 +59,23 @@ export async function generatePackageJSON({
     };
   }
 
-  return JSON.stringify(
-    {
-      name,
-      description,
-      author,
-      license,
-      version,
-      engines,
-      publishConfig,
-      type,
-      main,
-      types,
-      files,
-      module,
-      exports: exportsProp,
-      scripts,
-      dependencies,
-      devDependencies,
-      peerDependencies,
-    },
-    null,
-    2,
-  );
+  return transformObjectToYaml({
+    name,
+    description,
+    author,
+    license,
+    version,
+    engines,
+    publishConfig,
+    type,
+    main,
+    types,
+    files,
+    module,
+    exports: exportsProp,
+    scripts,
+    dependencies,
+    devDependencies,
+    peerDependencies,
+  });
 }

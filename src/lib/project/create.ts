@@ -7,7 +7,8 @@ import {
   promptForProjectOptions,
   promptForProjectType,
 } from '../../prompts/generators/srclaunch/project';
-import { SrcLaunchProjectConfigGenerator } from '../generators/config/srclaunch/project';
+import { generateSrcLaunchProjectConfig } from '../generators/config/srclaunch/project';
+import { generateFile } from '../generators/file';
 
 export async function createNewProjectInteractive({
   name,
@@ -34,19 +35,17 @@ export async function createNewProjectInteractive({
 
       process.exit(1);
     }
+
     const projectType = type ?? (await promptForProjectType());
 
-    const configGenerator = new SrcLaunchProjectConfigGenerator({
-      description: projectDescription,
-      file: { extension: 'ts', name: '.srclaunchrc' },
-      type: projectType as ProjectType,
-      name: projectName,
+    return await generateFile({
+      contents: await generateSrcLaunchProjectConfig({
+        description: projectDescription,
+        type: projectType as ProjectType,
+        name: projectName,
+      }),
+      name: '.srclaunchrc',
+      extension: 'ts',
     });
-
-    const result = await configGenerator.generate();
-
-    console.log('result', result);
-
-    return result;
   }
 }

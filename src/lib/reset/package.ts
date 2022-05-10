@@ -1,9 +1,10 @@
-import { PackageType, Project } from '@srclaunch/types';
+import { PackageOptions, PackageType, Project } from '@srclaunch/types';
 import {
   PROJECT_PACKAGE_JSON_BUILD_SCRIPTS,
   PROJECT_PACKAGE_JSON_COMMON_SCRIPTS,
   PROJECT_PACKAGE_JSON_DEV_SCRIPTS,
   PROJECT_PACKAGE_JSON_ENGINES,
+  PROJECT_PACKAGE_JSON_EXPORTS,
   PROJECT_PACKAGE_JSON_FILES,
   PROJECT_PACKAGE_JSON_LICENSE,
   PROJECT_PACKAGE_JSON_MAIN,
@@ -18,74 +19,7 @@ import {
   PROJECT_PACKAGE_JSON_TYPES,
 } from '../../constants/project';
 
-export function constructPackageJson({
-  author,
-  dependencies,
-  description,
-  devDependencies,
-  engines = PROJECT_PACKAGE_JSON_ENGINES,
-  exports,
-  files = PROJECT_PACKAGE_JSON_FILES,
-  license = PROJECT_PACKAGE_JSON_LICENSE,
-  main = PROJECT_PACKAGE_JSON_MAIN,
-  module = PROJECT_PACKAGE_JSON_MODULE,
-  name,
-  peerDependencies,
-  publishConfig = PROJECT_PACKAGE_JSON_PUBLISH_CONFIG,
-  scripts,
-  type = PROJECT_PACKAGE_JSON_TYPE,
-  types = PROJECT_PACKAGE_JSON_TYPES,
-  version,
-}: {
-  author?: string;
-  description?: string;
-  dependencies?: Record<string, string>;
-  devDependencies?: Record<string, string>;
-  engines?: {
-    node?: string;
-    npm?: string;
-    yarn?: string;
-  };
-  exports?:
-    | {
-        [x: string]: {
-          import: string | undefined;
-          require: string | undefined;
-        };
-      }
-    | undefined;
-  files?: string[];
-  license?: string;
-  main?: string;
-  module?: string;
-  name: string;
-  peerDependencies?: Record<string, string>;
-  publishConfig?: Record<string, string>;
-  scripts?: Record<string, string>;
-  type?: PackageType;
-  types?: string;
-  version?: string;
-}) {
-  return {
-    name,
-    description,
-    author,
-    license,
-    version,
-    engines,
-    publishConfig,
-    type,
-    main,
-    types,
-    files,
-    module,
-    exports,
-    scripts,
-    dependencies,
-    devDependencies,
-    peerDependencies,
-  };
-}
+export function constructPackageJson({}) {}
 
 export function getPackageScripts({
   build = true,
