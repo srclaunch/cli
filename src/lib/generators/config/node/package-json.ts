@@ -50,7 +50,7 @@ export async function generatePackageJSON({
   let exportsProp = {};
   for (const _export of exports ?? []) {
     exportsProp = {
-      ...exports,
+      ...exportsProp,
       [_export.path]: {
         import: _export.import,
         require: _export.require,
