@@ -125,7 +125,7 @@ export default new Command<Workspace & Project>({
           discardStdin: true,
           spinner: 'dots',
           text: chalk.cyanBright(
-            `setting up ${chalk.bold(config.name)} from SrcLaunch config...`,
+            `Setting up ${chalk.bold(config.name)} from SrcLaunch config...`,
           ),
         });
 
@@ -133,49 +133,15 @@ export default new Command<Workspace & Project>({
           const build = Boolean(config.build) ?? Boolean(flags['build']);
           const test = Boolean(config.test) ?? Boolean(flags['test']);
 
-          spinner.start('configuring and updating dependencies...');
-          const coreDevDependencies = await getDevDependencies({
-            ava: config.test?.tool === TestTool.Ava,
-            eslint: config.environments?.development?.linters?.includes(
-              CodeLinterTool.ESLint,
-            ),
-            github: config.type === ProjectType.GitHubAction,
-            jest: config.test?.tool === TestTool.Jest,
-            jestReact:
-              config.test?.tool === TestTool.Jest ||
-              (flags.react && test) ||
-              (config.type === ProjectType.WebApplication && test) ||
-              (config.type === ProjectType.ComponentLibrary && test),
-            prettier: config.environments?.development?.formatters?.includes(
-              CodeFormatterTool.Prettier,
-            ),
-            react:
-              config?.type === ProjectType.WebApplication ||
-              config?.type === ProjectType.ComponentLibrary ||
-              flags.react,
-            reactRouter: flags.reactRouter,
-            srclaunch: config?.requirements?.srclaunch,
-            styledComponents: flags.styledComponents,
-            stylelint: config.environments?.development?.linters?.includes(
-              CodeLinterTool.Stylelint,
-            ),
-            testCoverage: Boolean(config.test?.coverage),
-            typescript:
-              config?.environments?.development?.staticTyping?.includes(
-                StaticTypingTool.TypeScript,
-              ) ?? true,
-          });
-          spinner.succeed('dependencies updated');
-
-          spinner.start('configuring package.json...');
-          const existingPackageJsonContents = await JSON.parse(
-            (await readFile('./package.json')).toString(),
+          spinner.start('Updating dependencies...');
+          const existingPackageJson = await JSON.parse(
+            (await readFile('package.json')).toString(),
           );
           const packageJSON = generatePackageJSON({
             name: config.name,
             description: config.description,
             author: 'Steven Bennett <steven@srclaunch.com>',
-            version: existingPackageJsonContents.version ?? '0.0.0',
+            version: existingPackageJson.version ?? '0.0.0',
             engines: {
               node:
                 config.requirements?.node ?? PROJECT_PACKAGE_JSON_ENGINES.node,
@@ -210,7 +176,38 @@ export default new Command<Workspace & Project>({
               await getDependencies(config.requirements?.packages),
             ),
             devDependencies: sortDependencies({
-              ...coreDevDependencies,
+              ...(await getDevDependencies({
+                ava: config.test?.tool === TestTool.Ava,
+                eslint: config.environments?.development?.linters?.includes(
+                  CodeLinterTool.ESLint,
+                ),
+                github: config.type === ProjectType.GitHubAction,
+                jest: config.test?.tool === TestTool.Jest,
+                jestReact:
+                  config.test?.tool === TestTool.Jest ||
+                  (flags.react && test) ||
+                  (config.type === ProjectType.WebApplication && test) ||
+                  (config.type === ProjectType.ComponentLibrary && test),
+                prettier:
+                  config.environments?.development?.formatters?.includes(
+                    CodeFormatterTool.Prettier,
+                  ),
+                react:
+                  config?.type === ProjectType.WebApplication ||
+                  config?.type === ProjectType.ComponentLibrary ||
+                  flags.react,
+                reactRouter: flags.reactRouter,
+                srclaunch: config?.requirements?.srclaunch,
+                styledComponents: flags.styledComponents,
+                stylelint: config.environments?.development?.linters?.includes(
+                  CodeLinterTool.Stylelint,
+                ),
+                testCoverage: Boolean(config.test?.coverage),
+                typescript:
+                  config?.environments?.development?.staticTyping?.includes(
+                    StaticTypingTool.TypeScript,
+                  ) ?? true,
+              })),
               ...(await getDependencies(config.requirements?.devPackages)),
             }),
             peerDependencies: sortDependencies(
@@ -218,7 +215,7 @@ export default new Command<Workspace & Project>({
             ),
           });
 
-          const diff = diffJson(existingPackageJsonContents, packageJSON);
+          const diff = diffJson(existingPackageJson, packageJSON);
 
           if (diff.length > 0) {
             console.info(chalk.bold('Changes to package.json:'));
@@ -234,14 +231,29 @@ export default new Command<Workspace & Project>({
               }
             }
           }
+          spinner.succeed('Dependencies updated');
 
-          spinner.succeed('package.json configured');
-
-          spinner.start('cleaning project...');
+          spinner.start('Cleaning project cache...');
           await cleanDependencies();
           await cleanBuild();
           await cleanTestCoverage();
+          await createChangeset({
+            files: '.',
+            message: 'Clean installation cache',
+            type: ChangeType.Chore,
+          });
+          await generateFile({
+            contents: generateGitIgnoreConfig(),
+            name: '.gitignore',
+          });
+          await createChangeset({
+            files: ['./.gitignore'],
+            message: 'Update .gitignore',
+            type: ChangeType.Chore,
+          });
+          spinner.succeed('Project cache cleaned');
 
+          spinner.start('Initializing Yarn...');
           await generateFile({
             contents: await generateYarnConfig({
               nodeLinker: YarnNodeLinker.NodeModules,
@@ -249,62 +261,8 @@ export default new Command<Workspace & Project>({
             extension: 'yml',
             name: '.yarnrc',
           });
-
-          await createChangeset({
-            files: '.',
-            message: 'Clean installation cache',
-            type: ChangeType.Chore,
-          });
-
-          if (flags['push']) {
-            await push({ followTags: false });
-          }
-
-          await generateFile({
-            contents: generateGitIgnoreConfig(),
-            name: '.gitignore',
-          });
-
-          await createChangeset({
-            files: ['./.gitignore'],
-            message: 'Update .gitignore',
-            type: ChangeType.Chore,
-          });
-
-          spinner.succeed('project cleaned');
-
-          /* 
-            Create a GitHub Action workflow file based on the project
-            configuration.
-          */
-          spinner.start('Creating GitHub Actions public workflow...');
-          await generateFile({
-            contents: getPublishYml({ build, test }),
-            extension: 'yml',
-            name: 'publish',
-            path: '.github/workflows/',
-          });
-          spinner.succeed('added GitHub Actions publish workflow');
-
-          /*
-            Create configuration files for linters, formatters and static typing
-            tools.
-          */
-          spinner.start('creating DX tooling configurations...');
-          await writeToolingConfiguration({
-            formatters: config.environments?.development?.formatters,
-            linters: config.environments?.development?.linters,
-            project: config,
-            staticTyping: config.environments?.development?.staticTyping ?? [
-              StaticTypingTool.TypeScript,
-            ],
-          });
-          spinner.succeed('created DX tooling configurations');
-
-          spinner.start('initializing Yarn...');
           await shellExec('corepack enable yarn');
           await shellExec('yarn set version stable');
-
           await shellExec('yarn plugin import interactive-tools');
           await shellExec(
             'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
@@ -317,42 +275,68 @@ export default new Command<Workspace & Project>({
           ) {
             await shellExec('yarn plugin import typescript');
           }
-          spinner.succeed('initialized Yarn');
+          spinner.succeed('Initialized Yarn');
 
-          spinner.start('installing dependencies...');
+          spinner.start('Installing dependencies...');
           await shellExec('yarn install');
-          spinner.succeed('installed project dependencies');
+          spinner.succeed('Installed project dependencies');
+
+          /* 
+            Create a GitHub Action workflow file based on the project
+            configuration.
+          */
+          spinner.start('Creating GitHub Actions public workflow...');
+          await generateFile({
+            contents: getPublishYml({ build, test }),
+            extension: 'yml',
+            name: 'publish',
+            path: '.github/workflows/',
+          });
+          spinner.succeed('Added GitHub Actions publish workflow');
+
+          /*
+              Create configuration files for linters, formatters and static typing
+              tools.
+            */
+          spinner.start('Creating DX tooling configurations...');
+          await writeToolingConfiguration({
+            formatters: config.environments?.development?.formatters,
+            linters: config.environments?.development?.linters,
+            project: config,
+            staticTyping: config.environments?.development?.staticTyping ?? [
+              StaticTypingTool.TypeScript,
+            ],
+          });
+          spinner.succeed('Created DX tooling configurations');
 
           if (build) {
-            spinner.start('building project bundle...');
+            spinner.start('Building project bundle...');
             await shellExec('yarn build');
-            spinner.succeed('built project bundle');
+            spinner.succeed('Project compiled and bundled');
           }
 
           if (test) {
-            spinner.start('running test suite...');
+            spinner.start('Running test suite...');
             await shellExec('yarn test');
-            spinner.succeed('test run complete');
+            spinner.succeed('Test run complete');
           }
 
-          spinner.start('creating release...');
+          spinner.start('Creating release...');
           await createChangeset({
             files: '.',
             message: 'Project setup',
             type: ChangeType.Chore,
           });
-
           const { branch, version } = await createRelease({
             changesets: config.changesets,
             pipelines: config.release?.pipelines,
             publish: config.release?.publish,
           });
-          spinner.succeed(`created release ${version}`);
+          spinner.succeed(`Created release ${version}`);
 
           if (flags.push) {
-            spinner.start(`pushing release to branch ${chalk.bold(branch)}...`);
+            spinner.start(`Pushing release to branch ${chalk.bold(branch)}...`);
             const result = await push({ followTags: true });
-
             spinner.succeed(
               `${chalk.green('✔')} pushed release ${chalk.bold(
                 version,
