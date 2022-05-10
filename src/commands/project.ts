@@ -347,11 +347,9 @@ export default new Command<Workspace & Project>({
             spinner.start(`Pushing release to branch ${chalk.bold(branch)}...`);
             const result = await push({ followTags: true });
             spinner.succeed(
-              `${chalk.green('✔')} pushed release ${chalk.bold(
-                version,
-              )} to ${chalk.bold(result.repo)} on branch ${chalk.bold(
-                await getBranchName(),
-              )}`,
+              `Pushed release ${chalk.bold(version)} to ${chalk.bold(
+                result.repo,
+              )} on branch ${chalk.bold(await getBranchName())}`,
             );
           }
         } catch (err: any) {
