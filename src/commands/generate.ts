@@ -41,6 +41,9 @@ export default new Command({
       description:
         'Generates a package.yml file that can be used as a replacement for package.json',
       async run({ config, flags }): Promise<void> {
+        // await shellExec(
+        //   'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
+        // );
         // const yml = Yaml.dump({
         //   ...updatedPackageJsonContents,
         //   version: updatedPackageJsonContents.version,

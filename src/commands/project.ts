@@ -278,9 +278,6 @@ export default new Command<Workspace & Project>({
           await shellExec('corepack enable yarn');
           await shellExec('yarn set version stable');
           await shellExec('yarn plugin import interactive-tools');
-          await shellExec(
-            'yarn plugin import https://raw.githubusercontent.com/lyleunderwood/yarn-plugin-yaml-manifest/master/bundles/%40yarnpkg/plugin-yaml-manifest.js',
-          );
 
           if (
             config.environments?.development?.staticTyping?.includes(
