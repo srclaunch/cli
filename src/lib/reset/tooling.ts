@@ -42,7 +42,7 @@ export async function writeToolingConfiguration({
             path.resolve('./tsconfig.json'),
             uiConfig ? TYPESCRIPT_UI_CONFIG_CONTENT : TYPESCRIPT_CONFIG_CONTENT,
           );
-          console.info(`${chalk.green('✔')} added TypeScript config`);
+          // console.info(`${chalk.green('✔')} added TypeScript config`);
           break;
         default:
           break;
@@ -57,7 +57,7 @@ export async function writeToolingConfiguration({
               path.resolve('./.prettierrc.cjs'),
               JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
             );
-            console.info(`${chalk.green('✔')} added Prettier config`);
+            // console.info(`${chalk.green('✔')} added Prettier config`);
             break;
           default:
             break;
@@ -81,7 +81,7 @@ export async function writeToolingConfiguration({
                 2,
               ),
             );
-            console.info(`${chalk.green('✔')} added ESLint config`);
+            // console.info(`${chalk.green('✔')} added ESLint config`);
             break;
           case CodeLinterTool.Stylelint:
             await writeFile(
@@ -92,7 +92,7 @@ export async function writeToolingConfiguration({
                 2,
               ),
             );
-            console.info(`${chalk.green('✔')} added Stylelint config`);
+            // console.info(`${chalk.green('✔')} added Stylelint config`);
             break;
           default:
             break;
