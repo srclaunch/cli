@@ -339,12 +339,12 @@ export async function getDependencies(packages?: Package[]) {
 
 export async function getDevDependencies({
   ava,
-  eslint = true,
+  eslint,
   github,
   jest,
   jestReact,
   packages = [],
-  prettier = true,
+  prettier,
   react,
   reactRouter,
   release = true,

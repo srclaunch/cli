@@ -157,6 +157,7 @@ export default new Command<Workspace & Project>({
               config?.type === ProjectType.ComponentLibrary ||
               flags.react,
             reactRouter: flags.reactRouter,
+            release: Boolean(config.release),
             srclaunch: config?.requirements?.srclaunch,
             styledComponents: flags.styledComponents,
             stylelint: config.environments?.development?.linters?.includes(
