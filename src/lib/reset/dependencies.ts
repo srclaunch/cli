@@ -347,16 +347,12 @@ export async function getDevDependencies({
   prettier,
   react,
   reactRouter,
-  release = true,
-  srclaunch = {
-    dx: true,
-    cli: true,
-    types: true,
-  },
+  release,
+  srclaunch,
   styledComponents,
-  stylelint = false,
+  stylelint,
   testCoverage,
-  typescript = true,
+  typescript,
 }: {
   ava?: boolean;
   eslint?: boolean;
