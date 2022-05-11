@@ -379,7 +379,7 @@ export default new Command<Workspace & Project>({
             spinner.succeed(
               `Pushed release ${chalk.bold(version)} to ${chalk.bold(
                 result.repo,
-              )} on branch ${chalk.bold(await getBranchName())}`,
+              )} on branch ${chalk.bold(result.branch)}`,
             );
           }
         } catch (err: any) {
