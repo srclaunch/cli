@@ -239,28 +239,11 @@ export default new Command<Workspace & Project>({
             peerDependencies,
           });
 
-          const diff = diffJson(existingPackageJSON, packageJSON);
-
-          if (diff.length > 0) {
-            console.info(chalk.bold('Changes to package.json:'));
-            for (const change of diff) {
-              if (change.added) {
-                console.log(chalk.green.bold(`+ Added: ${change.count}`));
-                console.log(chalk.green(`+ ${change.value.toString().trim()}`));
-              }
-
-              if (change.removed) {
-                console.log(chalk.red.bold(`- Removed: ${change.count}`));
-                console.log(chalk.red(`- ${change.value.toString().trim()}`));
-              }
-            }
-          }
           await generateFile({
             contents: packageJSON,
             name: 'package',
             extension: 'json',
           });
-
           spinner.succeed('Dependencies updated');
 
           spinner.start('Cleaning project cache...');
@@ -307,6 +290,25 @@ export default new Command<Workspace & Project>({
           spinner.start('Installing dependencies...');
           await shellExec('yarn install');
           spinner.succeed('Installed project dependencies');
+
+          const updatedPackageJSON = await JSON.parse(
+            (await readFile('package.json')).toString(),
+          );
+          const diff = diffJson(existingPackageJSON, updatedPackageJSON);
+          if (diff.length > 0) {
+            console.info(chalk.bold('Changes to package.json:'));
+            for (const change of diff) {
+              if (change.added) {
+                console.log(chalk.green.bold(`+ Added: ${change.count}`));
+                console.log(chalk.green(`+ ${change.value.toString().trim()}`));
+              }
+
+              if (change.removed) {
+                console.log(chalk.red.bold(`- Removed: ${change.count}`));
+                console.log(chalk.red(`- ${change.value.toString().trim()}`));
+              }
+            }
+          }
 
           /* 
             Create a GitHub Action workflow file based on the project
