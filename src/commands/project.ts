@@ -1,5 +1,4 @@
 import {
-  License,
   Project,
   ProjectType,
   TestTool,
@@ -8,37 +7,23 @@ import {
   StaticTypingTool,
   ChangeType,
   Workspace,
+  BuildOptions,
 } from '@srclaunch/types';
-
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
-import Yaml from 'js-yaml';
 import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
-import {
-  deleteDirectory,
-  deleteFile,
-  fileExists,
-  readFile,
-  writeFile,
-} from '../lib/file-system.js';
-import path from 'path';
-import ora, { Spinner } from 'ora';
+import { readFile } from '../lib/file-system.js';
+import ora from 'ora';
 import { getBranchName, push } from '../lib/git.js';
-import { YARNRC_CONTENT } from '../constants/yarn.js';
 import { shellExec } from '../lib/cli.js';
-import { getPublishYml } from '../lib/reset/publish.js';
-import {
-  constructPackageJson,
-  getPackageScripts,
-} from '../lib/reset/package.js';
+import { getPublishYml } from '../lib/project/publish.js';
+import { getPackageScripts } from '../lib/project/package.js';
 import {
   getDependencies,
   getDevDependencies,
-} from '../lib/reset/dependencies.js';
+} from '../lib/project/dependencies.js';
 import {
-  PROJECT_PACKAGE_JSON_ENGINES,
-  PROJECT_PACKAGE_JSON_EXPORTS,
   PROJECT_PACKAGE_JSON_FILES,
   PROJECT_PACKAGE_JSON_LICENSE,
   PROJECT_PACKAGE_JSON_MAIN,
@@ -46,7 +31,7 @@ import {
   PROJECT_PACKAGE_JSON_TYPE,
   PROJECT_PACKAGE_JSON_TYPES,
 } from '../constants/project.js';
-import { writeToolingConfiguration } from '../lib/reset/tooling.js';
+import { writeToolingConfiguration } from '../lib/project/tooling.js';
 import { createRelease } from '../lib/release.js';
 import { createChangeset } from '../lib/changesets.js';
 import {
@@ -60,8 +45,8 @@ import {
 } from '../lib/generators/config/package-managers/yarn.js';
 import { generateFile } from '../lib/generators/file.js';
 import { generatePackageJSON } from '../lib/generators/config/node/package-json.js';
-import { sortDependencies } from '../lib/project/dependencies.js';
 import { generateGitIgnoreConfig } from '../lib/generators/config/git/gitignore.js';
+import { BUILD_DIR, BUILD_FILE_NAME } from '../constants/build.js';
 
 type ProjectSetupFlags = TypedFlags<{
   build: {
@@ -102,6 +87,10 @@ type ProjectSetupFlags = TypedFlags<{
     type: 'boolean';
   };
 }>;
+
+function isObjectArray(x: any[]): x is BuildOptions[] {
+  return x.every(i => typeof i === 'object');
+}
 
 export default new Command<Workspace & Project>({
   name: 'project',
@@ -199,13 +188,42 @@ export default new Command<Workspace & Project>({
                 'https://registry.npmjs.org/',
             },
             type: config.package?.type ?? PROJECT_PACKAGE_JSON_TYPE,
-            main: config?.package?.main,
-            types: config?.environments?.development?.staticTyping?.length
-              ? config.package?.types ?? PROJECT_PACKAGE_JSON_TYPES
-              : undefined,
-            files: config.package?.files ?? PROJECT_PACKAGE_JSON_FILES,
-            module: config?.package?.module,
-            exports: config.package?.exports ?? PROJECT_PACKAGE_JSON_EXPORTS,
+            main:
+              typeof config?.package?.main === 'undefined'
+                ? PROJECT_PACKAGE_JSON_MAIN
+                : config.package.main,
+            types:
+              typeof config?.package?.types === 'undefined'
+                ? PROJECT_PACKAGE_JSON_TYPES
+                : config.package?.types,
+            files:
+              typeof config.package?.files === 'undefined'
+                ? PROJECT_PACKAGE_JSON_FILES
+                : config.package?.files,
+            module:
+              typeof config?.package?.module === 'undefined'
+                ? PROJECT_PACKAGE_JSON_MODULE
+                : config.package?.module,
+            exports:
+              typeof config.package?.exports === 'undefined'
+                ? [
+                    {
+                      path: '.',
+                      import: `./${
+                        // @ts-ignore // TODO: fix this
+                        config.build?.output?.directory ?? BUILD_DIR
+                        // @ts-ignore // TODO: fix this
+                      }/${config.build?.output?.file ?? BUILD_FILE_NAME}.mjs`,
+                      require: `./${
+                        // @ts-ignore // TODO: fix this
+                        config.build?.output?.directory ?? BUILD_DIR
+                      }/${
+                        // @ts-ignore // TODO: fix this
+                        config.build?.output?.file ?? BUILD_FILE_NAME
+                      }.umd.cjs`,
+                    },
+                  ]
+                : config.package?.exports,
             scripts: {
               ...getPackageScripts({
                 build: Boolean(config.build) || flags['build'],

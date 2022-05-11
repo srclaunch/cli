@@ -12,6 +12,7 @@ import path from 'path';
 import { getFormatFileExtension } from './formats.js';
 import { emptyDirectory } from '../file-system.js';
 import chalk from 'chalk';
+import { BUILD_DIR } from '../../constants/build.js';
 
 export async function build({
   bundle = true,
@@ -44,7 +45,7 @@ export async function build({
 
     if (output?.clean) {
       console.info('Cleaning output directory...');
-      await emptyDirectory(output?.directory ?? 'dist');
+      await emptyDirectory(output?.directory ?? BUILD_DIR);
     }
 
     const result = await buildCommand({
@@ -53,10 +54,10 @@ export async function build({
       external: typeof bundle === 'object' ? (bundle.exclude as string[]) : [],
       format: format as Format,
       minify,
-      outdir: splitting ? output?.directory ?? 'dist' : undefined,
+      outdir: splitting ? output?.directory ?? BUILD_DIR : undefined,
       outfile: splitting
         ? undefined
-        : `${output?.directory ?? 'dist'}/${
+        : `${output?.directory ?? BUILD_DIR}/${
             output?.file ?? 'index'
           }${getFormatFileExtension(format)}`,
       platform,

@@ -11,6 +11,7 @@ import {
   ViteBuildOptions,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
+import { BUILD_DIR } from '../constants/build.js';
 
 type BuildFlags = TypedFlags<{
   clean: {
@@ -156,8 +157,6 @@ export default new Command<Project, BuildFlags>({
                   await esbuild({
                     ...build,
                     output: {
-                      directory: 'dist',
-                      file: 'index',
                       ...build.output,
                       clean,
                     },
@@ -175,8 +174,6 @@ export default new Command<Project, BuildFlags>({
                 await esbuild({
                   ...build,
                   output: {
-                    directory: 'dist',
-                    file: 'index',
                     ...build.output,
                     clean,
                   },

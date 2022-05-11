@@ -10,6 +10,7 @@ import {
 } from '@srclaunch/types';
 import { getViteFormatFileExtension } from './formats.js';
 import chalk from 'chalk';
+import { BUILD_DIR } from '../../constants/build.js';
 
 export async function build({
   assets,
@@ -43,7 +44,7 @@ export async function build({
           ? path.join(path.resolve(), assets?.directory)
           : undefined,
         emptyOutDir: output?.clean ?? true,
-        outDir: output?.directory ?? 'dist',
+        outDir: output?.directory ?? BUILD_DIR,
         lib: Boolean(library)
           ? {
               entry: path.join(

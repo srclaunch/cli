@@ -2,6 +2,7 @@ import ts, { Program } from 'typescript';
 import fs from 'fs-extra';
 import path from 'path';
 import { BuildOptions } from '@srclaunch/types';
+import { BUILD_DIR } from '../../constants/build.js';
 
 export type TypesBuildOptions = Pick<
   BuildOptions,
@@ -24,7 +25,7 @@ export async function build({ input, types, output }: TypesBuildOptions) {
     ...tsConfig,
     compilerOptions: {
       ...tsConfig.compilerOptions,
-      declarationDir: path.join(path.resolve(), output?.directory ?? 'dist'),
+      declarationDir: path.join(path.resolve(), output?.directory ?? BUILD_DIR),
       listEmittedFiles: true,
       rootDir: path.join(path.resolve(), input?.directory ?? 'src'),
     },
