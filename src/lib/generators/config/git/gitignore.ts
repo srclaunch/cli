@@ -2,8 +2,9 @@ export function generateGitIgnoreConfig(ignorePaths: string[] = []) {
   const defaultPaths = [
     '.env',
     '.DS_Store',
-    'node_modules',
+    'coverage',
     'dist',
+    'node_modules',
     '.yarn/*',
     '!.yarn/cache',
     '!.yarn/patches',
