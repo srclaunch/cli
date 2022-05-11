@@ -255,6 +255,17 @@ export default new Command<Workspace & Project>({
             message: 'Clean installation cache',
             type: ChangeType.Chore,
           });
+
+          if (flags.push) {
+            spinner.start('Pushing changes to remote...');
+            const pushResult = await push({ followTags: false });
+            spinner.succeed(
+              `Changes pushed to ${chalk.bold(
+                pushResult.repo,
+              )} on branch ${chalk.bold(pushResult.branch)}`,
+            );
+          }
+
           await generateFile({
             contents: generateGitIgnoreConfig(),
             name: '.gitignore',
@@ -354,6 +365,7 @@ export default new Command<Workspace & Project>({
             message: 'Project setup',
             type: ChangeType.Chore,
           });
+
           const { branch, version } = await createRelease({
             changesets: config.changesets,
             pipelines: config.release?.pipelines,
