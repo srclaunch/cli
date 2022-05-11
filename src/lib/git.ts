@@ -22,7 +22,7 @@ export async function getBranchName() {
 
 export async function push({ followTags = true }: { followTags?: boolean }) {
   const git: SimpleGit = Git();
-  const currentBranch = await (await git.branchLocal()).current;
+  const currentBranch = await git.branchLocal();
 
   const currentRepo = await (
     await git.getRemotes()
@@ -30,12 +30,16 @@ export async function push({ followTags = true }: { followTags?: boolean }) {
 
   const followTagsArg = followTags ? { '--follow-tags': null } : undefined;
 
-  const result = await git.push(currentRepo?.name ?? 'origin', currentBranch, {
-    ...followTagsArg,
-  });
+  const result = await git.push(
+    currentRepo?.name ?? 'origin',
+    currentBranch.current,
+    {
+      ...followTagsArg,
+    },
+  );
 
   return {
-    branch: currentBranch,
-    repo: currentRepo,
+    branch: currentBranch.current,
+    repo: result.repo,
   };
 }
