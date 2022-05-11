@@ -307,6 +307,9 @@ export default new Command<Workspace & Project>({
           );
           const diff = diffJson(existingPackageJSON, updatedPackageJSON);
           if (diff.length > 0) {
+            console.log('diff', diff);
+            console.log('diff.length', diff.length);
+            console.log('typeof diff', typeof diff);
             console.info(chalk.bold('Changes to package.json:'));
             for (const change of diff) {
               if (change.added) {
