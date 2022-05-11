@@ -34,5 +34,8 @@ export async function push({ followTags = true }: { followTags?: boolean }) {
     ...followTagsArg,
   });
 
-  return result;
+  return {
+    branch: currentBranch,
+    repo: currentRepo,
+  };
 }
