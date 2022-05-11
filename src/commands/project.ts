@@ -262,7 +262,7 @@ export default new Command<Workspace & Project>({
             spinner.succeed(
               `Changes pushed to ${chalk.bold(
                 pushResult.repo,
-              )} on branch ${chalk.bold(pushResult.branch?.remote)}`,
+              )} on branch ${chalk.bold(pushResult.branch?.remoteName)}`,
             );
           }
 
