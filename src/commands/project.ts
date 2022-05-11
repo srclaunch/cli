@@ -88,10 +88,6 @@ type ProjectSetupFlags = TypedFlags<{
   };
 }>;
 
-function isObjectArray(x: any[]): x is BuildOptions[] {
-  return x.every(i => typeof i === 'object');
-}
-
 export default new Command<Workspace & Project>({
   name: 'project',
   description: 'Manage project',
@@ -195,15 +191,17 @@ export default new Command<Workspace & Project>({
             types:
               typeof config?.package?.types === 'undefined'
                 ? PROJECT_PACKAGE_JSON_TYPES
-                : config.package?.types,
+                : config.package.types !== null
+                ? config.package.types
+                : undefined,
             files:
               typeof config.package?.files === 'undefined'
                 ? PROJECT_PACKAGE_JSON_FILES
-                : config.package?.files,
+                : config.package.files,
             module:
               typeof config?.package?.module === 'undefined'
                 ? PROJECT_PACKAGE_JSON_MODULE
-                : config.package?.module,
+                : config.package.module,
             exports:
               typeof config.package?.exports === 'undefined'
                 ? [
