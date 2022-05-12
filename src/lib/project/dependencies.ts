@@ -285,6 +285,8 @@ export async function getDependenciesLatestVersions(
     }
   }
 
+  console.log('versions', versions);
+
   return versions;
 }
 
