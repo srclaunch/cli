@@ -244,6 +244,15 @@ export async function getDependenciesLatestVersions(
       const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
       console.log('maxVersion', maxVersion);
 
+      const latest = await latestVersion(dep[0]);
+      console.log('latest', latest);
+
+      const semverRange = await latestVersion(dep[0], {
+        version:
+          typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
+      });
+      console.log('semverRange', semverRange);
+
       if (!maxVersion) {
         versions = { ...versions, [dep[0]]: dep[1] };
       } else {
@@ -282,15 +291,6 @@ export async function getDependenciesLatestVersions(
 
         versions = { ...versions, [dep[0]]: maxVersion };
       }
-
-      // const latest = await latestVersion(dep[0]);
-      // console.log('latest', latest);
-
-      // const semverRange = await latestVersion(dep[0], {
-      //   version:
-      //     typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
-      // });
-      // console.log('semverRange', semverRange);
     }
   }
 
