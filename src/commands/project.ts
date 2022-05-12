@@ -134,6 +134,7 @@ export default new Command<Workspace & Project>({
               (flags.react && test) ||
               (config.type === ProjectType.WebApplication && test) ||
               (config.type === ProjectType.ComponentLibrary && test),
+            packages: config.requirements?.packages,
             prettier: config.environments?.development?.formatters?.includes(
               CodeFormatterTool.Prettier,
             ),
