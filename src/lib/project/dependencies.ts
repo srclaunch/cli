@@ -436,7 +436,7 @@ export function getPackageDevDependencies(package_: Package) {
 
 export async function getDependencies({
   dev = false,
-  packages,
+  packages = [],
 }: {
   dev?: boolean;
   packages?: Package[];
