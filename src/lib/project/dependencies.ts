@@ -247,6 +247,7 @@ export async function getDependenciesLatestVersions(
       if (!maxVersion) {
         versions = { ...versions, [dep[0]]: dep[1] };
       } else {
+        console.log('dep[1]', dep[1], 'maxVersion', maxVersion);
         const diff = semverDiff(dep[1], maxVersion);
         switch (diff) {
           case 'major':
