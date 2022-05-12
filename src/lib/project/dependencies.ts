@@ -233,6 +233,8 @@ export async function getDependenciesLatestVersions(
         await shellExec(`npm view ${dep[0]} versions --json`),
       );
 
+      console.log(dep[0]);
+      console.log(dep[1]);
       console.log('availableVersions', availableVersions);
 
       const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
