@@ -1,8 +1,9 @@
 import latestVersion from 'latest-version';
 import chalk from 'chalk';
+import { SemVer } from 'semver';
 import semverMaxSatisfying from 'semver/ranges/max-satisfying';
 import semverDiff from 'semver/functions/diff';
-import semverValid from 'semver/functions/valid';
+import semverParse from 'semver/functions/parse';
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
@@ -94,7 +95,6 @@ import {
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
-import { SemVer } from 'semver';
 
 const emoji = {
   log: '\u26aa\ufe0f',
@@ -111,6 +111,7 @@ export function sortDependencies(
   if (!dependencies) {
     return {};
   }
+
   return Object.entries(dependencies)
     .sort(([, v1], [, v2]) => +v2 - +v1)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
@@ -223,39 +224,48 @@ export async function getDependenciesLatestVersions(
     [key: string]: string;
   } = {},
 ) {
-  let versions: { [key: string]: string | SemVer } = {};
+  let versions: { [key: string]: string } = {};
 
   for (const dep of Object.entries(dependencies)) {
     if (dep[1]) {
+      const depName = dep[0];
+      const depVersion = semverParse(dep[1]) as SemVer;
       const availableVersions = await JSON.parse(
-        await shellExec(`npm view ${dep[0]} versions --json`),
+        await shellExec(`npm view ${depName} versions --json`),
       );
-      const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
-      const semverRange = await latestVersion(dep[0], {
+      const maxVersion = semverMaxSatisfying(
+        availableVersions,
+        depVersion?.version,
+      );
+      const latestVer = await latestVersion(depName, {
         version:
           typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
       });
-      const diff = semverDiff(dep[1] as string, semverRange);
+      const semverRange = semverParse(latestVer);
 
+      const diff = semverDiff(
+        depVersion.version,
+        semverRange?.version ?? depVersion.version,
+      );
       switch (diff) {
         case 'major':
           console.log(
             `${emoji.error} ${chalk.red(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange?.version})`,
             )}`,
           );
           break;
         case 'minor':
           console.log(
             `${emoji.warning} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange?.version})`,
             )}`,
           );
           break;
         case 'patch':
           console.log(
             `${emoji.log} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange?.version})`,
             )}`,
           );
           break;
@@ -267,7 +277,10 @@ export async function getDependenciesLatestVersions(
           );
           break;
       }
-      versions = { ...versions, [dep[0]]: semverRange };
+      versions = {
+        ...versions,
+        [depName]: semverRange?.version ?? depVersion.version,
+      };
     }
   }
 
