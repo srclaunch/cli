@@ -110,7 +110,7 @@ export function sortDependencies(dependencies: { [key: string]: string }) {
     return {};
   }
 
-  return Object.entries(dependencies)
+  return [...Object.entries(dependencies)]
     .sort(([, v1], [, v2]) => +v2 - +v1)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
 }
