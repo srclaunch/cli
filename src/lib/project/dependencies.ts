@@ -4,6 +4,7 @@ import semverMaxSatisfying from 'semver/ranges/max-satisfying';
 import semverGreaterThan from 'semver/functions/gt';
 import semverDiff from 'semver/functions/diff';
 import semverClean from 'semver/functions/clean';
+import semverValid from 'semver/functions/valid';
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
@@ -232,8 +233,7 @@ export async function getDependenciesLatestVersions(
 
   console.log('latest version deps', [...Object.entries(dependencies)]);
   for (const dep of [...Object.entries(dependencies)] ?? []) {
-    if (!dep[0] || !dep[1]) {
-    } else {
+    if (semverValid(dep[1])) {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${dep[0]} versions --json`),
       );
@@ -253,7 +253,7 @@ export async function getDependenciesLatestVersions(
 
       console.log('dep[1]', dep[1], 'semverRange', semverRange);
       console.log('semverClean(dep[1]', semverClean(dep[1]));
-      const diff = semverDiff(semverClean(dep[1]) as string, semverRange);
+      const diff = semverDiff(dep[1] as string, semverRange);
 
       switch (diff) {
         case 'major':
