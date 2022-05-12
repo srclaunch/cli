@@ -105,11 +105,13 @@ const emoji = {
   success: '\u2705',
 };
 
-export function sortDependencies(dependencies: { [key: string]: string }) {
+export function sortDependencies(dependencies: { [key: string]: string } = {}) {
   if (!dependencies) {
     return {};
   }
 
+  console.log('dependencies to be sorted', dependencies);
+  console.log([...Object.entries(dependencies)]);
   return [...Object.entries(dependencies)]
     .sort(([, v1], [, v2]) => +v2 - +v1)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
@@ -460,6 +462,7 @@ export async function getDependencies({
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
+  console.log('dependenciesLatestVersions', dependenciesLatestVersions);
   return sortDependencies(dependenciesLatestVersions);
 }
 
