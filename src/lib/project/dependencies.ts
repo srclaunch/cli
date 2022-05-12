@@ -251,46 +251,41 @@ export async function getDependenciesLatestVersions(
         version:
           typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
       });
-      console.log('semverRange', semverRange);
 
-      if (!maxVersion) {
-        versions = { ...versions, [dep[0]]: dep[1] };
-      } else {
-        console.log('dep[1]', dep[1], 'maxVersion', maxVersion);
-        const diff = semverDiff(dep[1], maxVersion);
-        switch (diff) {
-          case 'major':
-            console.log(
-              `${emoji.error} ${chalk.red(
-                `${dep[0]} is outdated. (v${dep[1]} -> v${maxVersion})`,
-              )}`,
-            );
-            break;
-          case 'minor':
-            console.log(
-              `${emoji.warning} ${chalk.yellow(
-                `${dep[0]} is outdated. (v${dep[1]} -> v${maxVersion})`,
-              )}`,
-            );
-            break;
-          case 'patch':
-            console.log(
-              `${emoji.log} ${chalk.yellow(
-                `${dep[0]} is outdated. (v${dep[1]} -> v${maxVersion})`,
-              )}`,
-            );
-            break;
-          default:
-            console.log(
-              `${emoji.log} ${chalk.green(
-                `${dep[0]} is up to date. (v${dep[1]})`,
-              )}`,
-            );
-            break;
-        }
-
-        versions = { ...versions, [dep[0]]: maxVersion };
+      console.log('dep[1]', dep[1], 'semverRange', semverRange);
+      const diff = semverDiff(dep[1], semverRange);
+      switch (diff) {
+        case 'major':
+          console.log(
+            `${emoji.error} ${chalk.red(
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
+            )}`,
+          );
+          break;
+        case 'minor':
+          console.log(
+            `${emoji.warning} ${chalk.yellow(
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
+            )}`,
+          );
+          break;
+        case 'patch':
+          console.log(
+            `${emoji.log} ${chalk.yellow(
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
+            )}`,
+          );
+          break;
+        default:
+          console.log(
+            `${emoji.log} ${chalk.green(
+              `${dep[0]} is up to date. (v${dep[1]})`,
+            )}`,
+          );
+          break;
       }
+
+      versions = { ...versions, [dep[0]]: semverRange };
     }
   }
 
