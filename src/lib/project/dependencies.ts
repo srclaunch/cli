@@ -220,11 +220,9 @@ export function getProjectTypeDevDependencies(type?: ProjectType) {
 }
 
 export async function getDependenciesLatestVersions(
-  dependencies: {
-    [key: string]: string;
-  } = {},
-) {
-  let versions: { [key: string]: string } = {};
+  dependencies: Record<string, string> = {},
+): Promise<Record<string, string>> {
+  let versions: Record<string, string> = {};
 
   for (const dep of Object.entries(dependencies)) {
     const depName = dep[0];
@@ -255,15 +253,8 @@ export async function getDependenciesLatestVersions(
           [depName]: dep[1],
         };
       }
-
-      // const diff = semverDiff(
-      //   depVersion.version,
-      //   semverRange?.version ?? depVersion.version,
-      // );
-    } else {
     }
   }
-
   return versions;
 }
 
@@ -427,7 +418,7 @@ export async function getDependencies({
     return {};
   }
 
-  let dependencies: { [key: string]: string } = {};
+  let dependencies: Record<string, string> = {};
 
   for (const package_ of packages) {
     dependencies = {
@@ -476,7 +467,7 @@ export async function getDevDependencies({
   stylelint?: boolean;
   testCoverage?: boolean;
   typescript?: boolean;
-}): Promise<Record<string, string | SemVer>> {
+}): Promise<Record<string, string>> {
   return await getDependenciesLatestVersions({
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
