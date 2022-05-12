@@ -247,33 +247,33 @@ export async function getDependenciesLatestVersions(
       });
       console.log('semverRange', semverRange);
 
-      const diff = semverDiff(semverRange, latest);
+      const diff = semverDiff(dep[1], semverRange);
       switch (diff) {
         case 'major':
           console.log(
             `${emoji.error} ${chalk.red(
-              `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
             )}`,
           );
           break;
         case 'minor':
           console.log(
             `${emoji.warning} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
             )}`,
           );
           break;
         case 'patch':
           console.log(
             `${emoji.log} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
+              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
             )}`,
           );
           break;
         default:
           console.log(
             `${emoji.log} ${chalk.green(
-              `${dep[0]} is up to date. (v${semverRange} -> v${latest})`,
+              `${dep[0]} is up to date. (v${dep[1]} -> v${semverRange})`,
             )}`,
           );
           break;
@@ -283,7 +283,6 @@ export async function getDependenciesLatestVersions(
     }
   }
 
-  console.log('versions', versions);
   return versions;
 }
 
