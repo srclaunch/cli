@@ -224,64 +224,64 @@ export async function getDependenciesLatestVersions(
 ) {
   let versions: { [key: string]: string } = {};
 
-  for (const dep of [...Object.entries(dependencies)]) {
+  console.log('latest version deps', [...Object.entries(dependencies)]);
+  for (const dep of [...Object.entries(dependencies)] ?? []) {
     if (dep[0] && dep[1]) {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${dep[0]} versions --json`),
       );
 
+      console.log('availableVersions', availableVersions);
+
       const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
+      console.log('maxVersion', maxVersion);
 
-      if (maxVersion) {
-        const latest = await latestVersion(dep[0]);
+      const latest = await latestVersion(dep[0]);
+      console.log('latest', latest);
 
-        const semverRange = await latestVersion(dep[0], {
-          version:
-            typeof maxVersion === 'object' ? maxVersion.version : maxVersion,
-        });
+      const semverRange = await latestVersion(dep[0], {
+        version:
+          typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
+      });
+      console.log('semverRange', semverRange);
 
-        if (semverGreaterThan(semverRange, latest)) {
-          const diff = semverDiff(semverRange, latest);
-
-          switch (diff) {
-            case 'major':
-              console.log(
-                `${emoji.error} ${chalk.red(
-                  `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
-                )}`,
-              );
-              break;
-            case 'minor':
-              console.log(
-                `${emoji.warning} ${chalk.yellow(
-                  `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
-                )}`,
-              );
-              break;
-            case 'patch':
-              console.log(
-                `${emoji.log} ${chalk.yellow(
-                  `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
-                )}`,
-              );
-              break;
-            default:
-              console.log(
-                `${emoji.log} ${chalk.green(
-                  `${dep[0]} is up to date. (v${semverRange} -> v${latest})`,
-                )}`,
-              );
-              break;
-          }
-        }
-
-        versions[dep[0]] = semverRange;
-      } else {
-        versions[dep[0]] = dep[1];
+      const diff = semverDiff(semverRange, latest);
+      switch (diff) {
+        case 'major':
+          console.log(
+            `${emoji.error} ${chalk.red(
+              `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
+            )}`,
+          );
+          break;
+        case 'minor':
+          console.log(
+            `${emoji.warning} ${chalk.yellow(
+              `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
+            )}`,
+          );
+          break;
+        case 'patch':
+          console.log(
+            `${emoji.log} ${chalk.yellow(
+              `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
+            )}`,
+          );
+          break;
+        default:
+          console.log(
+            `${emoji.log} ${chalk.green(
+              `${dep[0]} is up to date. (v${semverRange} -> v${latest})`,
+            )}`,
+          );
+          break;
       }
+
+      versions[dep[0]] = semverRange;
     }
   }
 
+  console.log('versions', versions);
   return versions;
 }
 
@@ -470,7 +470,7 @@ export async function getDevDependencies({
   jest,
   jestReact,
   prettier,
-  project,
+
   react,
   reactRouter,
   srclaunch,
@@ -486,7 +486,7 @@ export async function getDevDependencies({
   jestReact?: boolean;
   packages?: Package[];
   prettier?: boolean;
-  project?: Project;
+
   react?: boolean;
   reactRouter?: boolean;
   srclaunch?: {

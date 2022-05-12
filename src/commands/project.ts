@@ -137,7 +137,6 @@ export default new Command<Workspace & Project>({
             prettier: config.environments?.development?.formatters?.includes(
               CodeFormatterTool.Prettier,
             ),
-            project: config,
             react:
               config?.type === ProjectType.WebApplication ||
               config?.type === ProjectType.ComponentLibrary ||
@@ -164,12 +163,12 @@ export default new Command<Workspace & Project>({
           });
           console.log('devDependencies', devDependencies);
           const dependencies = await getDependencies({
-            packages: config.requirements?.packages,
+            packages: config.requirements?.packages ?? [],
           });
           console.log('dependencies', dependencies);
 
           const peerDependencies = await getDependencies({
-            packages: config.requirements?.peerPackages,
+            packages: config.requirements?.peerPackages ?? [],
           });
           console.log('peerDependencies', peerDependencies);
 
