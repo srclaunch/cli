@@ -227,9 +227,10 @@ export async function getDependenciesLatestVersions(
   let versions: { [key: string]: string } = {};
 
   for (const dep of Object.entries(dependencies)) {
-    if (dep[1]) {
-      const depName = dep[0];
-      const depVersion = semverParse(dep[1]) as SemVer;
+    const depName = dep[0];
+    const depVersion = semverParse(dep[1]);
+
+    if (depVersion) {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${depName} versions --json`),
       );
@@ -280,6 +281,11 @@ export async function getDependenciesLatestVersions(
       versions = {
         ...versions,
         [depName]: semverRange?.version ?? depVersion.version,
+      };
+    } else {
+      versions = {
+        ...versions,
+        [depName]: dep[1],
       };
     }
   }
