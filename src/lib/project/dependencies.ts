@@ -434,7 +434,13 @@ export function getPackageDevDependencies(package_: Package) {
   }
 }
 
-export async function getDependencies(packages?: Package[]) {
+export async function getDependencies({
+  dev = false,
+  packages,
+}: {
+  dev?: boolean;
+  packages?: Package[];
+}) {
   if (!packages) {
     return undefined;
   }
@@ -444,7 +450,9 @@ export async function getDependencies(packages?: Package[]) {
   for (const package_ of packages) {
     dependencies = {
       ...dependencies,
-      ...getPackageDependencies(package_),
+      ...(dev
+        ? getPackageDevDependencies(package_)
+        : getPackageDependencies(package_)),
     };
   }
 
@@ -493,7 +501,7 @@ export async function getDevDependencies({
 }): Promise<Record<string, string>> {
   return await getDependenciesLatestVersions({
     ...getProjectTypeDevDependencies(project?.type),
-    ...(await getDependencies(packages)),
+    ...(await getDependencies({ dev: true, packages })),
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
     ...(github ? GITHUB_DEV_DEPENDENCIES : {}),
