@@ -271,8 +271,6 @@ export async function getDependenciesLatestVersions(
     }
   }
 
-  console.log('versions', versions);
-
   return versions;
 }
 
@@ -439,7 +437,6 @@ export async function getDependencies({
   let dependencies: { [key: string]: string } = {};
 
   for (const package_ of packages) {
-    console.log('package_', package_);
     dependencies = {
       ...dependencies,
       ...(dev
@@ -447,11 +444,9 @@ export async function getDependencies({
         : getPackageDependencies(package_)),
     };
   }
-  console.log('dependencies', dependencies);
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
-  console.log('dependenciesLatestVersions', dependenciesLatestVersions);
   return sortDependencies(dependenciesLatestVersions);
 }
 
@@ -462,7 +457,6 @@ export async function getDevDependencies({
   jest,
   jestReact,
   prettier,
-
   react,
   reactRouter,
   srclaunch,
@@ -478,7 +472,6 @@ export async function getDevDependencies({
   jestReact?: boolean;
   packages?: Package[];
   prettier?: boolean;
-
   react?: boolean;
   reactRouter?: boolean;
   srclaunch?: {
