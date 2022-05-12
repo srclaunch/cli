@@ -107,7 +107,7 @@ export default new Command<Workspace & Project>({
         }
 
         const spinner = ora({
-          discardStdin: true,
+          discardStdin: false,
           spinner: 'dots',
           text: chalk.cyanBright(
             `Setting up ${chalk.bold(config.name)} from SrcLaunch config...`,
