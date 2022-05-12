@@ -109,7 +109,7 @@ export function sortDependencies(
   dependencies: { [key: string]: string } | undefined,
 ) {
   if (!dependencies) {
-    return;
+    return {};
   }
 
   return Object.entries(dependencies)
@@ -120,19 +120,19 @@ export function sortDependencies(
 export function getPlatformDependencies(platform?: Platform) {
   switch (platform) {
     case Platform.Desktop:
-      return [];
+      return {};
     case Platform.Mobile:
-      return [];
+      return {};
     case Platform.NodeJS:
-      return [];
+      return {};
     case Platform.TV:
-      return [];
+      return {};
     case Platform.Universal:
       return {};
     case Platform.Watch:
-      return [];
+      return {};
     case Platform.Web:
-      return [];
+      return {};
   }
 }
 
@@ -400,7 +400,7 @@ export function getPackageDependencies(package_: Package) {
     case UniversalPackage.Zxcvbn:
       return ZXCVBN_DEPENDENCIES;
     default:
-      return;
+      return {};
   }
 }
 
@@ -430,7 +430,7 @@ export function getPackageDevDependencies(package_: Package) {
       return QUERY_STRING_DEV_DEPENDENCIES;
 
     default:
-      return;
+      return {};
   }
 }
 
@@ -442,7 +442,7 @@ export async function getDependencies({
   packages?: Package[];
 }) {
   if (!packages) {
-    return undefined;
+    return {};
   }
 
   let dependencies: { [key: string]: string } = {};
