@@ -157,6 +157,7 @@ export default new Command<Workspace & Project>({
           });
 
           const devDependencies = await getDependencies({
+            dev: true,
             packages: config.requirements?.devPackages,
           });
           const dependencies = await getDependencies({
