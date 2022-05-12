@@ -238,25 +238,29 @@ export async function getDependenciesLatestVersions(
         availableVersions,
         depVersion?.version,
       );
-      const latestVer = await latestVersion(depName, {
-        version:
-          typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
-      });
-      const semverRange = semverParse(latestVer);
+
+      if (maxVersion) {
+        const getMaxVersionString = () => {
+          return typeof maxVersion === 'object'
+            ? maxVersion?.version
+            : maxVersion;
+        };
+        versions = {
+          ...versions,
+          [depName]: getMaxVersionString(),
+        };
+      } else {
+        versions = {
+          ...versions,
+          [depName]: dep[1],
+        };
+      }
+
       // const diff = semverDiff(
       //   depVersion.version,
       //   semverRange?.version ?? depVersion.version,
       // );
-
-      versions = {
-        ...versions,
-        [depName]: semverRange?.version ?? depVersion.version,
-      };
     } else {
-      versions = {
-        ...versions,
-        [depName]: dep[1],
-      };
     }
   }
 
