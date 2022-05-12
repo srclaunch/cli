@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.540](https://github.com/srclaunch/cli/compare/v0.1.539...v0.1.540) (2022-05-12)
+
 ### [0.1.539](https://github.com/srclaunch/cli/compare/v0.1.538...v0.1.539) (2022-05-12)
 
 ### [0.1.538](https://github.com/srclaunch/cli/compare/v0.1.537...v0.1.538) (2022-05-12)
