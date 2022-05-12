@@ -470,7 +470,6 @@ export async function getDevDependencies({
   github,
   jest,
   jestReact,
-  packages = [],
   prettier,
   project,
   react,
@@ -503,7 +502,6 @@ export async function getDevDependencies({
 }): Promise<Record<string, string>> {
   return await getDependenciesLatestVersions({
     ...getProjectTypeDevDependencies(project?.type),
-    ...(await getDependencies({ dev: true, packages })),
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
     ...(github ? GITHUB_DEV_DEPENDENCIES : {}),

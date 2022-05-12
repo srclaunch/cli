@@ -134,7 +134,6 @@ export default new Command<Workspace & Project>({
               (flags.react && test) ||
               (config.type === ProjectType.WebApplication && test) ||
               (config.type === ProjectType.ComponentLibrary && test),
-            packages: config.requirements?.packages,
             prettier: config.environments?.development?.formatters?.includes(
               CodeFormatterTool.Prettier,
             ),
@@ -158,7 +157,10 @@ export default new Command<Workspace & Project>({
 
           const devDependencies = await getDependencies({
             dev: true,
-            packages: config.requirements?.devPackages,
+            packages: [
+              ...(config.requirements?.devPackages ?? []),
+              ...(config.requirements?.packages ?? []),
+            ],
           });
           const dependencies = await getDependencies({
             packages: config.requirements?.packages,
