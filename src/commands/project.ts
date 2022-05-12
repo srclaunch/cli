@@ -155,15 +155,15 @@ export default new Command<Workspace & Project>({
               ),
           });
 
-          const devDependencies = await getDependencies(
-            config.requirements?.devPackages,
-          );
-          const dependencies = await getDependencies(
-            config.requirements?.packages,
-          );
-          const peerDependencies = await getDependencies(
-            config.requirements?.peerPackages,
-          );
+          const devDependencies = await getDependencies({
+            packages: config.requirements?.devPackages,
+          });
+          const dependencies = await getDependencies({
+            packages: config.requirements?.packages,
+          });
+          const peerDependencies = await getDependencies({
+            packages: config.requirements?.peerPackages,
+          });
 
           const packageJSON = await generatePackageJSON({
             name: config.name,

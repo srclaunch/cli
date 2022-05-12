@@ -8,7 +8,7 @@ function constructHttpClientIndexScript({
   models,
 }: {
   readonly environments: {
-    readonly dev: {
+    readonly development: {
       readonly host: string;
       readonly port: number;
       readonly protocol: string;
@@ -45,8 +45,12 @@ import { getEnvironment } from '@srclaunch/web-environment';
 const environment: Environment = getEnvironment();
 
 const hosts = {
-  dev: '${environments.dev.protocol}://${environments.dev.host}${
-    environments.dev.port !== 80 ? `:${environments.dev.port.toString()}` : ''
+  dev: '${environments.development.protocol}://${
+    environments.development.host
+  }${
+    environments.development.port !== 80
+      ? `:${environments.development.port.toString()}`
+      : ''
   }',
   test: '${environments.test.protocol}://${environments.test.host}${
     environments.test.port !== 80 ? `:${environments.test.port.toString()}` : ''
