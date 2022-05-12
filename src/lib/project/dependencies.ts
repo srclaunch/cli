@@ -105,9 +105,7 @@ const emoji = {
   success: '\u2705',
 };
 
-export function sortDependencies(
-  dependencies: { [key: string]: string } | undefined,
-) {
+export function sortDependencies(dependencies: { [key: string]: string }) {
   if (!dependencies) {
     return {};
   }
@@ -214,9 +212,9 @@ export function getProjectTypeDevDependencies(type?: ProjectType) {
       return getPlatformDevDependencies(Platform.NodeJS);
     case ProjectType.WebSocketService:
       return getPlatformDevDependencies(Platform.NodeJS);
-    default:
-      return {};
   }
+
+  return {};
 }
 
 export async function getDependenciesLatestVersions(
