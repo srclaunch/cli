@@ -111,10 +111,7 @@ export function sortDependencies(
   if (!dependencies) {
     return {};
   }
-
-  console.log('dependencies to be sorted', dependencies);
-  console.log([...Object.entries(dependencies)]);
-  return [...Object.entries(dependencies)]
+  return Object.entries(dependencies)
     .sort(([, v1], [, v2]) => +v2 - +v1)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
 }
@@ -228,9 +225,8 @@ export async function getDependenciesLatestVersions(
 ) {
   let versions: { [key: string]: string | SemVer } = {};
 
-  console.log('latest version deps', [...Object.entries(dependencies)]);
-  for (const dep of [...Object.entries(dependencies)] ?? []) {
-    if (semverValid(dep[1])) {
+  for (const dep of Object.entries(dependencies)) {
+    if (dep[1]) {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${dep[0]} versions --json`),
       );
