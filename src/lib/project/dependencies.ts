@@ -95,6 +95,8 @@ import {
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
+import { version } from 'os';
+import { SemVer } from 'semver';
 
 const emoji = {
   log: '\u26aa\ufe0f',
@@ -105,7 +107,9 @@ const emoji = {
   success: '\u2705',
 };
 
-export function sortDependencies(dependencies: { [key: string]: string } = {}) {
+export function sortDependencies(
+  dependencies: { [key: string]: string | SemVer } = {},
+) {
   if (!dependencies) {
     return {};
   }
@@ -224,7 +228,7 @@ export async function getDependenciesLatestVersions(
     [key: string]: string;
   } = {},
 ) {
-  let versions: { [key: string]: string } = {};
+  let versions: { [key: string]: string | SemVer } = {};
 
   console.log('latest version deps', [...Object.entries(dependencies)]);
   for (const dep of [...Object.entries(dependencies)] ?? []) {
@@ -240,48 +244,52 @@ export async function getDependenciesLatestVersions(
       const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
       console.log('maxVersion', maxVersion);
 
-      const latest = await latestVersion(dep[0]);
-      console.log('latest', latest);
+      if (!maxVersion) {
+        versions = { ...versions, [dep[0]]: dep[1] };
+      } else {
+        const diff = semverDiff(dep[1], maxVersion);
+        switch (diff) {
+          case 'major':
+            console.log(
+              `${emoji.error} ${chalk.red(
+                `${dep[0]} is outdated. (v${dep[1]} -> v${maxVersion})`,
+              )}`,
+            );
+            break;
+          case 'minor':
+            console.log(
+              `${emoji.warning} ${chalk.yellow(
+                `${dep[0]} is outdated. (v${dep[1]} -> v${maxVersion})`,
+              )}`,
+            );
+            break;
+          case 'patch':
+            console.log(
+              `${emoji.log} ${chalk.yellow(
+                `${dep[0]} is outdated. (v${dep[1]} -> v${maxVersion})`,
+              )}`,
+            );
+            break;
+          default:
+            console.log(
+              `${emoji.log} ${chalk.green(
+                `${dep[0]} is up to date. (v${dep[1]})`,
+              )}`,
+            );
+            break;
+        }
 
-      const semverRange = await latestVersion(dep[0], {
-        version:
-          typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
-      });
-      console.log('semverRange', semverRange);
-
-      const diff = semverDiff(dep[1], semverRange);
-      switch (diff) {
-        case 'major':
-          console.log(
-            `${emoji.error} ${chalk.red(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
-            )}`,
-          );
-          break;
-        case 'minor':
-          console.log(
-            `${emoji.warning} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
-            )}`,
-          );
-          break;
-        case 'patch':
-          console.log(
-            `${emoji.log} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange})`,
-            )}`,
-          );
-          break;
-        default:
-          console.log(
-            `${emoji.log} ${chalk.green(
-              `${dep[0]} is up to date. (v${dep[1]})`,
-            )}`,
-          );
-          break;
+        versions = { ...versions, [dep[0]]: maxVersion };
       }
 
-      versions[dep[0]] = semverRange;
+      // const latest = await latestVersion(dep[0]);
+      // console.log('latest', latest);
+
+      // const semverRange = await latestVersion(dep[0], {
+      //   version:
+      //     typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
+      // });
+      // console.log('semverRange', semverRange);
     }
   }
 
@@ -504,7 +512,7 @@ export async function getDevDependencies({
   stylelint?: boolean;
   testCoverage?: boolean;
   typescript?: boolean;
-}): Promise<Record<string, string>> {
+}): Promise<Record<string, string | SemVer>> {
   return await getDependenciesLatestVersions({
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
