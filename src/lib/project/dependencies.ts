@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import semverMaxSatisfying from 'semver/ranges/max-satisfying';
 import semverGreaterThan from 'semver/functions/gt';
 import semverDiff from 'semver/functions/diff';
+import semverClean from 'semver/functions/clean';
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
@@ -95,7 +96,6 @@ import {
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
-import { version } from 'os';
 import { SemVer } from 'semver';
 
 const emoji = {
@@ -232,13 +232,12 @@ export async function getDependenciesLatestVersions(
 
   console.log('latest version deps', [...Object.entries(dependencies)]);
   for (const dep of [...Object.entries(dependencies)] ?? []) {
-    if (dep[0] && dep[1]) {
+    if (!dep[0] || !dep[1]) {
+    } else {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${dep[0]} versions --json`),
       );
 
-      console.log(dep[0]);
-      console.log(dep[1]);
       console.log('availableVersions', availableVersions);
 
       const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
@@ -253,7 +252,9 @@ export async function getDependenciesLatestVersions(
       });
 
       console.log('dep[1]', dep[1], 'semverRange', semverRange);
-      const diff = semverDiff(dep[1], semverRange);
+      console.log('semverClean(dep[1]', semverClean(dep[1]));
+      const diff = semverDiff(semverClean(dep[1]) as string, semverRange);
+
       switch (diff) {
         case 'major':
           console.log(
@@ -284,7 +285,6 @@ export async function getDependenciesLatestVersions(
           );
           break;
       }
-
       versions = { ...versions, [dep[0]]: semverRange };
     }
   }
