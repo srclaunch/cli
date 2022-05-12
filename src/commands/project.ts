@@ -173,6 +173,10 @@ export default new Command<Workspace & Project>({
           });
           console.log('peerDependencies', peerDependencies);
 
+          console.log('devDependencies combined', {
+            ...coreDevDependencies,
+            ...devDependencies,
+          });
           const packageJSON = await generatePackageJSON({
             name: config.name,
             description: config.description,
