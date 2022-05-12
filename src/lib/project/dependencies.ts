@@ -219,23 +219,25 @@ export function getProjectTypeDevDependencies(type?: ProjectType) {
   }
 }
 
-export async function getDependenciesLatestVersions(packages: {
-  [key: string]: string;
-}) {
+export async function getDependenciesLatestVersions(
+  dependencies: {
+    [key: string]: string;
+  } = {},
+) {
   let versions: { [key: string]: string } = {};
 
-  for (const package_ of [...Object.entries(packages)]) {
-    if (package_[0] && package_[1]) {
+  for (const dep of [...Object.entries(dependencies)]) {
+    if (dep[0] && dep[1]) {
       const availableVersions = await JSON.parse(
-        await shellExec(`npm view ${package_[0]} versions --json`),
+        await shellExec(`npm view ${dep[0]} versions --json`),
       );
 
-      const maxVersion = semverMaxSatisfying(availableVersions, package_[1]);
+      const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
 
       if (maxVersion) {
-        const latest = await latestVersion(package_[0]);
+        const latest = await latestVersion(dep[0]);
 
-        const semverRange = await latestVersion(package_[0], {
+        const semverRange = await latestVersion(dep[0], {
           version:
             typeof maxVersion === 'object' ? maxVersion.version : maxVersion,
         });
@@ -247,37 +249,37 @@ export async function getDependenciesLatestVersions(packages: {
             case 'major':
               console.log(
                 `${emoji.error} ${chalk.red(
-                  `${package_[0]} is outdated. (v${semverRange} -> v${latest})`,
+                  `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
                 )}`,
               );
               break;
             case 'minor':
               console.log(
                 `${emoji.warning} ${chalk.yellow(
-                  `${package_[0]} is outdated. (v${semverRange} -> v${latest})`,
+                  `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
                 )}`,
               );
               break;
             case 'patch':
               console.log(
                 `${emoji.log} ${chalk.yellow(
-                  `${package_[0]} is outdated. (v${semverRange} -> v${latest})`,
+                  `${dep[0]} is outdated. (v${semverRange} -> v${latest})`,
                 )}`,
               );
               break;
             default:
               console.log(
                 `${emoji.log} ${chalk.green(
-                  `${package_[0]} is up to date. (v${semverRange} -> v${latest})`,
+                  `${dep[0]} is up to date. (v${semverRange} -> v${latest})`,
                 )}`,
               );
               break;
           }
         }
 
-        versions[package_[0]] = semverRange;
+        versions[dep[0]] = semverRange;
       } else {
-        versions[package_[0]] = package_[1];
+        versions[dep[0]] = dep[1];
       }
     }
   }
