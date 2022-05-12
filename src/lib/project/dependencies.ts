@@ -448,6 +448,7 @@ export async function getDependencies({
   let dependencies: { [key: string]: string } = {};
 
   for (const package_ of packages) {
+    console.log('package_', package_);
     dependencies = {
       ...dependencies,
       ...(dev
@@ -455,7 +456,7 @@ export async function getDependencies({
         : getPackageDependencies(package_)),
     };
   }
-
+  console.log('dependencies', dependencies);
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
@@ -499,7 +500,6 @@ export async function getDevDependencies({
   typescript?: boolean;
 }): Promise<Record<string, string>> {
   return await getDependenciesLatestVersions({
-    ...getProjectTypeDevDependencies(project?.type),
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),
     ...(github ? GITHUB_DEV_DEPENDENCIES : {}),
