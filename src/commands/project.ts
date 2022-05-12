@@ -153,7 +153,6 @@ export default new Command<Workspace & Project>({
                 StaticTypingTool.TypeScript,
               ),
           });
-
           const devDependencies = await getDependencies({
             dev: true,
             packages: [
@@ -161,20 +160,12 @@ export default new Command<Workspace & Project>({
               ...(config.requirements?.packages ?? []),
             ],
           });
-          console.log('devDependencies', devDependencies);
           const dependencies = await getDependencies({
             packages: config.requirements?.packages ?? [],
           });
-          console.log('dependencies', dependencies);
 
           const peerDependencies = await getDependencies({
             packages: config.requirements?.peerPackages ?? [],
-          });
-          console.log('peerDependencies', peerDependencies);
-
-          console.log('devDependencies combined', {
-            ...coreDevDependencies,
-            ...devDependencies,
           });
           const packageJSON = await generatePackageJSON({
             name: config.name,
@@ -346,9 +337,9 @@ export default new Command<Workspace & Project>({
           spinner.succeed('Added GitHub Actions publish workflow');
 
           /*
-              Create configuration files for linters, formatters and static typing
-              tools.
-            */
+            Create configuration files for linters, formatters and static typing
+            tools.
+          */
           spinner.start('Creating DX tooling configurations...');
           await writeToolingConfiguration({
             formatters: config.environments?.development?.formatters,

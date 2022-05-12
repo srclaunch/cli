@@ -1,9 +1,7 @@
 import latestVersion from 'latest-version';
 import chalk from 'chalk';
 import semverMaxSatisfying from 'semver/ranges/max-satisfying';
-import semverGreaterThan from 'semver/functions/gt';
 import semverDiff from 'semver/functions/diff';
-import semverClean from 'semver/functions/clean';
 import semverValid from 'semver/functions/valid';
 import { shellExec } from '../cli';
 import {
@@ -11,7 +9,6 @@ import {
   NodePackage,
   Package,
   Platform,
-  Project,
   ProjectType,
   UniversalPackage,
 } from '@srclaunch/types';
@@ -237,22 +234,11 @@ export async function getDependenciesLatestVersions(
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${dep[0]} versions --json`),
       );
-
-      console.log('availableVersions', availableVersions);
-
       const maxVersion = semverMaxSatisfying(availableVersions, dep[1]);
-      console.log('maxVersion', maxVersion);
-
-      const latest = await latestVersion(dep[0]);
-      console.log('latest', latest);
-
       const semverRange = await latestVersion(dep[0], {
         version:
           typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
       });
-
-      console.log('dep[1]', dep[1], 'semverRange', semverRange);
-      console.log('semverClean(dep[1]', semverClean(dep[1]));
       const diff = semverDiff(dep[1] as string, semverRange);
 
       switch (diff) {
