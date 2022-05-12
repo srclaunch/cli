@@ -273,7 +273,7 @@ export async function getDependenciesLatestVersions(
         default:
           console.log(
             `${emoji.log} ${chalk.green(
-              `${dep[0]} is up to date. (v${dep[1]} -> v${semverRange})`,
+              `${dep[0]} is up to date. (v${dep[1]})`,
             )}`,
           );
           break;
