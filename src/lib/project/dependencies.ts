@@ -243,46 +243,11 @@ export async function getDependenciesLatestVersions(
           typeof maxVersion === 'object' ? maxVersion?.version : maxVersion,
       });
       const semverRange = semverParse(latestVer);
+      // const diff = semverDiff(
+      //   depVersion.version,
+      //   semverRange?.version ?? depVersion.version,
+      // );
 
-      console.log(
-        'diff',
-        depVersion.version,
-        semverRange?.version ?? depVersion.version,
-      );
-      const diff = semverDiff(
-        depVersion.version,
-        semverRange?.version ?? depVersion.version,
-      );
-      switch (diff) {
-        case 'major':
-          console.log(
-            `${emoji.error} ${chalk.red(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange?.version})`,
-            )}`,
-          );
-          break;
-        case 'minor':
-          console.log(
-            `${emoji.warning} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange?.version})`,
-            )}`,
-          );
-          break;
-        case 'patch':
-          console.log(
-            `${emoji.log} ${chalk.yellow(
-              `${dep[0]} is outdated. (v${dep[1]} -> v${semverRange?.version})`,
-            )}`,
-          );
-          break;
-        default:
-          console.log(
-            `${emoji.log} ${chalk.green(
-              `${dep[0]} is up to date. (v${dep[1]})`,
-            )}`,
-          );
-          break;
-      }
       versions = {
         ...versions,
         [depName]: semverRange?.version ?? depVersion.version,
