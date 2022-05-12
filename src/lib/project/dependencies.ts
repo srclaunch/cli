@@ -244,6 +244,11 @@ export async function getDependenciesLatestVersions(
       });
       const semverRange = semverParse(latestVer);
 
+      console.log(
+        'diff',
+        depVersion.version,
+        semverRange?.version ?? depVersion.version,
+      );
       const diff = semverDiff(
         depVersion.version,
         semverRange?.version ?? depVersion.version,
