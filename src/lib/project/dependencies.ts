@@ -225,6 +225,7 @@ export async function getDependencyLatestVersion(
   version: string,
 ) {
   console.log('dependency', dependency);
+  console.log('version', version);
 
   const availableVersions = await JSON.parse(
     await shellExec(`npm view ${dependency} versions --json`),
@@ -261,7 +262,7 @@ export async function getDependenciesLatestVersions(
     };
   });
 
-  await parallelLimit(tasks, 10, err => {
+  parallelLimit(tasks, 10, err => {
     console.error(chalk.red(err));
   });
   console.log('versions', versions);
