@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { SemVer } from 'semver';
 import semverMaxSatisfying from 'semver/ranges/max-satisfying';
 import semverDiff from 'semver/functions/diff';
-import semverParse from 'semver/functions/parse';
+import semver from 'semver/functions/parse';
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
@@ -232,42 +232,33 @@ export async function getDependenciesLatestVersions(
   }));
   console.log('depsArr', depsArr);
   for (const dep of depsArr) {
-    console.log('dep', dep);
-    const depVersion = semverParse(dep.version);
-    console.log('depVersion', depVersion);
+    const availableVersions = await JSON.parse(
+      await shellExec(`npm view ${dep.name} versions --json`),
+    );
+    console.log('availableVersions', availableVersions);
 
-    if (depVersion) {
-      const availableVersions = await JSON.parse(
-        await shellExec(`npm view ${dep.name} versions --json`),
-      );
-      console.log('availableVersions', availableVersions);
+    const maxVersion = semverMaxSatisfying(availableVersions, dep?.version);
 
-      const maxVersion = semverMaxSatisfying(
-        availableVersions,
-        depVersion?.version,
-      );
+    console.log('maxVersion', maxVersion);
 
-      console.log('maxVersion', maxVersion);
+    if (maxVersion) {
+      const getMaxVersionString = () => {
+        return typeof maxVersion === 'object'
+          ? maxVersion?.version
+          : maxVersion;
+      };
 
-      if (maxVersion) {
-        const getMaxVersionString = () => {
-          return typeof maxVersion === 'object'
-            ? maxVersion?.version
-            : maxVersion;
-        };
+      console.log('getMaxVersionString', getMaxVersionString());
 
-        console.log('getMaxVersionString', getMaxVersionString);
-
-        versions = {
-          ...versions,
-          [dep.name]: getMaxVersionString(),
-        };
-      } else {
-        versions = {
-          ...versions,
-          [dep.name]: dep.version,
-        };
-      }
+      versions = {
+        ...versions,
+        [dep.name]: getMaxVersionString(),
+      };
+    } else {
+      versions = {
+        ...versions,
+        [dep.name]: dep.version,
+      };
     }
   }
   console.log('versions', versions);
