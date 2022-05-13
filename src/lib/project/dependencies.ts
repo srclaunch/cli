@@ -227,18 +227,18 @@ export async function getDependenciesLatestVersions(
   const depsArray = Object.entries(dependencies);
   console.log('depsArray', depsArray);
   const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
-    [k]: v,
+    name: k,
+    version: v,
   }));
   console.log('depsArr', depsArr);
   for (const dep of depsArr) {
     console.log('dep', dep);
-    const depName = dep[0];
-    console.log('depName', depName);
-    const depVersion = semverParse(dep[1]);
+    const depVersion = semverParse(dep.version);
     console.log('depVersion', depVersion);
+
     if (depVersion) {
       const availableVersions = await JSON.parse(
-        await shellExec(`npm view ${depName} versions --json`),
+        await shellExec(`npm view ${dep.name} versions --json`),
       );
       console.log('availableVersions', availableVersions);
 
@@ -260,12 +260,12 @@ export async function getDependenciesLatestVersions(
 
         versions = {
           ...versions,
-          [depName]: getMaxVersionString(),
+          [dep.name]: getMaxVersionString(),
         };
       } else {
         versions = {
           ...versions,
-          [depName]: dep[1],
+          [dep.name]: dep.version,
         };
       }
     }
