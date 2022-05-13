@@ -226,16 +226,21 @@ export async function getDependenciesLatestVersions(
 
   for (const dep of Object.entries(dependencies)) {
     const depName = dep[0];
+    console.log('depName', depName);
     const depVersion = semverParse(dep[1]);
-
+    console.log('depVersion', depVersion);
     if (depVersion) {
       const availableVersions = await JSON.parse(
         await shellExec(`npm view ${depName} versions --json`),
       );
+      console.log('availableVersions', availableVersions);
+
       const maxVersion = semverMaxSatisfying(
         availableVersions,
         depVersion?.version,
       );
+
+      console.log('maxVersion', maxVersion);
 
       if (maxVersion) {
         const getMaxVersionString = () => {
@@ -243,6 +248,9 @@ export async function getDependenciesLatestVersions(
             ? maxVersion?.version
             : maxVersion;
         };
+
+        console.log('getMaxVersionString', getMaxVersionString);
+
         versions = {
           ...versions,
           [depName]: getMaxVersionString(),
@@ -255,6 +263,7 @@ export async function getDependenciesLatestVersions(
       }
     }
   }
+  console.log('versions', versions);
   return versions;
 }
 
