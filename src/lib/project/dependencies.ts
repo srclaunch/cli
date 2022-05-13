@@ -224,7 +224,14 @@ export async function getDependenciesLatestVersions(
 ): Promise<Record<string, string>> {
   let versions: Record<string, string> = {};
 
-  for (const dep of Object.entries(dependencies)) {
+  const depsArray = Object.entries(dependencies);
+  console.log('depsArray', depsArray);
+  const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
+    [k]: v,
+  }));
+  console.log('depsArr', depsArr);
+  for (const dep of depsArr) {
+    console.log('dep', dep);
     const depName = dep[0];
     console.log('depName', depName);
     const depVersion = semverParse(dep[1]);
