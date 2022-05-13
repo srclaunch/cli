@@ -4,7 +4,7 @@ import { SemVer } from 'semver';
 import semverMaxSatisfying from 'semver/ranges/max-satisfying';
 import semverDiff from 'semver/functions/diff';
 import semver from 'semver/functions/parse';
-import { parallelLimit } from 'async';
+import { AsyncFunction, parallelLimit } from 'async';
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
@@ -252,15 +252,28 @@ export async function getDependenciesLatestVersions(
     version: v,
   }));
 
-  const tasks = depsArr.map(dep => {
-    return async () => {
-      const latestVersion = await getDependencyLatestVersion(
-        dep.name,
-        dep.version,
-      );
-      versions = { ...versions, [dep.name]: latestVersion };
+  let tasks = {};
+  for (const { name, version } of depsArr) {
+    tasks = {
+      ...tasks,
+      [name]: async (cb: () => void) => {
+        const latestVersion = await getDependencyLatestVersion(name, version);
+        versions = { ...versions, [name]: latestVersion };
+        cb();
+      },
     };
-  });
+  }
+  // const tasks: AsyncFunction<Record<string, string>> = depsArr.map(dep => {
+  //   return async (cb: AsyncFunctionCallback) => {
+  //     const latestVersion = await getDependencyLatestVersion(
+  //       dep.name,
+  //       dep.version,
+  //     );
+  //     versions = { ...versions, [dep.name]: latestVersion };
+
+  //     cb();
+  //   };
+  // });
 
   parallelLimit(tasks, 10, err => {
     console.error(chalk.red(err));
