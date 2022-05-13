@@ -4,6 +4,7 @@ import { SemVer } from 'semver';
 import semverMaxSatisfying from 'semver/ranges/max-satisfying';
 import semverDiff from 'semver/functions/diff';
 import semver from 'semver/functions/parse';
+import { parallelLimit } from 'async';
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
@@ -219,49 +220,52 @@ export function getProjectTypeDevDependencies(type?: ProjectType) {
   return {};
 }
 
+export async function getDependencyLatestVersion(
+  dependency: string,
+  version: string,
+) {
+  console.log('dependency', dependency);
+
+  const availableVersions = await JSON.parse(
+    await shellExec(`npm view ${dependency} versions --json`),
+  );
+  console.log('availableVersions', availableVersions);
+
+  const maxVersion = semverMaxSatisfying(availableVersions, version);
+
+  console.log('maxVersion', maxVersion);
+
+  if (maxVersion) {
+    return typeof maxVersion === 'object' ? maxVersion?.version : maxVersion;
+  }
+
+  return version;
+}
+
 export async function getDependenciesLatestVersions(
   dependencies: Record<string, string> = {},
 ): Promise<Record<string, string>> {
   let versions: Record<string, string> = {};
-
-  const depsArray = Object.entries(dependencies);
-  console.log('depsArray', depsArray);
   const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
     name: k,
     version: v,
   }));
-  console.log('depsArr', depsArr);
-  for (const dep of depsArr) {
-    const availableVersions = await JSON.parse(
-      await shellExec(`npm view ${dep.name} versions --json`),
-    );
-    console.log('availableVersions', availableVersions);
 
-    const maxVersion = semverMaxSatisfying(availableVersions, dep?.version);
+  const tasks = depsArr.map(dep => {
+    return async () => {
+      const latestVersion = await getDependencyLatestVersion(
+        dep.name,
+        dep.version,
+      );
+      versions = { ...versions, [dep.name]: latestVersion };
+    };
+  });
 
-    console.log('maxVersion', maxVersion);
-
-    if (maxVersion) {
-      const getMaxVersionString = () => {
-        return typeof maxVersion === 'object'
-          ? maxVersion?.version
-          : maxVersion;
-      };
-
-      console.log('getMaxVersionString', getMaxVersionString());
-
-      versions = {
-        ...versions,
-        [dep.name]: getMaxVersionString(),
-      };
-    } else {
-      versions = {
-        ...versions,
-        [dep.name]: dep.version,
-      };
-    }
-  }
+  await parallelLimit(tasks, 10, err => {
+    console.error(chalk.red(err));
+  });
   console.log('versions', versions);
+
   return versions;
 }
 
