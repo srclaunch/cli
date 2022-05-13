@@ -2069,7 +2069,7 @@ __metadata:
     terminal-link: ^3.0.0
     ts-jest: ^28.0.2
     ts-node: ^10.7.0
-    typescript: ^4.6.4
+    typescript: ^4.6.3
     unconfig: ^0.3.4
     update-notifier: ^5.1.0
     vite: ^2.9.9
@@ -11804,7 +11804,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.6.4":
+"typescript@npm:^4.6.3":
   version: 4.6.4
   resolution: "typescript@npm:4.6.4"
   bin:
@@ -11814,7 +11814,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>":
   version: 4.6.4
   resolution: "typescript@patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"
   bin:
