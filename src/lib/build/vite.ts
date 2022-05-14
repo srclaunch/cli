@@ -25,7 +25,7 @@ export async function build({
   minify = true,
   output,
   platform = BuildPlatform.Browser,
-  rootDir = path.join(path.resolve(), input?.directory ?? SOURCE_DIR),
+  rootDir = path.resolve(),
   sourcemap = true,
   target = BuildTarget.ESNext,
   types = true,
