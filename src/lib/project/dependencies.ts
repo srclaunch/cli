@@ -398,7 +398,7 @@ export async function getDependencyLatestVersion(
   version?: string,
 ) {
   const versions = await shellExec(
-    `yarn npm view ${dependency} versions --json`,
+    `yarn npm info ${dependency} --fields versions --json`,
   );
   const parsedVersions = await JSON.parse(versions);
 
@@ -418,7 +418,6 @@ export async function getDependencyLatestVersion(
 export async function getDependenciesLatestVersions(
   dependencies: Dependencies,
 ): Promise<Dependencies> {
-  console.log('dependencies', dependencies);
   try {
     const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
       name: k as string,
@@ -435,11 +434,12 @@ export async function getDependenciesLatestVersions(
     };
 
     const deps = await getDeps(depsArr);
+    console.log('getDeps', deps);
     let depsDict: Dependencies = {};
     for (const dep of deps) {
       depsDict = { ...depsDict, ...dep };
     }
-
+    console.log('depsDict', depsDict);
     return depsDict;
   } catch (err) {
     console.error(err);
@@ -462,8 +462,8 @@ export async function getDependencies({
 
   for (const package_ of packages) {
     const deps = dev
-      ? getPackageDevDependencies(package_)
-      : getPackageDependencies(package_);
+      ? { ...getPackageDevDependencies(package_) }
+      : { ...getPackageDependencies(package_) };
 
     console.log('dev', dev);
     console.log('deps', deps);
@@ -471,7 +471,6 @@ export async function getDependencies({
       ...dependencies,
       ...deps,
     };
-    console.log('dependencies', dependencies);
   }
 
   console.log('line 476 dependencies', dependencies);
