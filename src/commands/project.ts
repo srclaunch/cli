@@ -158,6 +158,7 @@ export default new Command<Workspace & Project>({
             packages: [
               ...(config.requirements?.devPackages ?? []),
               ...(config.requirements?.packages ?? []),
+              ...(config.requirements?.peerPackages ?? []),
             ],
           });
           const dependencies = await getDependencies({
@@ -167,6 +168,7 @@ export default new Command<Workspace & Project>({
           const peerDependencies = await getDependencies({
             packages: config.requirements?.peerPackages ?? [],
           });
+
           const packageJSON = await generatePackageJSON({
             name: config.name,
             description: config.description,
