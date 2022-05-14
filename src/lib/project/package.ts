@@ -10,8 +10,6 @@ import {
   PROJECT_PACKAGE_JSON_TEST_SCRIPTS,
 } from '../../constants/project';
 
-export function constructPackageJson({}) {}
-
 export function getPackageScripts({
   build = true,
   release = true,

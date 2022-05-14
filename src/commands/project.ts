@@ -15,7 +15,7 @@ import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
 import { readFile } from '../lib/file-system.js';
 import ora from 'ora';
-import { getBranchName, push } from '../lib/git.js';
+import { push } from '../lib/git.js';
 import { shellExec } from '../lib/cli.js';
 import { getPublishYml } from '../lib/project/publish.js';
 import { getPackageScripts } from '../lib/project/package.js';
@@ -44,7 +44,7 @@ import {
   YarnNodeLinker,
 } from '../lib/generators/config/package-managers/yarn.js';
 import { generateFile } from '../lib/generators/file.js';
-import { generatePackageJSON } from '../lib/generators/config/node/package-json.js';
+import { generateNodePackageManifest } from '../lib/generators/config/node/package-manifest.js';
 import { generateGitIgnoreConfig } from '../lib/generators/config/git/gitignore.js';
 import { BUILD_DIR, BUILD_FILE_NAME } from '../constants/build.js';
 
@@ -173,7 +173,7 @@ export default new Command<Workspace & Project>({
           });
           console.log('peerDependencies', peerDependencies);
 
-          const packageJSON = await generatePackageJSON({
+          const packageJSON = await generateNodePackageManifest({
             name: config.name,
             description: config.description,
             author: 'Steven Bennett <steven@srclaunch.com>',

@@ -122,26 +122,6 @@ export type Dependency = {
 
 export type Dependencies = Record<string, string>;
 
-export function sortDependencies(dependencies: Dependencies): Dependencies {
-  if (
-    dependencies === undefined ||
-    !dependencies ||
-    !Object.keys(dependencies).length
-  ) {
-    return dependencies;
-  }
-
-  let sortedDependencies: Dependencies = {};
-  for (const dependency of Object.keys(dependencies).sort()) {
-    sortedDependencies = {
-      ...sortDependencies,
-      [dependency]: dependencies[dependency],
-    };
-  }
-
-  return sortedDependencies;
-}
-
 export function getPlatformDependencies(platform?: Platform) {
   switch (platform) {
     case Platform.Desktop:
@@ -391,6 +371,26 @@ export function getPackageDevDependencies(package_: Package) {
     default:
       return {};
   }
+}
+
+export function sortDependencies(dependencies: Dependencies): Dependencies {
+  if (
+    dependencies === undefined ||
+    !dependencies ||
+    !Object.keys(dependencies).length
+  ) {
+    return dependencies;
+  }
+
+  let sortedDependencies: Dependencies = {};
+  for (const dependency of Object.keys(dependencies).sort()) {
+    sortedDependencies = {
+      ...sortedDependencies,
+      [dependency]: dependencies[dependency] as string,
+    };
+  }
+
+  return sortedDependencies;
 }
 
 export async function getDependencyLatestVersion(

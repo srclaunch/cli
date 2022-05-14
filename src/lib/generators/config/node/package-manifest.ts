@@ -1,7 +1,7 @@
-import { File, PackageOptions, PackageType } from '@srclaunch/types';
+import { PackageOptions, PackageType } from '@srclaunch/types';
 import { Dependencies } from '../../../project/dependencies';
 
-export type PackageJSONGeneratorOptions = {
+export type NodePackageManifestGeneratorOptions = {
   author?: string;
   description?: string;
   dependencies?: Dependencies;
@@ -25,7 +25,7 @@ export type PackageJSONGeneratorOptions = {
   version?: string;
 };
 
-export async function generatePackageJSON({
+export async function generateNodePackageManifest({
   author,
   dependencies,
   description,
@@ -43,7 +43,7 @@ export async function generatePackageJSON({
   type,
   types,
   version,
-}: PackageJSONGeneratorOptions): Promise<string> {
+}: NodePackageManifestGeneratorOptions): Promise<string> {
   if (!name) {
     throw new Error('Name is required');
   }
