@@ -465,6 +465,7 @@ export async function getDependencies({
   dev?: boolean;
   packages?: Package[];
 }): Promise<Dependencies> {
+  console.log('DEV: ', dev);
   console.log('packages', packages);
   if (!packages) {
     return {};
