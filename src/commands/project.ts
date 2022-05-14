@@ -334,7 +334,7 @@ export default new Command<Workspace & Project>({
             configuration.
           */
           spinner.start('Creating GitHub Actions public workflow...');
-          await ensureDirectoryExists('.github');
+          await ensureDirectoryExists('.github/workflows');
           await generateFile({
             contents: getPublishYml({ build, test }),
             extension: 'yml',
