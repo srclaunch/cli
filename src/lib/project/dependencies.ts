@@ -244,62 +244,6 @@ export function getProjectTypeDevDependencies(type?: ProjectType) {
   return {};
 }
 
-export async function getDependencyLatestVersion(
-  dependency: string,
-  version?: string,
-) {
-  try {
-  } catch (err) {}
-  if (!version) {
-    return await latestVersion(dependency);
-  }
-
-  const versions = await shellExec(`npm view ${dependency} versions --json`);
-  const parsedVersions = await JSON.parse(versions);
-
-  if (parsedVersions && parsedVersions.length) {
-    const maxVersion = await semverMaxSatisfying(parsedVersions, version);
-
-    if (maxVersion) {
-      return typeof maxVersion === 'object' ? maxVersion?.version : maxVersion;
-    }
-  }
-
-  return await latestVersion(dependency);
-}
-
-export async function getDependenciesLatestVersions(
-  dependencies: Dependencies,
-): Promise<Dependencies> {
-  console.log('dependencies', dependencies);
-  try {
-    const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
-      name: k as string,
-      version: v as string,
-    }));
-
-    const getDeps = async (deps: { name: string; version: string }[]) => {
-      return Promise.all(
-        deps.map(async dep => ({
-          [dep.name]:
-            (await getDependencyLatestVersion(dep.name)) ?? dep.version,
-        })),
-      );
-    };
-
-    const deps = await getDeps(depsArr);
-    let depsDict: Dependencies = {};
-    for (const dep of deps) {
-      depsDict = { ...depsDict, ...dep };
-    }
-
-    return depsDict;
-  } catch (err) {
-    console.error(err);
-    return dependencies;
-  }
-}
-
 export function getPackageDependencies(package_: Package) {
   switch (package_) {
     case BrowserPackage.AmazonCognitoIdentityJS:
@@ -449,6 +393,58 @@ export function getPackageDevDependencies(package_: Package) {
   }
 }
 
+export async function getDependencyLatestVersion(
+  dependency: string,
+  version?: string,
+) {
+  const versions = await shellExec(`npm view ${dependency} versions --json`);
+  const parsedVersions = await JSON.parse(versions);
+
+  if (parsedVersions && parsedVersions.length && version) {
+    const maxVersion = await semverMaxSatisfying(parsedVersions, version);
+
+    if (maxVersion) {
+      return typeof maxVersion === 'object'
+        ? `^${maxVersion?.version}`
+        : `^${maxVersion}`;
+    }
+  }
+
+  return `^${await latestVersion(dependency)}`;
+}
+
+export async function getDependenciesLatestVersions(
+  dependencies: Dependencies,
+): Promise<Dependencies> {
+  console.log('dependencies', dependencies);
+  try {
+    const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
+      name: k as string,
+      version: v as string,
+    }));
+
+    const getDeps = async (deps: { name: string; version: string }[]) => {
+      return Promise.all(
+        deps.map(async dep => ({
+          [dep.name]:
+            (await getDependencyLatestVersion(dep.name)) ?? dep.version,
+        })),
+      );
+    };
+
+    const deps = await getDeps(depsArr);
+    let depsDict: Dependencies = {};
+    for (const dep of deps) {
+      depsDict = { ...depsDict, ...dep };
+    }
+
+    return depsDict;
+  } catch (err) {
+    console.error(err);
+    return dependencies;
+  }
+}
+
 export async function getDependencies({
   dev = false,
   packages = [],
@@ -467,10 +463,13 @@ export async function getDependencies({
       ? getPackageDevDependencies(package_)
       : getPackageDependencies(package_);
 
+    console.log('dev', dev);
+    console.log('deps', deps);
     dependencies = {
       ...dependencies,
       ...deps,
     };
+    console.log('dependencies', dependencies);
   }
 
   console.log('line 476 dependencies', dependencies);
