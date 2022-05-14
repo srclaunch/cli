@@ -161,6 +161,7 @@ export default new Command<Workspace & Project>({
               ...(config.requirements?.peerPackages ?? []),
             ],
           });
+
           const dependencies = await getDependencies({
             packages: config.requirements?.packages ?? [],
           });
