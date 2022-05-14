@@ -106,6 +106,8 @@ export default new Command<Workspace & Project>({
           console.log(chalk.red('No project configuration found'));
         }
 
+        const build = Boolean(config.build) ?? Boolean(flags['build']);
+        const test = Boolean(config.test) ?? Boolean(flags['test']);
         const spinner = ora({
           discardStdin: true,
           spinner: 'dots',
@@ -115,11 +117,9 @@ export default new Command<Workspace & Project>({
         });
 
         try {
-          const build = Boolean(config.build) ?? Boolean(flags['build']);
-          const test = Boolean(config.test) ?? Boolean(flags['test']);
-
           spinner.start('Updating dependencies...');
-          const existingPackageJSON = await JSON.parse(
+
+          const existingPackageManifest = await JSON.parse(
             (await readFile('package.json')).toString(),
           );
           const coreDevDependencies = await getDevDependencies({
@@ -174,7 +174,7 @@ export default new Command<Workspace & Project>({
             name: config.name,
             description: config.description,
             author: 'Steven Bennett <steven@srclaunch.com>',
-            version: existingPackageJSON.version ?? '0.0.0',
+            version: existingPackageManifest.version ?? '0.0.0',
             engines: {
               node: config.requirements?.node,
               npm: config.requirements?.npm,
@@ -307,10 +307,13 @@ export default new Command<Workspace & Project>({
           await shellExec('yarn install');
           spinner.succeed('Installed project dependencies');
 
-          const updatedPackageJSON = await JSON.parse(
+          const updatedPackageManifest = await JSON.parse(
             (await readFile('package.json')).toString(),
           );
-          const diff = diffJson(existingPackageJSON, updatedPackageJSON);
+          const diff = diffJson(
+            existingPackageManifest,
+            updatedPackageManifest,
+          );
           if (diff.length > 1) {
             console.info(chalk.bold('> Changes to package.json:'));
             for (const change of diff) {
