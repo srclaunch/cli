@@ -250,23 +250,17 @@ export async function getDependencyLatestVersion(
     return await latestVersion(dependency);
   }
 
-  console.log('dependency', dependency);
-  console.log('version', version);
-
   const availableVersions = await JSON.parse(
     await shellExec(`npm view ${dependency} versions --json`),
   );
-  console.log('availableVersions', availableVersions);
 
   const maxVersion = await semverMaxSatisfying(availableVersions, version);
-
-  console.log('maxVersion', maxVersion);
 
   if (maxVersion) {
     return typeof maxVersion === 'object' ? maxVersion?.version : maxVersion;
   }
 
-  return version;
+  return latestVersion(dependency);
 }
 
 export async function getDependenciesLatestVersions(
@@ -290,7 +284,6 @@ export async function getDependenciesLatestVersions(
       version: v,
     }));
 
-    console.log('depsArr', depsArr);
     let versions: Record<string, string> = {};
 
     const result = await Promise.all(
@@ -300,9 +293,11 @@ export async function getDependenciesLatestVersions(
           dep.version,
         );
         versions = { ...versions, [dep.name]: latestVersion };
+        return versions;
       }),
     );
 
+    console.log('result', result);
     if (!versions) {
       return {};
     }
