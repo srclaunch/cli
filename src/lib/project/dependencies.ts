@@ -247,7 +247,7 @@ export async function getDependencyLatestVersion(
   version?: string,
 ) {
   if (!version) {
-    return latestVersion(dependency);
+    return await latestVersion(dependency);
   }
 
   console.log('dependency', dependency);
@@ -258,7 +258,7 @@ export async function getDependencyLatestVersion(
   );
   console.log('availableVersions', availableVersions);
 
-  const maxVersion = semverMaxSatisfying(availableVersions, version);
+  const maxVersion = await semverMaxSatisfying(availableVersions, version);
 
   console.log('maxVersion', maxVersion);
 
