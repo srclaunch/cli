@@ -289,6 +289,8 @@ export async function getDependenciesLatestVersions(
       name: k,
       version: v,
     }));
+
+    console.log('depsArr', depsArr);
     let versions: Record<string, string> = {};
 
     const result = await Promise.all(
@@ -301,7 +303,12 @@ export async function getDependenciesLatestVersions(
       }),
     );
 
-    console.log('result', result);
+    if (!result[0]) {
+      return {};
+    }
+
+    console.log('result', result[0]);
+    return result[0];
     // // @ts-ignore
     // const tasks: AsyncFunction<Dependencies>[] = await depsArr.map(dep => {
     //   return {
