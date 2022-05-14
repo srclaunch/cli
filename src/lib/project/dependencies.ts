@@ -105,6 +105,7 @@ import {
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
 import { MapLike } from 'typescript';
+import { ValidationException } from '@srclaunch/exceptions';
 
 const emoji = {
   log: '\u26aa\ufe0f',
@@ -119,7 +120,7 @@ export type Dependency = {
   [name: string]: string | undefined;
 };
 
-export type Dependencies = MapLike<string>;
+export type Dependencies = Record<string, string>;
 
 export function sortDependencies(dependencies: Dependencies): Dependencies {
   if (
@@ -268,7 +269,7 @@ export async function getDependencyLatestVersion(
 }
 
 export async function getDependenciesLatestVersions(
-  dependencies: Dependencies = {},
+  dependencies: Dependencies,
 ): Promise<Dependencies> {
   console.log('dependencies', dependencies);
   try {
@@ -287,15 +288,12 @@ export async function getDependenciesLatestVersions(
     };
 
     const deps = await getDeps(depsArr);
-    let depsMap: Dependencies = {};
+    let depsDict: Dependencies = {};
     for (const dep of deps) {
-      depsMap = {
-        ...depsMap,
-        ...dep,
-      };
+      depsDict = { ...depsDict, ...dep };
     }
 
-    return depsMap;
+    return depsDict;
   } catch (err) {
     console.error(err);
     return dependencies;
