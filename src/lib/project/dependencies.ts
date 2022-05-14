@@ -246,19 +246,22 @@ export async function getDependencyLatestVersion(
   dependency: string,
   version?: string,
 ) {
+  try {
+  } catch (err) {}
   if (!version) {
     return await latestVersion(dependency);
   }
 
-  const availableVersions = await JSON.parse(
-    await shellExec(`npm view ${dependency} versions --json`),
-  );
-  const maxVersion = await semverMaxSatisfying(availableVersions, version);
+  const versions = await shellExec(`npm view ${dependency} versions --json`);
+  const parsedVersions = await JSON.parse(versions);
 
-  if (maxVersion) {
-    return typeof maxVersion === 'object' ? maxVersion?.version : maxVersion;
+  if (parsedVersions && parsedVersions.length) {
+    const maxVersion = await semverMaxSatisfying(parsedVersions, version);
+
+    if (maxVersion) {
+      return typeof maxVersion === 'object' ? maxVersion?.version : maxVersion;
+    }
   }
-
   return latestVersion(dependency);
 }
 
