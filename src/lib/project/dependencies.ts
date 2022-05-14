@@ -304,41 +304,9 @@ export async function getDependenciesLatestVersions(
 
     console.log('versions', versions);
     return versions;
-    // // @ts-ignore
-    // const tasks: AsyncFunction<Dependencies>[] = await depsArr.map(dep => {
-    //   return {
-    //     [dep.name]: async (
-    //       cb: (err?: Error | null | undefined, result?: Dependencies) => void,
-    //     ): Promise<void> => {
-    //       const latestVersion = await getDependencyLatestVersion(
-    //         dep.name,
-    //         dep.version,
-    //       );
-
-    //       cb(undefined, { [dep.name]: latestVersion });
-    //     },
-    //   };
-    // });
-
-    // console.log('tasks', tasks);
-    // let results = await parallelLimit<Dependencies, Dependencies, Error>(
-    //   tasks,
-    //   5,
-    // );
-
-    // console.log('results', results);
-
-    // @ts-ignore
-    // if (results) {
-    //   return results;
-    // }
-    // results is equal to ['one','two'] even though
-    // the second function had a shorter timeout.
   } catch (err) {
-    console.error(chalk.red(err));
+    return dependencies;
   }
-
-  return {};
 }
 
 export function getPackageDependencies(package_: Package) {
