@@ -64,6 +64,22 @@ export async function emptyDirectory(directory: string): Promise<void> {
   }
 }
 
+export async function ensureDirectoryExists(directory: string): Promise<void> {
+  if (!directory) {
+    throw new Error('Directory must be provided');
+  }
+
+  if (directory === '/') {
+    throw new Error('Cannot ensure root directory exists');
+  }
+
+  try {
+    await fs.ensureDir(directory);
+  } catch (err) {
+    throw new Error(`Could not ensure directory exists: ${directory}`);
+  }
+}
+
 export async function fileExists(path: string): Promise<boolean> {
   try {
     await fs.access(path);

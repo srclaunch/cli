@@ -13,7 +13,7 @@ import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
 import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
-import { readFile } from '../lib/file-system.js';
+import { ensureDirectoryExists, readFile } from '../lib/file-system.js';
 import ora from 'ora';
 import { push } from '../lib/git.js';
 import { shellExec } from '../lib/cli.js';
@@ -334,6 +334,7 @@ export default new Command<Workspace & Project>({
             configuration.
           */
           spinner.start('Creating GitHub Actions public workflow...');
+          await ensureDirectoryExists('.github');
           await generateFile({
             contents: getPublishYml({ build, test }),
             extension: 'yml',
