@@ -4,7 +4,15 @@ import { SemVer } from 'semver';
 import semverMaxSatisfying from 'semver/ranges/max-satisfying';
 import semverDiff from 'semver/functions/diff';
 import semver from 'semver/functions/parse';
-import { AsyncFunction, parallelLimit } from 'async';
+import {
+  AsyncFunction,
+  AsyncFunctionEx,
+  AsyncResultObjectCallback,
+  AsyncAutoTask,
+  Dictionary,
+  parallelLimit,
+  AsyncAutoTasks,
+} from 'async';
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
@@ -106,16 +114,30 @@ const emoji = {
   success: '\u2705',
 };
 
-export function sortDependencies(
-  dependencies: { [key: string]: string | SemVer } = {},
-) {
-  if (!dependencies) {
-    return {};
+export type Dependency = {
+  [name: string]: string;
+};
+
+export type Dependencies = {
+  [name: keyof Dependency]: string | undefined;
+};
+
+export function sortDependencies(dependencies: Dependencies): Dependencies {
+  if (
+    dependencies === undefined ||
+    !dependencies ||
+    !Object.keys(dependencies).length
+  ) {
+    return dependencies;
   }
 
-  return Object.entries(dependencies)
-    .sort(([, v1], [, v2]) => +v2 - +v1)
-    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+  const sortedDependencies: Dependencies = {};
+
+  for (const dependency of Object.keys(dependencies).sort()) {
+    sortedDependencies[dependency] = dependencies[dependency];
+  }
+
+  return sortedDependencies;
 }
 
 export function getPlatformDependencies(platform?: Platform) {
@@ -222,8 +244,12 @@ export function getProjectTypeDevDependencies(type?: ProjectType) {
 
 export async function getDependencyLatestVersion(
   dependency: string,
-  version: string,
+  version?: string,
 ) {
+  if (!version) {
+    return latestVersion(dependency);
+  }
+
   console.log('dependency', dependency);
   console.log('version', version);
 
@@ -244,25 +270,26 @@ export async function getDependencyLatestVersion(
 }
 
 export async function getDependenciesLatestVersions(
-  dependencies: Record<string, string> = {},
-): Promise<Record<string, string>> {
-  let versions: Record<string, string> = {};
+  dependencies: Dependencies = {},
+): Promise<Dependencies> {
   const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
     name: k,
     version: v,
   }));
+  let versions: Record<string, string> = {};
 
   let tasks = {};
   for (const { name, version } of depsArr) {
     tasks = {
       ...tasks,
-      [name]: async (cb: () => void) => {
+      [name]: async (cb: (versions?: Record<string, string>) => void) => {
         const latestVersion = await getDependencyLatestVersion(name, version);
-        versions = { ...versions, [name]: latestVersion };
-        cb();
+        cb({ ...versions, [name]: latestVersion });
       },
     };
   }
+
+  console.log('tasks', tasks);
   // const tasks: AsyncFunction<Record<string, string>> = depsArr.map(dep => {
   //   return async (cb: AsyncFunctionCallback) => {
   //     const latestVersion = await getDependencyLatestVersion(
@@ -275,7 +302,35 @@ export async function getDependenciesLatestVersions(
   //   };
   // });
 
-  parallelLimit(tasks, 10, err => {
+  const tasksF = depsArr.map(dep => ({
+    [dep.name]: async (
+      cb: (err?: Error | null | undefined, result?: Dependencies) => void,
+    ): Promise<void> => {
+      const latestVersion = await getDependencyLatestVersion(
+        dep.name,
+        dep.version,
+      );
+      cb(undefined, { [dep.name]: latestVersion });
+    },
+  }));
+
+  try {
+    // @ts-ignore
+    let results = await parallelLimit(tasksF, 5);
+
+    console.log('results', results);
+
+    // @ts-ignore
+    if (results) {
+      return results;
+    }
+    // results is equal to ['one','two'] even though
+    // the second function had a shorter timeout.
+  } catch (err) {
+    console.log(err);
+  }
+
+  await parallelLimit(tasks, 10, err => {
     console.error(chalk.red(err));
   });
   console.log('versions', versions);
@@ -438,12 +493,12 @@ export async function getDependencies({
 }: {
   dev?: boolean;
   packages?: Package[];
-}) {
+}): Promise<Dependencies> {
   if (!packages) {
     return {};
   }
 
-  let dependencies: Record<string, string> = {};
+  let dependencies: Dependencies = {};
 
   for (const package_ of packages) {
     dependencies = {
@@ -492,7 +547,7 @@ export async function getDevDependencies({
   stylelint?: boolean;
   testCoverage?: boolean;
   typescript?: boolean;
-}): Promise<Record<string, string>> {
+}): Promise<Dependencies> {
   return await getDependenciesLatestVersions({
     ...(ava ? AVA_TESTING_DEV_DEPENDENCIES : {}),
     ...(eslint ? ESLINT_DEV_DEPENDENCIES : {}),

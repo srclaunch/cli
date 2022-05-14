@@ -1,10 +1,11 @@
 import { File, PackageOptions, PackageType } from '@srclaunch/types';
+import { Dependencies } from '../../../project/dependencies';
 
 export type PackageJSONGeneratorOptions = {
   author?: string;
   description?: string;
-  dependencies?: Record<string, string>;
-  devDependencies?: Record<string, string>;
+  dependencies?: Dependencies;
+  devDependencies?: Dependencies;
   engines?: {
     node?: string;
     npm?: string;
@@ -16,7 +17,7 @@ export type PackageJSONGeneratorOptions = {
   main?: string;
   module?: string;
   name: string;
-  peerDependencies?: Record<string, string>;
+  peerDependencies?: Dependencies;
   publishConfig?: Record<string, string>;
   scripts?: Record<string, string>;
   type?: PackageType;
