@@ -516,6 +516,7 @@ export async function getDependencies({
     };
   }
 
+  console.log('dependencies', dependencies);
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
