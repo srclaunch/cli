@@ -509,6 +509,7 @@ export async function getDependencies({
       ? getPackageDevDependencies(package_)
       : getPackageDependencies(package_);
 
+    console.log('deps', deps);
     dependencies = {
       ...dependencies,
       ...deps,
