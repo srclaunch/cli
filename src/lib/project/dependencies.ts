@@ -461,9 +461,9 @@ export async function getDependencies({
   let dependencies: Dependencies = {};
 
   for (const package_ of packages) {
-    const deps = dev
-      ? { ...getPackageDevDependencies(package_) }
-      : { ...getPackageDependencies(package_) };
+    const deps: Dependencies = dev
+      ? getPackageDevDependencies(package_)
+      : getPackageDependencies(package_);
 
     console.log('dev', dev);
     console.log('deps', deps);
