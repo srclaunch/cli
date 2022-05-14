@@ -276,19 +276,17 @@ export async function getDependenciesLatestVersions(
 
     let versions: Record<string, string> = {};
 
-    await Promise.all(
-      depsArr.map(async dep => {
-        const latestVersion = await getDependencyLatestVersion(
-          dep.name,
-          dep.version,
-        );
-        versions = { ...versions, [dep.name]: latestVersion };
-        return { [dep.name]: latestVersion };
-      }),
-    );
-
-    if (!versions) {
-      return {};
+    if (depsArr.length) {
+      await Promise.all(
+        depsArr.map(async dep => {
+          const latestVersion = await getDependencyLatestVersion(
+            dep.name,
+            dep.version,
+          );
+          versions = { ...versions, [dep.name]: latestVersion };
+          return { [dep.name]: latestVersion };
+        }),
+      );
     }
 
     return versions;
