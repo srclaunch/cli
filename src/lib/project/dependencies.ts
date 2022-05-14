@@ -397,7 +397,9 @@ export async function getDependencyLatestVersion(
   dependency: string,
   version?: string,
 ) {
-  const versions = await shellExec(`npm view ${dependency} versions --json`);
+  const versions = await shellExec(
+    `yarn npm view ${dependency} versions --json`,
+  );
   const parsedVersions = await JSON.parse(versions);
 
   if (parsedVersions && parsedVersions.length && version) {
