@@ -266,18 +266,6 @@ export async function getDependencyLatestVersion(
 export async function getDependenciesLatestVersions(
   dependencies: Dependencies = {},
 ): Promise<Dependencies> {
-  // const tasks: AsyncFunction<Record<string, string>> = depsArr.map(dep => {
-  //   return async (cb: AsyncFunctionCallback) => {
-  //     const latestVersion = await getDependencyLatestVersion(
-  //       dep.name,
-  //       dep.version,
-  //     );
-  //     versions = { ...versions, [dep.name]: latestVersion };
-
-  //     cb();
-  //   };
-  // });
-
   try {
     const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
       name: k,
@@ -305,6 +293,7 @@ export async function getDependenciesLatestVersions(
     console.log('versions', versions);
     return versions;
   } catch (err) {
+    console.error(err);
     return dependencies;
   }
 }
