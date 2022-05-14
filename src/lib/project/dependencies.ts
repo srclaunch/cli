@@ -284,19 +284,6 @@ export async function getDependenciesLatestVersions(
   //   };
   // });
 
-  // let tasks = {};
-  // const tasksF = await depsArr.map(dep => ({
-  //   [dep.name]: async (
-  //     cb: (err?: Error | null | undefined, result?: Dependencies) => void,
-  //   ): Promise<void> => {
-  //     const latestVersion = await getDependencyLatestVersion(
-  //       dep.name,
-  //       dep.version,
-  //     );
-  //     cb(undefined, { [dep.name]: latestVersion });
-  //   },
-  // }));
-
   try {
     const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
       name: k,
@@ -304,19 +291,27 @@ export async function getDependenciesLatestVersions(
     }));
     let versions: Record<string, string> = {};
 
-    let tasks = {};
-    for (const { name, version } of depsArr) {
-      tasks = {
-        ...tasks,
-        [name]: async (cb: (versions?: Record<string, string>) => void) => {
-          const latestVersion = await getDependencyLatestVersion(name, version);
-          cb({ ...versions, [name]: latestVersion });
+    // @ts-ignore
+    const tasks: AsyncFunction<Dependencies>[] = await depsArr.map(dep => {
+      return {
+        [dep.name]: async (
+          cb: (err?: Error | null | undefined, result?: Dependencies) => void,
+        ): Promise<void> => {
+          const latestVersion = await getDependencyLatestVersion(
+            dep.name,
+            dep.version,
+          );
+
+          cb(undefined, { [dep.name]: latestVersion });
         },
       };
-    }
+    });
 
     console.log('tasks', tasks);
-    let results = await parallelLimit(tasks, 5);
+    let results = await parallelLimit<Dependencies, Dependencies, Error>(
+      tasks,
+      5,
+    );
 
     console.log('results', results);
 
