@@ -270,6 +270,7 @@ export async function getDependencyLatestVersion(
 export async function getDependenciesLatestVersions(
   dependencies: Dependencies = {},
 ): Promise<Dependencies> {
+  console.log('dependencies', dependencies);
   try {
     const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
       name: k as string,
@@ -286,14 +287,15 @@ export async function getDependenciesLatestVersions(
     };
 
     const deps = await getDeps(depsArr);
+    let depsMap: Dependencies = {};
+    for (const dep of deps) {
+      depsMap = {
+        ...depsMap,
+        ...dep,
+      };
+    }
 
-    return Object.entries(deps).reduce(
-      (acc, [key, value]) => ({
-        ...acc,
-        [key]: value,
-      }),
-      {},
-    );
+    return depsMap;
   } catch (err) {
     console.error(err);
     return dependencies;
@@ -476,6 +478,8 @@ export async function getDependencies({
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
+
+  console.log('dependenciesLatestVersions', dependenciesLatestVersions);
 
   return sortDependencies(dependenciesLatestVersions);
 }
