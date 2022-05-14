@@ -293,7 +293,7 @@ export async function getDependenciesLatestVersions(
           dep.version,
         );
         versions = { ...versions, [dep.name]: latestVersion };
-        return versions;
+        return { [dep.name]: latestVersion };
       }),
     );
 
