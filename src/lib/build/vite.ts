@@ -85,7 +85,7 @@ export async function build({
         include: (optimize?.include ?? []) as string[],
       },
       plugins: webApp?.react ? [react()] : [],
-      root: rootDir ?? path.resolve(),
+      root: rootDir ?? path.join(path.resolve(), input?.directory ?? 'src'),
     });
 
     // console.log('result', result);
