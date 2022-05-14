@@ -38,6 +38,7 @@ export async function writeToolingConfiguration({
           const uiConfig =
             project.type === ProjectType.WebApplication ||
             project.type === ProjectType.ComponentLibrary;
+
           await writeFile(
             path.resolve('./tsconfig.json'),
             uiConfig ? TYPESCRIPT_UI_CONFIG_CONTENT : TYPESCRIPT_CONFIG_CONTENT,
@@ -55,7 +56,7 @@ export async function writeToolingConfiguration({
           case CodeFormatterTool.Prettier:
             await writeFile(
               path.resolve('./.prettierrc.cjs'),
-              JSON.stringify(PRETTIER_CONFIG_CONTENT, null, 2),
+              PRETTIER_CONFIG_CONTENT,
             );
             // console.info(`${chalk.green('✔')} added Prettier config`);
             break;
@@ -75,22 +76,14 @@ export async function writeToolingConfiguration({
           case CodeLinterTool.ESLint:
             await writeFile(
               path.resolve('./.eslintrc.cjs'),
-              JSON.stringify(
-                ui ? ESLINT_UI_CONFIG_CONTENT : ESLINT_CONFIG_CONTENT,
-                null,
-                2,
-              ),
+              ui ? ESLINT_UI_CONFIG_CONTENT : ESLINT_CONFIG_CONTENT,
             );
             // console.info(`${chalk.green('✔')} added ESLint config`);
             break;
           case CodeLinterTool.Stylelint:
             await writeFile(
               path.resolve('./.stylelintrc.js'),
-              JSON.stringify(
-                ui ? STYLELINT_UI_CONFIG_CONTENT : STYLELINT_CONFIG_CONTENT,
-                null,
-                2,
-              ),
+              ui ? STYLELINT_UI_CONFIG_CONTENT : STYLELINT_CONFIG_CONTENT,
             );
             // console.info(`${chalk.green('✔')} added Stylelint config`);
             break;
