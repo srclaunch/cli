@@ -11,6 +11,7 @@ import {
 import { getViteFormatFileExtension } from './formats.js';
 import chalk from 'chalk';
 import { BUILD_DIR } from '../../constants/build.js';
+import { SOURCE_MAIN_FILE, SOURCE_DIR } from '../../constants/dev.js';
 
 export async function build({
   assets,
@@ -24,7 +25,7 @@ export async function build({
   minify = true,
   output,
   platform = BuildPlatform.Browser,
-  rootDir,
+  rootDir = path.join(path.resolve(), input?.directory ?? SOURCE_DIR),
   sourcemap = true,
   target = BuildTarget.ESNext,
   types = true,
@@ -49,8 +50,8 @@ export async function build({
           ? {
               entry: path.join(
                 path.resolve(),
-                input?.directory ?? 'src',
-                input?.file ?? 'index.ts',
+                input?.directory ?? SOURCE_DIR,
+                input?.file ?? SOURCE_MAIN_FILE,
               ),
               formats: viteFormats,
               name:
@@ -85,7 +86,7 @@ export async function build({
         include: (optimize?.include ?? []) as string[],
       },
       plugins: webApp?.react ? [react()] : [],
-      root: rootDir ?? path.join(path.resolve(), input?.directory ?? 'src'),
+      root: rootDir,
     });
 
     // console.log('result', result);
