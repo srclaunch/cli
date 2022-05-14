@@ -473,6 +473,7 @@ export async function getDependencies({
     };
   }
 
+  console.log('line 476 dependencies', dependencies);
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
