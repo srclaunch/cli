@@ -505,16 +505,20 @@ export async function getDependencies({
   let dependencies: Dependencies = {};
 
   for (const package_ of packages) {
+    const deps = dev
+      ? getPackageDevDependencies(package_)
+      : getPackageDependencies(package_);
+
     dependencies = {
       ...dependencies,
-      ...(dev
-        ? getPackageDevDependencies(package_)
-        : getPackageDependencies(package_)),
+      ...deps,
     };
   }
+
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
+
   return sortDependencies(dependenciesLatestVersions);
 }
 
