@@ -104,6 +104,7 @@ import {
   TEST_COVERAGE_DEV_DEPENDENCIES,
   TYPESCRIPT_DEV_DEPENDENCIES,
 } from '../../constants/dev-dependencies';
+import { MapLike } from 'typescript';
 
 const emoji = {
   log: '\u26aa\ufe0f',
@@ -115,12 +116,10 @@ const emoji = {
 };
 
 export type Dependency = {
-  [name: string]: string;
+  [name: string]: string | undefined;
 };
 
-export type Dependencies = {
-  [name: keyof Dependency]: string | undefined;
-};
+export type Dependencies = MapLike<string>;
 
 export function sortDependencies(dependencies: Dependencies): Dependencies {
   if (
@@ -131,10 +130,12 @@ export function sortDependencies(dependencies: Dependencies): Dependencies {
     return dependencies;
   }
 
-  const sortedDependencies: Dependencies = {};
-
+  let sortedDependencies: Dependencies = {};
   for (const dependency of Object.keys(dependencies).sort()) {
-    sortedDependencies[dependency] = dependencies[dependency];
+    sortedDependencies = {
+      ...sortDependencies,
+      [dependency]: dependencies[dependency],
+    };
   }
 
   return sortedDependencies;
@@ -262,7 +263,8 @@ export async function getDependencyLatestVersion(
       return typeof maxVersion === 'object' ? maxVersion?.version : maxVersion;
     }
   }
-  return latestVersion(dependency);
+
+  return await latestVersion(dependency);
 }
 
 export async function getDependenciesLatestVersions(
@@ -270,26 +272,28 @@ export async function getDependenciesLatestVersions(
 ): Promise<Dependencies> {
   try {
     const depsArr = Array.from(Object.entries(dependencies), ([k, v]) => ({
-      name: k,
-      version: v,
+      name: k as string,
+      version: v as string,
     }));
 
-    let versions: Record<string, string> = {};
-
-    if (depsArr.length) {
-      await Promise.all(
-        depsArr.map(async dep => {
-          const latestVersion = await getDependencyLatestVersion(
-            dep.name,
-            dep.version,
-          );
-          versions = { ...versions, [dep.name]: latestVersion };
-          return { [dep.name]: latestVersion };
-        }),
+    const getDeps = async (deps: { name: string; version: string }[]) => {
+      return Promise.all(
+        deps.map(async dep => ({
+          [dep.name]:
+            (await getDependencyLatestVersion(dep.name)) ?? dep.version,
+        })),
       );
-    }
+    };
 
-    return versions;
+    const deps = await getDeps(depsArr);
+
+    return Object.entries(deps).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: value,
+      }),
+      {},
+    );
   } catch (err) {
     console.error(err);
     return dependencies;

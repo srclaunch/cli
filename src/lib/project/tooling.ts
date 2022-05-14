@@ -43,7 +43,6 @@ export async function writeToolingConfiguration({
             path.resolve('./tsconfig.json'),
             uiConfig ? TYPESCRIPT_UI_CONFIG_CONTENT : TYPESCRIPT_CONFIG_CONTENT,
           );
-          // console.info(`${chalk.green('✔')} added TypeScript config`);
           break;
         default:
           break;
