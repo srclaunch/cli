@@ -433,13 +433,11 @@ export async function getDependenciesLatestVersions(
       );
     };
 
-    const deps = await getDeps(depsArr);
-    console.log('getDeps', deps);
     let depsDict: Dependencies = {};
-    for (const dep of deps) {
+    for (const dep of await getDeps(depsArr)) {
       depsDict = { ...depsDict, ...dep };
     }
-    console.log('depsDict', depsDict);
+
     return depsDict;
   } catch (err) {
     console.error(err);
@@ -465,20 +463,15 @@ export async function getDependencies({
       ? getPackageDevDependencies(package_)
       : getPackageDependencies(package_);
 
-    console.log('dev', dev);
-    console.log('deps', deps);
     dependencies = {
       ...dependencies,
       ...deps,
     };
   }
 
-  console.log('line 476 dependencies', dependencies);
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
-
-  console.log('dependenciesLatestVersions', dependenciesLatestVersions);
 
   return sortDependencies(dependenciesLatestVersions);
 }

@@ -162,16 +162,13 @@ export default new Command<Workspace & Project>({
             ],
           });
 
-          console.log('devDependencies', devDependencies);
           const dependencies = await getDependencies({
             packages: config.requirements?.packages ?? [],
           });
-          console.log('dependencies', dependencies);
 
           const peerDependencies = await getDependencies({
             packages: config.requirements?.peerPackages ?? [],
           });
-          console.log('peerDependencies', peerDependencies);
 
           const packageJSON = await generateNodePackageManifest({
             name: config.name,
