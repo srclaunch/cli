@@ -253,7 +253,6 @@ export async function getDependencyLatestVersion(
   const availableVersions = await JSON.parse(
     await shellExec(`npm view ${dependency} versions --json`),
   );
-
   const maxVersion = await semverMaxSatisfying(availableVersions, version);
 
   if (maxVersion) {
@@ -274,7 +273,7 @@ export async function getDependenciesLatestVersions(
 
     let versions: Record<string, string> = {};
 
-    const result = await Promise.all(
+    await Promise.all(
       depsArr.map(async dep => {
         const latestVersion = await getDependencyLatestVersion(
           dep.name,
@@ -285,12 +284,10 @@ export async function getDependenciesLatestVersions(
       }),
     );
 
-    console.log('result', result);
     if (!versions) {
       return {};
     }
 
-    console.log('versions', versions);
     return versions;
   } catch (err) {
     console.error(err);
@@ -454,8 +451,6 @@ export async function getDependencies({
   dev?: boolean;
   packages?: Package[];
 }): Promise<Dependencies> {
-  console.log('DEV: ', dev);
-  console.log('packages', packages);
   if (!packages) {
     return {};
   }
@@ -467,14 +462,12 @@ export async function getDependencies({
       ? getPackageDevDependencies(package_)
       : getPackageDependencies(package_);
 
-    console.log('deps', deps);
     dependencies = {
       ...dependencies,
       ...deps,
     };
   }
 
-  console.log('dependencies', dependencies);
   const dependenciesLatestVersions = await getDependenciesLatestVersions(
     dependencies,
   );
