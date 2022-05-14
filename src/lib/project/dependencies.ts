@@ -299,16 +299,16 @@ export async function getDependenciesLatestVersions(
           dep.name,
           dep.version,
         );
-        return { [dep.name]: latestVersion };
+        versions = { ...versions, [dep.name]: latestVersion };
       }),
     );
 
-    if (!result[0]) {
+    if (!versions) {
       return {};
     }
 
-    console.log('result', result[0]);
-    return result[0];
+    console.log('versions', versions);
+    return versions;
     // // @ts-ignore
     // const tasks: AsyncFunction<Dependencies>[] = await depsArr.map(dep => {
     //   return {
