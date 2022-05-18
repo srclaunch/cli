@@ -73,6 +73,14 @@ export async function build({
           output: {
             globals:
               typeof bundle === 'object' ? bundle.globals ?? {} : undefined,
+            entryFileNames:
+              typeof bundle === 'object' && bundle.preserveModules
+                ? '[name].mjs'
+                : undefined,
+            preserveModules:
+              typeof bundle === 'object' && bundle.preserveModules
+                ? true
+                : false,
           },
         },
         sourcemap,

@@ -1,13 +1,5 @@
-import {
-  Environments,
-  Project,
-  ProjectType,
-  RunOptions,
-  RunTool,
-  WebApplicationRunOptions,
-} from '@srclaunch/types';
+import { Environments, Project, RunnerOptions, Runner } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
-import { getEnvironment } from '@srclaunch/node-environment';
 import { Command, CommandType } from '../lib/command.js';
 import { run as runVite } from '../lib/run/vite';
 import chalk from 'chalk';
@@ -30,14 +22,14 @@ export default new Command<Project, RunFlags>({
       name: 'dev',
       description: 'Start project in development mode',
       run: async ({ config, flags }) => {
-        const options = (config.run as RunOptions).development;
+        const options = config.environments?.development?.run as RunnerOptions;
 
         if (!options) {
           throw new Error('Missing development configuration');
         }
 
-        switch (options?.tool) {
-          case RunTool.Vite:
+        switch (options?.runner) {
+          case Runner.Vite:
             await runVite({
               environment: Environments.Development,
               options,
@@ -49,7 +41,7 @@ export default new Command<Project, RunFlags>({
             console.error(
               `${chalk.red('✘')} ${chalk.bold(
                 'Unsupported run tool',
-              )} ${chalk.bold(options?.tool)}`,
+              )} ${chalk.bold(options?.runner)}`,
             );
             break;
         }
