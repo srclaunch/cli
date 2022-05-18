@@ -70,10 +70,18 @@ export default new Command<Project, BuildFlags>({
       }
     } else if (Array.isArray(options)) {
       for (const build of options) {
+        const clean = build.output?.clean ?? run === 0;
+        const types = build.types ?? run === 0;
+
         switch (build.tool) {
           case BuildTool.Vite:
             await vite({
               ...build,
+              output: {
+                ...build.output,
+                clean,
+              },
+              types,
               library:
                 config.type === ProjectType.Library ||
                 config.type === ProjectType.CLIApplication
@@ -88,9 +96,6 @@ export default new Command<Project, BuildFlags>({
             const formats = build?.formats ?? [build.format ?? BuildFormat.ESM];
 
             for (const format of formats) {
-              const clean = build.output?.clean ?? run === 0;
-              const types = build.types ?? run === 0;
-
               await esbuild({
                 ...build,
                 output: {
@@ -100,9 +105,10 @@ export default new Command<Project, BuildFlags>({
                 format,
                 types,
               } as ESBuildOptions);
-              run = run + 1;
             }
         }
+
+        run = run + 1;
       }
     }
   },
