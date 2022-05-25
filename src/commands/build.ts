@@ -52,8 +52,8 @@ export default new Command<Project, BuildFlags>({
           const formats = options.formats ?? [BuildFormat.ESM];
 
           for (const format of formats) {
-            const clean = options.output?.clean ?? run === 0;
-            const types = options.types ?? run === 0;
+            const clean = options.output?.clean && run === 0;
+            const types = options.types && run === 0;
 
             await esbuild({
               ...options,
@@ -70,8 +70,8 @@ export default new Command<Project, BuildFlags>({
       }
     } else if (Array.isArray(options)) {
       for (const build of options) {
-        const clean = build.output?.clean ?? run === 0;
-        const types = build.types ?? run === 0;
+        const clean = build.output?.clean && run === 0;
+        const types = build.types && run === 0;
 
         switch (build.tool) {
           case BuildTool.Vite:
