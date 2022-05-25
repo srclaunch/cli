@@ -1990,7 +1990,7 @@ __metadata:
   dependencies:
     "@srclaunch/dx": ^0.1.86
     "@srclaunch/exceptions": ^0.1.75
-    "@srclaunch/logic": ^0.0.24
+    "@srclaunch/logic": ^0.0.27
     "@srclaunch/node-environment": ^0.1.27
     "@srclaunch/types": 0.1.292
     "@types/async": ^3.2.13
@@ -2111,15 +2111,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/logic@npm:^0.0.24":
-  version: 0.0.24
-  resolution: "@srclaunch/logic@npm:0.0.24"
+"@srclaunch/logic@npm:^0.0.27":
+  version: 0.0.27
+  resolution: "@srclaunch/logic@npm:0.0.27"
   dependencies:
     email-validator: ^2.0.4
     fs-extra: ^10.1.0
     js-yaml: ^4.1.0
     password-validator: ^5.3.0
-  checksum: 86a6733e93cc50855f4adba55977e73d7a7db68d83e848f79869d56837de03e8ebd2a3776a70cca7d0874179c5f8907084f745db219c8a70de5631c36c460618
+  checksum: 73f4877cb24cc883b50d371d8cc8f0c8c1c0a4a3ff4ffbb8a74eeaae0da60eb654df283385013225467613d78c62c709bac6701bba2ff50fe28f263a944c9107
   languageName: node
   linkType: hard
 
