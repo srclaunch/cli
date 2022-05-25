@@ -18,7 +18,7 @@ import {
   TYPESCRIPT_CONFIG_CONTENT,
   TYPESCRIPT_UI_CONFIG_CONTENT,
 } from '../../constants/static-typing';
-import { writeFile } from '../file-system';
+import { writeFile } from '@srclaunch/logic';
 
 export async function writeToolingConfiguration({
   formatters = [],

@@ -1,5 +1,5 @@
 import path from 'path';
-import { deleteDirectory, deleteFile, writeFile } from '../file-system';
+import { deleteDirectory, deleteFile, writeFile } from '@srclaunch/logic';
 
 export async function cleanDependencies() {
   await deleteDirectory(path.resolve('node_modules'));

@@ -1,5 +1,5 @@
 import { build as buildCommand, Format } from 'esbuild';
-import { build as buildTypes } from './types.js';
+import { build as buildTypes } from './types';
 import {
   BuildFormat,
   BuildOptions,
@@ -9,11 +9,12 @@ import {
   ESBuildOptions,
   Platform,
 } from '@srclaunch/types';
+import { emptyDirectory } from '@srclaunch/logic';
 import path from 'path';
-import { getFormatFileExtension } from './formats.js';
-import { emptyDirectory } from '../file-system.js';
+import { getFormatFileExtension } from './formats';
+
 import chalk from 'chalk';
-import { BUILD_DIR } from '../../constants/build.js';
+import { BUILD_DIR } from '../../constants/build';
 
 export async function build({
   bundle = true,
