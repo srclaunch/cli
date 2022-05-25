@@ -40,9 +40,11 @@ export async function createNewProjectInteractive({
     return await writeFile(
       '.srclaunchrc.ts',
       await generateSrcLaunchProjectConfig({
-        description: projectDescription,
-        type: projectType as ProjectType,
-        name: projectName,
+        project: {
+          description: projectDescription,
+          type: projectType as ProjectType,
+          name: projectName,
+        },
       }),
     );
   }
