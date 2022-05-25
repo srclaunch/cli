@@ -30,6 +30,10 @@ export const EXPRESS_DEV_DEPENDENCIES = {
   '@types/express': '^4.17.13',
 };
 
+export const FS_EXTRA_DEV_DEPENDENCIES = {
+  '@types/fs-extra': '^9.0.13',
+};
+
 export const GITHUB_DEV_DEPENDENCIES = {
   'eslint-plugin-github': '^4.3.6',
 };

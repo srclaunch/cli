@@ -1,4 +1,5 @@
 import { Project } from '@srclaunch/types';
+import Yaml from 'js-yaml';
 import { Command } from '../lib/command.js';
 import { TypedFlags } from 'meow';
 import { createNewProjectInteractive } from '../lib/project/create.js';
@@ -22,6 +23,19 @@ export default new Command({
   name: 'generate',
   description: `Generate code, configuration, and files for various patterns and libraries.`,
   commands: [
+    new Command<Project>({
+      name: 'github-actions',
+      description:
+        'Generate GitHub Actions workflows from the SrcLaunch config file.',
+      async run({ config, flags }): Promise<void> {
+        const repositoryWorkflows = config?.repository?.workflows;
+
+        if (repositoryWorkflows) {
+          const yaml = Yaml.dump(repositoryWorkflows);
+          console.log('yaml', yaml);
+        }
+      },
+    }),
     new Command<Project, GenerateSrcLaunchProjectFlags>({
       name: 'srclaunch-project-config',
       description:

@@ -7,6 +7,7 @@ import {
   BuildTarget,
   BundleOptions,
   ESBuildOptions,
+  Platform,
 } from '@srclaunch/types';
 import path from 'path';
 import { getFormatFileExtension } from './formats.js';
@@ -20,7 +21,7 @@ export async function build({
   input,
   minify = true,
   output,
-  platform = BuildPlatform.Browser,
+  platform = BuildPlatform.Universal,
   sourcemap = true,
   splitting = true,
   target = BuildTarget.ESNext,
@@ -60,7 +61,14 @@ export async function build({
         : `${output?.directory ?? BUILD_DIR}/${
             output?.file ?? 'index'
           }${getFormatFileExtension(format)}`,
-      platform,
+      platform:
+        platform === BuildPlatform.Universal
+          ? 'neutral'
+          : platform === BuildPlatform.Browser
+          ? 'browser'
+          : platform === BuildPlatform.Node
+          ? 'node'
+          : undefined,
       sourcemap,
       splitting: format === 'esm' && splitting,
       target,

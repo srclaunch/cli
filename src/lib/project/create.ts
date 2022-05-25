@@ -1,14 +1,13 @@
-import { Project, ProjectType } from '@srclaunch/types';
+import { ProjectType } from '@srclaunch/types';
 import chalk from 'chalk';
+import { generateSrcLaunchProjectConfig, writeFile } from '@srclaunch/logic';
+
 import {
   promptForProjectCreate,
   promptForProjectDescription,
   promptForProjectName,
-  promptForProjectOptions,
   promptForProjectType,
 } from '../../prompts/generators/srclaunch/project';
-import { generateSrcLaunchProjectConfig } from '../generators/config/srclaunch/project';
-import { generateFile } from '../generators/file';
 
 export async function createNewProjectInteractive({
   name,
@@ -38,14 +37,13 @@ export async function createNewProjectInteractive({
 
     const projectType = type ?? (await promptForProjectType());
 
-    return await generateFile({
-      contents: await generateSrcLaunchProjectConfig({
+    return await writeFile(
+      '.srclaunchrc.ts',
+      await generateSrcLaunchProjectConfig({
         description: projectDescription,
         type: projectType as ProjectType,
         name: projectName,
       }),
-      name: '.srclaunchrc',
-      extension: 'ts',
-    });
+    );
   }
 }

@@ -1,6 +1,3 @@
-import { Command, CommandType } from '../lib/command.js';
-import { build as esbuild } from '../lib/build/esbuild.js';
-import { build as vite } from '../lib/build/vite.js';
 import {
   BuildFormat,
   BuildOptions,
@@ -11,7 +8,10 @@ import {
   ViteBuildOptions,
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
-import { BUILD_DIR } from '../constants/build.js';
+import { Command, CommandType } from '../lib/command';
+import { build as esbuild } from '../lib/build/esbuild';
+import { build as vite } from '../lib/build/vite';
+import { BUILD_DIR } from '../constants/build';
 
 type BuildFlags = TypedFlags<{
   clean: {

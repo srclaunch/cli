@@ -1,4 +1,4 @@
 {
   "extends": "@srclaunch/dx/tsconfig.ui.json",
-  "include": ["src"]
+  "include": ["src", "../logic/src/runners/vite.ts"]
 }

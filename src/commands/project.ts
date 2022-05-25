@@ -11,18 +11,28 @@ import {
 } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
 import { diffJson } from 'diff';
-import { Command, CommandType } from '../lib/command.js';
 import chalk from 'chalk';
-import { ensureDirectoryExists, readFile } from '../lib/file-system.js';
+// import { ensureDirectoryExists, readFile } from '../lib/file-system';
 import ora from 'ora';
-import { push } from '../lib/git.js';
-import { shellExec } from '../lib/cli.js';
-import { getPublishYml } from '../lib/project/publish.js';
-import { getPackageScripts } from '../lib/project/package.js';
+import {
+  generateGitIgnoreConfig,
+  generateNodePackageManifest,
+  generateYarnConfig,
+  ensureDirectoryExists,
+  readFile,
+  writeFile,
+  YarnNodeLinker,
+} from '@srclaunch/logic';
+import { Command, CommandType } from '../lib/command';
+
+import { push } from '../lib/git';
+import { shellExec } from '../lib/cli';
+import { getPublishYml } from '../lib/project/publish';
+import { getPackageScripts } from '../lib/project/package';
 import {
   getDependencies,
   getDevDependencies,
-} from '../lib/project/dependencies.js';
+} from '../lib/project/dependencies';
 import {
   PROJECT_PACKAGE_JSON_FILES,
   PROJECT_PACKAGE_JSON_LICENSE,
@@ -30,23 +40,16 @@ import {
   PROJECT_PACKAGE_JSON_MODULE,
   PROJECT_PACKAGE_JSON_TYPE,
   PROJECT_PACKAGE_JSON_TYPES,
-} from '../constants/project.js';
-import { writeToolingConfiguration } from '../lib/project/tooling.js';
-import { createRelease } from '../lib/release.js';
-import { createChangeset } from '../lib/changesets.js';
+} from '../constants/project';
+import { writeToolingConfiguration } from '../lib/project/tooling';
+import { createRelease } from '../lib/release';
+import { createChangeset } from '../lib/changesets';
 import {
   cleanBuild,
   cleanDependencies,
   cleanTestCoverage,
-} from '../lib/project/clean.js';
-import {
-  generateYarnConfig,
-  YarnNodeLinker,
-} from '../lib/generators/config/package-managers/yarn.js';
-import { generateFile } from '../lib/generators/file.js';
-import { generateNodePackageManifest } from '../lib/generators/config/node/package-manifest.js';
-import { generateGitIgnoreConfig } from '../lib/generators/config/git/gitignore.js';
-import { BUILD_DIR, BUILD_FILE_NAME } from '../constants/build.js';
+} from '../lib/project/clean';
+import { BUILD_DIR, BUILD_FILE_NAME } from '../constants/build';
 
 type ProjectSetupFlags = TypedFlags<{
   build: {
@@ -98,6 +101,12 @@ export default new Command<Workspace & Project>({
       run: async ({ config, flags }) => {},
       type: CommandType.Workspace,
     }),
+    new Command<Project>({
+      name: 'sync',
+      description: 'Sync SrcLaunch configuration with project',
+      run: async ({ config, flags }) => {},
+      type: CommandType.Workspace,
+    }),
     new Command<Project, ProjectSetupFlags>({
       name: 'setup',
       description: 'Setup a project for use with SrcLaunch',
@@ -120,7 +129,7 @@ export default new Command<Workspace & Project>({
           spinner.start('Updating dependencies...');
 
           const existingPackageManifest = await JSON.parse(
-            (await readFile('package.json')).toString(),
+            (await readFile('packageon')).toString(),
           );
           const coreDevDependencies = await getDevDependencies({
             ava: config.test?.tool === TestTool.Ava,
@@ -231,7 +240,7 @@ export default new Command<Workspace & Project>({
               ...getPackageScripts({
                 build: Boolean(config.build) || flags['build'],
                 release: Boolean(config.release) || flags['release'],
-                run: config.run,
+                run: config.environments?.development?.run,
                 test: Boolean(config.test),
               }),
               ...config?.package?.scripts,
@@ -244,11 +253,7 @@ export default new Command<Workspace & Project>({
             peerDependencies,
           });
 
-          await generateFile({
-            contents: packageJSON,
-            name: 'package',
-            extension: 'json',
-          });
+          await writeFile('package.json', packageJSON);
           spinner.succeed('Dependencies updated');
 
           spinner.start('Cleaning project cache...');
@@ -271,10 +276,7 @@ export default new Command<Workspace & Project>({
             );
           }
 
-          await generateFile({
-            contents: generateGitIgnoreConfig(),
-            name: '.gitignore',
-          });
+          await writeFile('.gitignore', generateGitIgnoreConfig());
           await createChangeset({
             files: ['./.gitignore'],
             message: 'Update .gitignore',
@@ -283,13 +285,12 @@ export default new Command<Workspace & Project>({
           spinner.succeed('Project cache cleaned');
 
           spinner.start('Initializing Yarn...');
-          await generateFile({
-            contents: await generateYarnConfig({
+          await writeFile(
+            '.yarnrc.yml',
+            await generateYarnConfig({
               nodeLinker: YarnNodeLinker.NodeModules,
             }),
-            extension: 'yml',
-            name: '.yarnrc',
-          });
+          );
           await shellExec('corepack enable yarn');
           await shellExec('yarn set version stable');
           await shellExec('yarn plugin import interactive-tools');
@@ -308,14 +309,14 @@ export default new Command<Workspace & Project>({
           spinner.succeed('Installed project dependencies');
 
           const updatedPackageManifest = await JSON.parse(
-            (await readFile('package.json')).toString(),
+            (await readFile('packageon')).toString(),
           );
           const diff = diffJson(
             existingPackageManifest,
             updatedPackageManifest,
           );
           if (diff.length > 1) {
-            console.info(chalk.bold('> Changes to package.json:'));
+            console.info(chalk.bold('> Changes to packageon:'));
             for (const change of diff) {
               if (change.added) {
                 console.log(chalk.green.bold(`+ Added: ${change.count}`));
@@ -335,12 +336,10 @@ export default new Command<Workspace & Project>({
           */
           spinner.start('Creating GitHub Actions public workflow...');
           await ensureDirectoryExists('.github/workflows');
-          await generateFile({
-            contents: getPublishYml({ build, test }),
-            extension: 'yml',
-            name: 'publish',
-            path: '.github/workflows/',
-          });
+          await writeFile(
+            '.github/workflows/publish.yml',
+            getPublishYml({ build, test }),
+          );
           spinner.succeed('Added GitHub Actions publish workflow');
 
           /*
@@ -377,8 +376,6 @@ export default new Command<Workspace & Project>({
 
           const { branch, version } = await createRelease({
             changesets: config.changesets,
-            pipelines: config.release?.pipelines,
-            publish: config.release?.publish,
           });
           spinner.succeed(`Created release ${version}`);
 

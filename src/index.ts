@@ -1,21 +1,22 @@
 import meow, { AnyFlags, TypedFlags } from 'meow';
 import updateNotifier, { Package } from 'update-notifier';
-import buildCommands from './commands/build.js';
-import changesetCommands from './commands/changesets.js';
-import configCommands from './commands/config.js';
-import helpCommands from './commands/help.js';
-import generateCommands from './commands/generate.js';
-import infrastructureCommands from './commands/infrastructure.js';
-import installCommands from './commands/install.js';
-import modelCommands from './commands/models.js';
-import projectCommands from './commands/project.js';
-import releaseCommands from './commands/release.js';
-import runCommands from './commands/run.js';
-import testCommands from './commands/test.js';
+import { loadSrcLaunchConfig } from '@srclaunch/logic';
 
-import { getSrcLaunchConfig } from './lib/config.js';
-import { Command, CommandType, handleCommand } from './lib/command.js';
-import { InteractiveModeFlag } from './lib/flags.js';
+import buildCommands from './commands/build';
+import changesetCommands from './commands/changesets';
+import configCommands from './commands/config';
+import helpCommands from './commands/help';
+import generateCommands from './commands/generate';
+import infrastructureCommands from './commands/infrastructure';
+import installCommands from './commands/install';
+import modelCommands from './commands/models';
+import projectCommands from './commands/project';
+import releaseCommands from './commands/release';
+import runCommands from './commands/run';
+import testCommands from './commands/test';
+
+import { Command, CommandType, handleCommand } from './lib/command';
+import { InteractiveModeFlag } from './lib/flags';
 
 export type { Command };
 export { CommandType };
@@ -25,7 +26,7 @@ Usage
   $ srclaunch <command>
 
 Commands
-  build - Build SrcLaunch project if srclaunch.config.json is found in the current directory
+  build - Build SrcLaunch project if srclaunch.configon is found in the current directory
   models
     * build - Build models into Sequelize models, Typescript definitions and JSON
   test - Run tests and collect coverage
@@ -42,7 +43,7 @@ export async function main() {
   try {
     const command = cli.input;
     const flags = cli.flags as TypedFlags<InteractiveModeFlag>;
-    const config = await getSrcLaunchConfig();
+    const config = await loadSrcLaunchConfig();
 
     updateNotifier({ pkg: cli.pkg as Package }).notify();
 

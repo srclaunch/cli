@@ -51,6 +51,10 @@ export const EXPRESS_DEPENDENCIES = {
   express: '^4.17.3',
 };
 
+export const FS_EXTRA_DEPENDENCIES = {
+  'fs-extra': '^10.1.0',
+};
+
 export const HEX_RGB_DEPENDENCIES = {
   'hex-rgb': '^5.0.0',
 };
@@ -63,6 +67,10 @@ export const JS_FILE_DOWNLOAD_DEPENDENCIES = {
   'js-file-download': '^0.4.12',
   'password-validator': '^5.2.1',
   zxcvbn: '^4.4.2',
+};
+
+export const JS_YAML_DEPENDENCIES = {
+  'js-yaml': '^4.1.0',
 };
 
 export const KEYGRIP_DEPENDENCIES = {

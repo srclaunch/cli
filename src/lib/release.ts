@@ -9,13 +9,9 @@ import { getBranchName, push } from './git';
 
 export async function createRelease({
   changesets,
-  publish,
-  pipelines,
   push: pushFlag = false,
 }: {
   changesets?: ChangesetOptions;
-  publish: ReleaseOptions['publish'];
-  pipelines: ReleaseOptions['pipelines'];
   push?: boolean;
 }): Promise<{
   repo?: string;

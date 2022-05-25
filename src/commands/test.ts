@@ -1,10 +1,9 @@
-import { Command, CommandType } from '../lib/command.js';
-import { run as runAvaTests } from '../lib/test/ava.js';
-import { run as runC8Coverage } from '../lib/test/coverage.js';
-import { run as runJestTests } from '../lib/test/jest.js';
-import { Project } from '@srclaunch/types';
+import { Project, TestTool } from '@srclaunch/types';
 import { TypedFlags } from 'meow';
-import { TestTool } from '@srclaunch/types';
+import { Command, CommandType } from '../lib/command';
+import { run as runAvaTests } from '../lib/test/ava';
+import { run as runC8Coverage } from '../lib/test/coverage';
+import { run as runJestTests } from '../lib/test/jest';
 
 type TestFlags = TypedFlags<{
   coverage: {

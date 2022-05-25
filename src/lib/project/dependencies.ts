@@ -16,6 +16,7 @@ import {
 import { shellExec } from '../cli';
 import {
   BrowserPackage,
+  Dependencies,
   NodePackage,
   Package,
   Platform,
@@ -78,6 +79,8 @@ import {
   ZXCVBN_DEPENDENCIES,
   PICO_COLORS_DEPENDENCIES,
   SERIALIZE_ERROR_DEPENDENCIES,
+  JS_YAML_DEPENDENCIES,
+  FS_EXTRA_DEPENDENCIES,
 } from '../../constants/dependencies';
 import {
   ASYNC_EXIT_HOOK_DEV_DEPENDENCIES,
@@ -85,6 +88,7 @@ import {
   COMMON_NODE_PLATFORM_DEV_DEPENDENCIES,
   ESLINT_DEV_DEPENDENCIES,
   EXPRESS_DEV_DEPENDENCIES,
+  FS_EXTRA_DEV_DEPENDENCIES,
   GITHUB_DEV_DEPENDENCIES,
   JEST_REACT_TESTING_DEV_DEPENDENCIES,
   JEST_TESTING_DEV_DEPENDENCIES,
@@ -115,12 +119,6 @@ const emoji = {
   error: '\ud83d\udd34',
   success: '\u2705',
 };
-
-export type Dependency = {
-  [name: string]: string | undefined;
-};
-
-export type Dependencies = Record<string, string>;
 
 export function getPlatformDependencies(platform?: Platform) {
   switch (platform) {
@@ -250,6 +248,8 @@ export function getPackageDependencies(package_: Package) {
       return REACT_REDUX_DEPENDENCIES;
     case BrowserPackage.ReactRouter:
       return REACT_ROUTER_DEPENDENCIES;
+    case BrowserPackage.SrcLaunchIcons:
+      return SRCLAUNCH_ICONS_DEPENDENCIES;
     case BrowserPackage.SrcLaunchWebEnvironment:
       return SRCLAUNCH_WEB_ENVIRONMENT_DEPENDENCIES;
     case BrowserPackage.SrcLaunchReactHooks:
@@ -273,6 +273,8 @@ export function getPackageDependencies(package_: Package) {
       return CONFIG_DEPENDENCIES;
     case NodePackage.Express:
       return EXPRESS_DEPENDENCIES;
+    case NodePackage.FSExtra:
+      return FS_EXTRA_DEPENDENCIES;
     case NodePackage.SrcLaunchHttpServer:
       return SRCLAUNCH_HTTP_SERVER_DEPENDENCIES;
     case NodePackage.SrcLaunchDataClient:
@@ -300,6 +302,8 @@ export function getPackageDependencies(package_: Package) {
       return EMAIL_VALIDATOR_DEPENDENCIES;
     case UniversalPackage.HexRGB:
       return HEX_RGB_DEPENDENCIES;
+    case UniversalPackage.JSYaml:
+      return JS_YAML_DEPENDENCIES;
     case UniversalPackage.Luxon:
       return LUXON_DEPENDENCIES;
     case UniversalPackage.NanoID:
@@ -326,8 +330,6 @@ export function getPackageDependencies(package_: Package) {
       return SRCLAUNCH_HTTP_CLIENT_DEPENDENCIES;
     case UniversalPackage.SrcLaunchI18n:
       return SRCLAUNCH_I18N_DEPENDENCIES;
-    case UniversalPackage.SrcLaunchIcons:
-      return SRCLAUNCH_ICONS_DEPENDENCIES;
     case UniversalPackage.SrcLaunchLogger:
       return SRCLAUNCH_LOGGER_DEPENDENCIES;
     case UniversalPackage.SrcLaunchTransform:
@@ -356,6 +358,8 @@ export function getPackageDevDependencies(package_: Package) {
       return ASYNC_EXIT_HOOK_DEV_DEPENDENCIES;
     case NodePackage.Express:
       return EXPRESS_DEV_DEPENDENCIES;
+    case NodePackage.FSExtra:
+      return FS_EXTRA_DEV_DEPENDENCIES;
     case NodePackage.Keygrip:
       return KEYGRIP_DEV_DEPENDENCIES;
     case NodePackage.Multer:
