@@ -15,6 +15,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@antfu/utils@npm:^0.5.1":
+  version: 0.5.2
+  resolution: "@antfu/utils@npm:0.5.2"
+  checksum: 9b91446b2dbb823abeeba1cc33d6ebf701a462923408ad4751fbe162da46ae0669c774c2b5435fc77691dc207ce5de5945e693d5163e07d6ef42e376b04c7af4
+  languageName: node
+  linkType: hard
+
 "@arcanis/slice-ansi@npm:^1.1.1":
   version: 1.1.1
   resolution: "@arcanis/slice-ansi@npm:1.1.1"
@@ -1981,9 +1988,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@srclaunch/cli@workspace:."
   dependencies:
-    "@srclaunch/dx": ^0.1.86
+    "@srclaunch/dx": ^0.1.87
     "@srclaunch/exceptions": ^0.1.75
-    "@srclaunch/logic": ^0.0.30
+    "@srclaunch/logic": ^0.0.31
     "@srclaunch/node-environment": ^0.1.27
     "@srclaunch/types": 0.1.292
     "@types/async": ^3.2.13
@@ -2069,10 +2076,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@srclaunch/dx@npm:^0.1.86":
-  version: 0.1.86
-  resolution: "@srclaunch/dx@npm:0.1.86"
-  checksum: c8936121d77464ecb1dac15ef5799c1739b71b59e622a94d0ca3fe7c2804fe8995059501e1402bf318cd675d57f192e3605ce9076a1b84f2d78d81332e1d61a6
+"@srclaunch/dx@npm:^0.1.87":
+  version: 0.1.87
+  resolution: "@srclaunch/dx@npm:0.1.87"
+  checksum: 99a611128b6263632eea33b897d0d61ab9916ac4b997898f259543c6660e300d64152035d62f0f572ad9250cb6c28ad70c8f0b1d68fce3edadfae9436af18bba
   languageName: node
   linkType: hard
 
@@ -2099,15 +2106,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/logic@npm:^0.0.30":
-  version: 0.0.30
-  resolution: "@srclaunch/logic@npm:0.0.30"
+"@srclaunch/logic@npm:^0.0.31":
+  version: 0.0.31
+  resolution: "@srclaunch/logic@npm:0.0.31"
   dependencies:
     email-validator: ^2.0.4
     fs-extra: ^10.1.0
     js-yaml: ^4.1.0
     password-validator: ^5.3.0
-  checksum: 6e745f8fbc2ff50eb96b88e03f5300b8c22826a374103c23adfecffb819697fb5e22b6466200a66889ba66fde365ad8a9bd4c0ac886ec28f7ddb4dfff184ba9c
+    unconfig: ^0.3.4
+  checksum: 8d169dcfa66dcbae706e5e591958eba33f2727552c1dc7d2cf788449b72d37253e5a3979f4d9b229adcfaaaea7be689fafac42f98ac4eb1f333923e5e700b28b
   languageName: node
   linkType: hard
 
@@ -4833,6 +4841,13 @@ __metadata:
     has-property-descriptors: ^1.0.0
     object-keys: ^1.1.1
   checksum: ce0aef3f9eb193562b5cfb79b2d2c86b6a109dfc9fdcb5f45d680631a1a908c06824ddcdb72b7573b54e26ace07f0a23420aaba0d5c627b34d2c1de8ef527e2b
+  languageName: node
+  linkType: hard
+
+"defu@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "defu@npm:6.0.0"
+  checksum: 3c24ef0009b796e32a1655a23fc1f11a79b42012255b6bc88889242da77b7e45bfa4293d9661d28f3f6c12c931309e18f5047efa492670585a3da768887cea74
   languageName: node
   linkType: hard
 
@@ -8023,6 +8038,15 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: 96f1d69042b3c6dfc695f2a4e4b0db38af6fb78582ad1a02beaa57cfcd77cbd31567d7d865c1c85709b7c3e176eefa3b2035ffecd646005f15d8ef528eccf205
+  languageName: node
+  linkType: hard
+
+"jiti@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "jiti@npm:1.13.0"
+  bin:
+    jiti: bin/jiti.js
+  checksum: 1e74d99b9a551df952057b8bce56f744caccca0044aa05021643e6ce0837ed47bc2d5b290fecb462e32988c6bf318afe77e341310c5ecf6bb63c19c80c929cb6
   languageName: node
   linkType: hard
 
@@ -11841,6 +11865,17 @@ __metadata:
     has-symbols: ^1.0.3
     which-boxed-primitive: ^1.0.2
   checksum: b7a1cf5862b5e4b5deb091672ffa579aa274f648410009c81cca63fed3b62b610c4f3b773f912ce545bb4e31edc3138975b5bc777fc6e4817dca51affb6380e9
+  languageName: node
+  linkType: hard
+
+"unconfig@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "unconfig@npm:0.3.4"
+  dependencies:
+    "@antfu/utils": ^0.5.1
+    defu: ^6.0.0
+    jiti: ^1.13.0
+  checksum: 77e9d172a7a8aade3c3dd9177a0d6ae058cd1df2feef0323abbb71f67758dbd0ec022b0d9a66d592926cdcb7c1784979485c631e802d8c431e4a4dfe67ec79da
   languageName: node
   linkType: hard
 
