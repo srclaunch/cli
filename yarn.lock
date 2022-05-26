@@ -15,13 +15,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@antfu/utils@npm:^0.5.1":
-  version: 0.5.2
-  resolution: "@antfu/utils@npm:0.5.2"
-  checksum: 9b91446b2dbb823abeeba1cc33d6ebf701a462923408ad4751fbe162da46ae0669c774c2b5435fc77691dc207ce5de5945e693d5163e07d6ef42e376b04c7af4
-  languageName: node
-  linkType: hard
-
 "@arcanis/slice-ansi@npm:^1.1.1":
   version: 1.1.1
   resolution: "@arcanis/slice-ansi@npm:1.1.1"
@@ -2043,13 +2036,11 @@ __metadata:
     eslint-plugin-sort-requires: ^2.1.0
     eslint-plugin-testing-library: ^5.5.0
     eslint-plugin-unicorn: ^42.0.0
-    fs-extra: ^10.1.0
     ink: ^3.2.0
     ink-multi-select: ^2.0.0
     ink-spinner: ^4.0.3
     jest: ^27.5.1
     jest-cli: ^27.5.1
-    js-yaml: ^4.1.0
     latest-version: ^6.0.0
     luxon: ^2.4.0
     meow: ^10.1.2
@@ -2073,7 +2064,6 @@ __metadata:
     ts-jest: ^28.0.2
     ts-node: ^10.7.0
     typescript: 4.6.4
-    unconfig: ^0.3.4
     update-notifier: ^5.1.0
     vite: ^2.9.9
   bin:
@@ -4861,13 +4851,6 @@ __metadata:
     has-property-descriptors: ^1.0.0
     object-keys: ^1.1.1
   checksum: ce0aef3f9eb193562b5cfb79b2d2c86b6a109dfc9fdcb5f45d680631a1a908c06824ddcdb72b7573b54e26ace07f0a23420aaba0d5c627b34d2c1de8ef527e2b
-  languageName: node
-  linkType: hard
-
-"defu@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "defu@npm:6.0.0"
-  checksum: 3c24ef0009b796e32a1655a23fc1f11a79b42012255b6bc88889242da77b7e45bfa4293d9661d28f3f6c12c931309e18f5047efa492670585a3da768887cea74
   languageName: node
   linkType: hard
 
@@ -8058,15 +8041,6 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: 96f1d69042b3c6dfc695f2a4e4b0db38af6fb78582ad1a02beaa57cfcd77cbd31567d7d865c1c85709b7c3e176eefa3b2035ffecd646005f15d8ef528eccf205
-  languageName: node
-  linkType: hard
-
-"jiti@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "jiti@npm:1.13.0"
-  bin:
-    jiti: bin/jiti.js
-  checksum: 1e74d99b9a551df952057b8bce56f744caccca0044aa05021643e6ce0837ed47bc2d5b290fecb462e32988c6bf318afe77e341310c5ecf6bb63c19c80c929cb6
   languageName: node
   linkType: hard
 
@@ -11885,17 +11859,6 @@ __metadata:
     has-symbols: ^1.0.3
     which-boxed-primitive: ^1.0.2
   checksum: b7a1cf5862b5e4b5deb091672ffa579aa274f648410009c81cca63fed3b62b610c4f3b773f912ce545bb4e31edc3138975b5bc777fc6e4817dca51affb6380e9
-  languageName: node
-  linkType: hard
-
-"unconfig@npm:^0.3.4":
-  version: 0.3.4
-  resolution: "unconfig@npm:0.3.4"
-  dependencies:
-    "@antfu/utils": ^0.5.1
-    defu: ^6.0.0
-    jiti: ^1.13.0
-  checksum: 77e9d172a7a8aade3c3dd9177a0d6ae058cd1df2feef0323abbb71f67758dbd0ec022b0d9a66d592926cdcb7c1784979485c631e802d8c431e4a4dfe67ec79da
   languageName: node
   linkType: hard
 
