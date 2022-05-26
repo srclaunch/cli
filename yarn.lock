@@ -1983,13 +1983,11 @@ __metadata:
   dependencies:
     "@srclaunch/dx": ^0.1.86
     "@srclaunch/exceptions": ^0.1.75
-    "@srclaunch/logic": ^0.0.29
+    "@srclaunch/logic": ^0.0.30
     "@srclaunch/node-environment": ^0.1.27
     "@srclaunch/types": 0.1.292
     "@types/async": ^3.2.13
     "@types/diff": ^5.0.2
-    "@types/fs-extra": ^9.0.13
-    "@types/js-yaml": ^4.0.5
     "@types/luxon": ^2.3.2
     "@types/node": ^17.0.33
     "@types/node-emoji": ^1.8.1
@@ -2101,15 +2099,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/logic@npm:^0.0.29":
-  version: 0.0.29
-  resolution: "@srclaunch/logic@npm:0.0.29"
+"@srclaunch/logic@npm:^0.0.30":
+  version: 0.0.30
+  resolution: "@srclaunch/logic@npm:0.0.30"
   dependencies:
     email-validator: ^2.0.4
     fs-extra: ^10.1.0
     js-yaml: ^4.1.0
     password-validator: ^5.3.0
-  checksum: fa206cf27203559c5f302567788698880677902e43912db22594a219d571b4794aed352eb87c8c16ddb2a78f232e0fc60e9b64863f372eca2b842e0a19120ffb
+  checksum: 6e745f8fbc2ff50eb96b88e03f5300b8c22826a374103c23adfecffb819697fb5e22b6466200a66889ba66fde365ad8a9bd4c0ac886ec28f7ddb4dfff184ba9c
   languageName: node
   linkType: hard
 
@@ -2277,15 +2275,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^9.0.13":
-  version: 9.0.13
-  resolution: "@types/fs-extra@npm:9.0.13"
-  dependencies:
-    "@types/node": "*"
-  checksum: add79e212acd5ac76b97b9045834e03a7996aef60a814185e0459088fd290519a3c1620865d588fa36c4498bf614210d2a703af5cf80aa1dbc125db78f6edac3
-  languageName: node
-  linkType: hard
-
 "@types/glob@npm:*":
   version: 7.2.0
   resolution: "@types/glob@npm:7.2.0"
@@ -2334,13 +2323,6 @@ __metadata:
   dependencies:
     "@types/istanbul-lib-report": "*"
   checksum: f1ad54bc68f37f60b30c7915886b92f86b847033e597f9b34f2415acdbe5ed742fa559a0a40050d74cdba3b6a63c342cac1f3a64dba5b68b66a6941f4abd7903
-  languageName: node
-  linkType: hard
-
-"@types/js-yaml@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "@types/js-yaml@npm:4.0.5"
-  checksum: 7dcac8c50fec31643cc9d6444b5503239a861414cdfaa7ae9a38bc22597c4d850c4b8cec3d82d73b3fbca408348ce223b0408d598b32e094470dfffc6d486b4d
   languageName: node
   linkType: hard
 
